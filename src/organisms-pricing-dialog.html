@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>Organism — Pricing Dialog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="disrupta-ui.css" />
+  <link rel="stylesheet" href="sb-docs.css" />
+</head>
+<body class="page-laboratorio-ideias sb-doc-page">
+
+  <header>
+    <span class="sb-doc-tag">Organismo</span>
+    <span class="sb-doc-tag">Interface Principal</span>
+    <h1 class="sb-doc-h1">Pricing Dialog</h1>
+    <p class="sb-doc-desc">Diálogo modal acoplado à navegação superior para gestão rápida de planos (Mensal/Anual) e upgrades de tokens.</p>
+  </header>
+
+  <section>
+    <h2 class="sb-doc-h2">UX Writing & Identidade</h2>
+    <div class="sb-doc-uxw">
+      <p><strong>Voz:</strong> Direta, objetiva e transparente.</p>
+      <p><strong>Tom:</strong> Confiante (sem ansiedade de conversão). O foco é mostrar o limite exato de recursos sem culpar o utilizador por "bater no teto".</p>
+      <p><strong>Regra de Ouro:</strong> Nunca arredondar preços para cima. Exibir a moeda separada do valor para alinhamento ocular perfeito.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sb-doc-h2">Canvas (Interativo)</h2>
+    <div class="sb-doc-canvas" style="min-height: 400px;">
+      <button type="button" class="btn-primary lab-tokens__open-pricing" aria-haspopup="dialog" aria-controls="lab-pricing-dialog" style="border-radius: 0;">
+        Abrir Pricing Dialog
+      </button>
+
+      <!-- The Component -->
+      <dialog id="lab-pricing-dialog" class="lab-pricing-dialog" aria-labelledby="lab-pricing-title">
+        <div class="lab-pricing-dialog__panel">
+          <header class="lab-pricing-dialog__head">
+            <h2 id="lab-pricing-title" class="lab-pricing-dialog__title">Planos e tokens</h2>
+            <button type="button" class="lab-pricing-dialog__close" aria-label="Fechar">
+              <span aria-hidden="true">×</span>
+            </button>
+          </header>
+          <div class="lab-pricing">
+            <div class="lab-pricing__period" role="group" aria-label="Período de cobrança">
+              <div class="lab-pricing__period-inner" data-period="0">
+                <div id="lab-pricing-period-knob" class="lab-pricing__period-knob" aria-hidden="true"></div>
+                <button type="button" class="lab-pricing__period-btn is-active" id="lab-pricing-period-0" data-period="0" aria-pressed="true">
+                  Mensal
+                </button>
+                <button type="button" class="lab-pricing__period-btn" id="lab-pricing-period-1" data-period="1" aria-pressed="false">
+                  Anual
+                </button>
+              </div>
+            </div>
+            <div class="lab-pricing__plans" id="lab-pricing-plans">
+              <button type="button" class="lab-pricing__plan" data-plan="0" aria-pressed="true">
+                <div class="lab-pricing__plan-main">
+                  <p class="lab-pricing__plan-name">Grátis</p>
+                  <p class="lab-pricing__plan-meta">
+                    <span class="lab-pricing__currency">R$</span><span class="lab-pricing__amount">0,00</span><span class="lab-pricing__suffix">/mês</span>
+                  </p>
+                </div>
+                <span class="lab-pricing__radio" aria-hidden="true"><span class="lab-pricing__radio-dot"></span></span>
+              </button>
+              <button type="button" class="lab-pricing__plan" data-plan="1" aria-pressed="false">
+                <div class="lab-pricing__plan-main">
+                  <p class="lab-pricing__plan-name">Starter <span class="lab-pricing__badge">Popular</span></p>
+                  <p class="lab-pricing__plan-meta">
+                    <span class="lab-pricing__currency">R$</span>
+                    <span id="lab-pricing-starter" class="lab-pricing__amount lab-pricing__amount--flow">49,90</span>
+                    <span class="lab-pricing__suffix">/mês</span>
+                  </p>
+                </div>
+                <span class="lab-pricing__radio" aria-hidden="true"><span class="lab-pricing__radio-dot"></span></span>
+              </button>
+              <button type="button" class="lab-pricing__plan" data-plan="2" aria-pressed="false">
+                <div class="lab-pricing__plan-main">
+                  <p class="lab-pricing__plan-name">Pro</p>
+                  <p class="lab-pricing__plan-meta">
+                    <span class="lab-pricing__currency">R$</span>
+                    <span id="lab-pricing-pro" class="lab-pricing__amount lab-pricing__amount--flow">99,90</span>
+                    <span class="lab-pricing__suffix">/mês</span>
+                  </p>
+                </div>
+                <span class="lab-pricing__radio" aria-hidden="true"><span class="lab-pricing__radio-dot"></span></span>
+              </button>
+              <div id="lab-pricing-ring" class="lab-pricing__ring" aria-hidden="true"></div>
+            </div>
+            <button type="button" class="lab-pricing__cta">Começar</button>
+          </div>
+        </div>
+      </dialog>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sb-doc-h2">Matriz FEER (Technical Rigor)</h2>
+    
+    <h3 class="sb-doc-h3">Fluxos (Flows)</h3>
+    <table class="sb-doc-table">
+      <thead>
+        <tr>
+          <th>Passo</th>
+          <th>Ação do Usuário</th>
+          <th>Resposta do Sistema</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Clica no Trigger <code>.lab-tokens__open-pricing</code></td>
+          <td>O <code>dialog</code> abre no topo direito (fixo no viewport), foco salta para o fechar.</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Seleciona o período (Anual)</td>
+          <td>A posição do selector (Knob) anima e os preços interpolam os valores.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Escolhe um novo plano</td>
+          <td>O anel (ring) de contorno anima em volta do plano, o rádio preenche. O plano atual fica retido (disabled) se o utilizador já o tiver.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sb-doc-h3">Estados de UI (States)</h3>
+    <table class="sb-doc-table">
+      <thead>
+        <tr>
+          <th>Estado</th>
+          <th>Descrição Visual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>aria-pressed="true"</code></td>
+          <td>Borda do plano transita para branco <code>var(--text)</code> e aplica ring externo.</td>
+        </tr>
+        <tr>
+          <td><code>[disabled]</code></td>
+          <td>Opacidade de 50%, evento de clique ignorado (para o plano atualmente subscrito).</td>
+        </tr>
+        <tr>
+          <td>Loading (Transição)</td>
+          <td>Interpolação JavaScript pura para incrementar os cêntimos visualmente (`.lab-pricing__amount--flow`).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sb-doc-h3">Acessibilidade (POUR)</h3>
+    <table class="sb-doc-table">
+      <thead>
+        <tr>
+          <th>Princípio</th>
+          <th>Aplicação (HTML/CSS)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Perceptível</td>
+          <td>Cores no standard APCA, sem dependência exclusiva de cor para estado ativo (usa ring border e radio button).</td>
+        </tr>
+        <tr>
+          <td>Operável</td>
+          <td>Teclado funciona nos botões de período (<code>Tab</code>) e no botão de fechar. Foco mantido dentro do dialog via trap de JS.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <script src="js/laboratorio-ideias.js"></script>
+</body>
+</html>

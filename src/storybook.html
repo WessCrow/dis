@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <title>DIS — Storybook</title>
+    <link rel="stylesheet" href="design-system/index.css" />
+    <link rel="stylesheet" href="disrupta-ui.css" />
+    <style>
+      :root {
+        --sb-sidebar: 17.5rem;
+        --sb-toolbar-h: 2.75rem;
+        --sb-preview-pad: 1rem;
+        --font-sans: "Inter", system-ui, sans-serif;
+        --font-mono: "JetBrains Mono", ui-monospace, monospace;
+        --sb-bg: var(--canvas);
+        --sb-panel: var(--panel);
+        --sb-panel-2: var(--panel-2);
+        --sb-border: var(--border);
+        --sb-text: var(--text);
+        --sb-muted: var(--text-muted);
+        --sb-focus: var(--ds-blue);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        font-family: var(--font-sans);
+        background: var(--sb-bg);
+        color: var(--sb-text);
+        background-image: radial-gradient(circle at center, var(--bg-dot-color) 0.95px, transparent 1px);
+        background-size: var(--bg-dot-size) var(--bg-dot-size);
+        background-attachment: fixed;
+      }
+      .sb-skip {
+        position: fixed;
+        top: 0;
+        left: 0.65rem;
+        z-index: 300;
+        padding: 0.45rem 0.75rem;
+        border-radius: 0;
+        background: var(--void);
+        border: 1px solid var(--sb-border);
+        color: var(--sb-text);
+        font-size: 0.8125rem;
+        text-decoration: none;
+        transform: translateY(-130%);
+        transition: transform 0.15s ease;
+      }
+      .sb-skip:focus {
+        outline: none;
+        box-shadow: var(--ds-focus-ring);
+        transform: translateY(0.35rem);
+      }
+      .sb-app {
+        display: grid;
+        grid-template-columns: var(--sb-sidebar) 1fr;
+        grid-template-rows: 1fr;
+        height: 100%;
+        min-height: 0;
+      }
+      @media (max-width: 720px) {
+        .sb-app {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto 1fr;
+        }
+        .sb-sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--sb-border);
+          max-height: 40vh;
+          overflow: auto;
+        }
+        .sb-sidebar.is-collapsed .sb-nav {
+          display: none;
+        }
+      }
+      .sb-sidebar {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        border-right: 1px solid var(--sb-border);
+        background: var(--void);
+      }
+      .sb-sidebar__head {
+        padding: 1rem 1rem 0.75rem;
+        flex-shrink: 0;
+      }
+      .sb-sidebar__brand {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--sb-muted);
+        margin: 0 0 0.2rem;
+      }
+      .sb-sidebar__title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+      .sb-sidebar__sub {
+        font-size: 0.75rem;
+        color: var(--sb-muted);
+        margin: 0.35rem 0 0;
+        line-height: 1.4;
+      }
+      .sb-toggle {
+        display: none;
+        margin: 0.5rem 1rem 0;
+        padding: 0.4rem 0.65rem;
+        font: inherit;
+        font-size: 0.8125rem;
+        border-radius: 0;
+        border: 1px solid var(--sb-border);
+        background: var(--void);
+        color: var(--sb-text);
+        cursor: pointer;
+      }
+      .sb-toggle:focus-visible {
+        outline: none;
+        box-shadow: var(--ds-focus-ring);
+      }
+      @media (max-width: 720px) {
+        .sb-toggle {
+          display: block;
+        }
+      }
+      .sb-nav {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        padding: 0.5rem 0 1rem;
+      }
+      .sb-nav__group {
+        margin-top: 0.75rem;
+      }
+      .sb-nav__label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--sb-muted);
+        padding: 0.35rem 1rem;
+        margin: 0;
+      }
+      .sb-nav__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .sb-nav__item {
+        margin: 0;
+      }
+      .sb-nav__btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        text-align: left;
+        padding: 0.55rem 1rem;
+        border: none;
+        background: transparent;
+        color: var(--sb-text);
+        font: inherit;
+        font-size: 0.875rem;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+      }
+      .sb-nav__btn:hover {
+        background: var(--sb-panel);
+      }
+      .sb-nav__btn:focus-visible {
+        outline: none;
+        box-shadow: inset 0 0 0 2px var(--sb-focus);
+      }
+      .sb-nav__btn[aria-current="page"] {
+        background: color-mix(in srgb, var(--text) 8%, var(--void));
+        border-left-color: var(--text);
+        font-weight: 500;
+      }
+      .sb-nav__ico {
+        width: 1.1rem;
+        height: 1.1rem;
+        flex-shrink: 0;
+        opacity: 0.85;
+      }
+      .sb-nav__meta {
+        display: block;
+        font-size: 0.6875rem;
+        color: var(--sb-muted);
+        font-weight: 400;
+        margin-top: 0.1rem;
+      }
+      .sb-nav__open {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin: 0.15rem 1rem 0;
+        font-size: 0.6875rem;
+        color: var(--text);
+        opacity: 0.6;
+        text-decoration: none;
+        transition: opacity 0.15s ease;
+      }
+      .sb-nav__open:hover {
+        opacity: 1;
+      }
+      .sb-nav__open:focus-visible {
+        outline: none;
+        box-shadow: var(--ds-focus-ring);
+        border-radius: 0;
+      }
+      .sb-main {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+        background: var(--void);
+      }
+      .sb-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem 0.5rem;
+        min-height: var(--sb-toolbar-h);
+        padding: 0.35rem 0.65rem;
+        border-bottom: 1px solid var(--sb-border);
+        background: var(--void);
+      }
+      .sb-toolbar__label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--sb-muted);
+        margin-right: 0.25rem;
+      }
+      .sb-chip {
+        font: inherit;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.28rem 0.55rem;
+        border-radius: 0;
+        border: 1px solid var(--sb-border);
+        background: var(--void);
+        color: var(--sb-text);
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      .sb-chip:hover {
+        background: color-mix(in srgb, var(--text) 10%, var(--void));
+        border-color: color-mix(in srgb, var(--sb-border) 50%, var(--text));
+      }
+      .sb-chip:focus-visible {
+        outline: none;
+        box-shadow: var(--ds-focus-ring);
+      }
+      .sb-chip[aria-pressed="true"] {
+        border-color: var(--text);
+        background: color-mix(in srgb, var(--text) 12%, var(--void));
+      }
+      .sb-toolbar__spacer {
+        flex: 1;
+        min-width: 0.5rem;
+      }
+      .sb-reload {
+        font: inherit;
+        font-size: 0.75rem;
+        padding: 0.28rem 0.6rem;
+        border-radius: 0;
+        border: 1px solid var(--sb-border);
+        background: var(--void);
+        color: var(--sb-text);
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      .sb-reload:hover {
+        background: color-mix(in srgb, var(--text) 10%, var(--void));
+      }
+      .sb-reload:focus-visible {
+        outline: none;
+        box-shadow: var(--ds-focus-ring);
+      }
+      .sb-preview {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        padding: var(--sb-preview-pad);
+        overflow: auto;
+      }
+      .sb-frame-wrap {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-width: 0;
+      }
+      .sb-frame-wrap[data-viewport="full"] {
+        align-items: stretch;
+      }
+      .sb-frame {
+        width: 100%;
+        max-width: var(--sb-frame-max, 100%);
+        height: 100%;
+        min-height: calc(100vh - var(--sb-toolbar-h) - var(--sb-preview-pad) * 2 - 2rem);
+        border: 1px solid var(--sb-border);
+        border-radius: 0;
+        background: var(--void);
+        box-shadow: none;
+        overflow: hidden;
+      }
+      .sb-frame iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 560px;
+        border: 0;
+      }
+      .sb-status {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--sb-muted);
+        padding: 0 0.5rem;
+        max-width: 40%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="sb-skip" href="#sb-preview-frame">Pular para a pré-visualização</a>
+    <div class="sb-app">
+      <aside class="sb-sidebar" id="sb-sidebar" aria-label="Navegação do Storybook">
+        <div class="sb-sidebar__head">
+          <p class="sb-sidebar__brand">Disrupta · DIS</p>
+          <h1 class="sb-sidebar__title">Storybook</h1>
+          <p class="sb-sidebar__sub">Páginas estáticas do protótipo dentro de um shell navegável.</p>
+        </div>
+        <button type="button" class="sb-toggle" id="sb-toggle" aria-expanded="true" aria-controls="sb-nav">
+          Menu das histórias
+        </button>
+        <nav class="sb-nav" id="sb-nav" aria-label="Histórias">
+          <div class="sb-nav__group">
+            <p class="sb-nav__label">Foundations</p>
+            <ul class="sb-nav__list" role="list">
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="foundations-geist">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z" />
+                  </svg>
+                  <span>
+                    Geist showcase
+                    <span class="sb-nav__meta">Tokens, tipografia e base visual</span>
+                  </span>
+                </button>
+              </li>
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="foundations-disrupta-v2">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M12 2 3 7l9 5 9-5-9-5Zm0 20-9-5V9l9 5 9-5v8l-9 5Z" />
+                  </svg>
+                  <span>
+                    Disrupta-v2 foundations
+                    <span class="sb-nav__meta">Tokens, componentes e estados v2</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="sb-nav__group">
+            <p class="sb-nav__label">Atoms</p>
+            <ul class="sb-nav__list" role="list">
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="atoms-v2">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M6 12h12M6 7h12M6 17h12" />
+                  </svg>
+                  <span>
+                    Atoms
+                    <span class="sb-nav__meta">Buttons, input, badge e tipografia base</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="sb-nav__group">
+            <p class="sb-nav__label">Molecules</p>
+            <ul class="sb-nav__list" role="list">
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="molecules-v2">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M4 12h7v7H4v-7Zm9-7h7v14h-7V5Zm-9 3h7v3H4V8Z" />
+                  </svg>
+                  <span>
+                    Molecules
+                    <span class="sb-nav__meta">Combinações de componentes com ação</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="sb-nav__group">
+            <p class="sb-nav__label">Organisms</p>
+            <ul class="sb-nav__list" role="list">
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="organisms-v2">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M4 5h16v14H4V5Zm3 3h10m-10 4h6" />
+                  </svg>
+                  <span>
+                    Organisms
+                    <span class="sb-nav__meta">Blocos funcionais completos</span>
+                  </span>
+                </button>
+              </li>
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="organisms-pricing-dialog">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                  <span>
+                    Pricing Dialog
+                    <span class="sb-nav__meta">Diálogo modal de planos e tokens</span>
+                  </span>
+                </button>
+              </li>
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="organisms-notification-dialog">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+                  </svg>
+                  <span>
+                    Notification Dialog
+                    <span class="sb-nav__meta">Pop-over de notificações</span>
+                  </span>
+                </button>
+              </li>
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="organisms-float-dash">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M4 5h16v14H4V5Zm-1 5h18" />
+                  </svg>
+                  <span>
+                    Float Dash
+                    <span class="sb-nav__meta">Menu doca lateral expansível</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="sb-nav__group">
+            <p class="sb-nav__label">Templates</p>
+            <ul class="sb-nav__list" role="list">
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="templates-v2">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                  <span>
+                    Templates
+                    <span class="sb-nav__meta">Estruturas de layout reutilizáveis</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="sb-nav__group">
+            <p class="sb-nav__label">Pages</p>
+            <ul class="sb-nav__list" role="list">
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="pages-laboratorio" aria-current="page">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  <span>
+                    Laboratório de Ideias
+                    <span class="sb-nav__meta">Página principal com fluxo completo</span>
+                  </span>
+                </button>
+              </li>
+              <li class="sb-nav__item">
+                <button type="button" class="sb-nav__btn" data-story="pages-atomic-overview">
+                  <svg class="sb-nav__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+                    <path d="M4 4h16v16H4V4Zm4 4h8m-8 4h8m-8 4h5" />
+                  </svg>
+                  <span>
+                    Atomic overview
+                    <span class="sb-nav__meta">Mapa completo por camadas</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+            <a class="sb-nav__open" id="sb-open-tab" href="laboratorio-ideias.html" target="_blank" rel="noopener noreferrer">
+              Abrir história noutro separador ↗
+            </a>
+          </div>
+        </nav>
+      </aside>
+      <div class="sb-main">
+        <div class="sb-toolbar" role="toolbar" aria-label="Pré-visualização">
+          <span class="sb-toolbar__label">Viewport</span>
+          <button type="button" class="sb-chip" data-viewport="mobile" aria-pressed="false">Mobile · 390</button>
+          <button type="button" class="sb-chip" data-viewport="tablet" aria-pressed="false">Tablet · 834</button>
+          <button type="button" class="sb-chip" data-viewport="desktop" aria-pressed="true">Desktop</button>
+          <span class="sb-toolbar__spacer"></span>
+          <span class="sb-status" id="sb-status" aria-live="polite"></span>
+          <button type="button" class="sb-reload" id="sb-reload" aria-label="Recarregar iframe">↻ Recarregar</button>
+        </div>
+        <div class="sb-preview">
+          <div class="sb-frame-wrap" id="sb-frame-wrap" data-viewport="full">
+            <div class="sb-frame" id="sb-frame">
+              <iframe
+                id="sb-preview-frame"
+                title="Pré-visualização da história"
+                src="laboratorio-ideias.html"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var STORIES = {
+          "foundations-geist": {
+            src: "vercel-geist-showcase.html",
+            title: "Foundations · Geist",
+          },
+          "foundations-disrupta-v2": {
+            src: "disrupta-v2-showcase.html",
+            title: "Foundations · Disrupta-v2",
+          },
+          "atoms-v2": {
+            src: "disrupta-v2-atomic.html#atoms",
+            title: "Atoms · Disrupta-v2",
+          },
+          "molecules-v2": {
+            src: "disrupta-v2-atomic.html#molecules",
+            title: "Molecules · Disrupta-v2",
+          },
+          "organisms-v2": {
+            src: "disrupta-v2-atomic.html#organisms",
+            title: "Organisms · Disrupta-v2",
+          },
+          "organisms-pricing-dialog": {
+            src: "organisms-pricing-dialog.html",
+            title: "Organism · Pricing Dialog",
+          },
+          "organisms-notification-dialog": {
+            src: "organisms-notification-dialog.html",
+            title: "Organism · Notification Dialog",
+          },
+          "organisms-float-dash": {
+            src: "organisms-float-dash.html",
+            title: "Organism · Float Dash",
+          },
+          "templates-v2": {
+            src: "disrupta-v2-atomic.html#templates",
+            title: "Templates · Disrupta-v2",
+          },
+          "pages-laboratorio": {
+            src: "laboratorio-ideias.html",
+            title: "Pages · Laboratório de Ideias",
+          },
+          "pages-atomic-overview": {
+            src: "disrupta-v2-atomic.html#pages",
+            title: "Pages · Atomic overview",
+          },
+        };
+
+        var iframe = document.getElementById("sb-preview-frame");
+        var frameWrap = document.getElementById("sb-frame-wrap");
+        var openTab = document.getElementById("sb-open-tab");
+        var statusEl = document.getElementById("sb-status");
+        var navButtons = document.querySelectorAll(".sb-nav__btn[data-story]");
+        var viewportButtons = document.querySelectorAll(".sb-chip[data-viewport]");
+        var reloadBtn = document.getElementById("sb-reload");
+        var sidebar = document.getElementById("sb-sidebar");
+        var navToggle = document.getElementById("sb-toggle");
+        function getHashStory() {
+          var h = (location.hash || "").replace(/^#/, "");
+          if (h.indexOf("story=") === 0) {
+            var id = h.slice("story=".length).split("&")[0];
+            return STORIES[id] ? id : "pages-laboratorio";
+          }
+          return "pages-laboratorio";
+        }
+
+        function setHashStory(id) {
+          if (STORIES[id]) {
+            location.hash = "story=" + id;
+          }
+        }
+
+        function setViewport(mode) {
+          var max = "100%";
+          if (mode === "mobile") max = "390px";
+          if (mode === "tablet") max = "834px";
+          frameWrap.style.setProperty("--sb-frame-max", max);
+          frameWrap.dataset.viewport = mode === "desktop" ? "full" : mode;
+          viewportButtons.forEach(function (b) {
+            var m = b.getAttribute("data-viewport");
+            var on = (mode === "desktop" && m === "desktop") || mode === m;
+            b.setAttribute("aria-pressed", on ? "true" : "false");
+          });
+        }
+
+        function selectStory(id, pushHash) {
+          if (!STORIES[id]) id = "pages-laboratorio";
+          var s = STORIES[id];
+          iframe.src = s.src;
+          iframe.title = "Pré-visualização: " + s.title;
+          openTab.href = s.src;
+          statusEl.textContent = s.src;
+          navButtons.forEach(function (btn) {
+            if (btn.getAttribute("data-story") === id) {
+              btn.setAttribute("aria-current", "page");
+            } else {
+              btn.removeAttribute("aria-current");
+            }
+          });
+          if (pushHash) setHashStory(id);
+        }
+
+        navButtons.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            selectStory(btn.getAttribute("data-story"), true);
+            if (window.matchMedia("(max-width: 720px)").matches && sidebar) {
+              sidebar.classList.add("is-collapsed");
+              navToggle.setAttribute("aria-expanded", "false");
+            }
+          });
+        });
+
+        viewportButtons.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var m = btn.getAttribute("data-viewport");
+            if (m === "desktop") setViewport("desktop");
+            else if (m === "tablet") setViewport("tablet");
+            else setViewport("mobile");
+          });
+        });
+
+        reloadBtn.addEventListener("click", function () {
+          try {
+            iframe.contentWindow.location.reload();
+          } catch (e) {
+            iframe.src = iframe.src;
+          }
+        });
+
+        window.addEventListener("hashchange", function () {
+          selectStory(getHashStory(), false);
+        });
+
+        navToggle.addEventListener("click", function () {
+          var collapsed = sidebar.classList.toggle("is-collapsed");
+          navToggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        });
+
+        selectStory(getHashStory(), false);
+        setViewport("desktop");
+      })();
+    </script>
+  </body>
+</html>

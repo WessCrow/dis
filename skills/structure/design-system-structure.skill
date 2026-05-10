@@ -1,0 +1,130 @@
+# design-system-structure.skill
+
+> **Tipo:** Structure Skill
+> **Camada:** Organização Estrutural
+> **Stack:** Design System (React + Storybook ou standalone)
+> **Ativado por:** Start.md quando detecta: design system, component library, storybook
+
+---
+
+## 🎯 Propósito
+
+Gerar arquitetura base de um design system com organização atômica, tokens padronizados, Storybook configurado e exports limpos para consumo externo.
+
+---
+
+## ⚡ Quando usar
+
+- Usuário menciona "design system", "component library", "Storybook"
+- Projeto dedicado a criar componentes reutilizáveis para múltiplos consumidores
+- Criação de biblioteca de UI interna ou pública
+
+---
+
+## 🗂️ Arquitetura Gerada
+
+```
+/
+├── src/
+│   ├── tokens/                   → design tokens (primitivos do sistema)
+│   │   ├── colors.ts
+│   │   ├── typography.ts
+│   │   ├── spacing.ts
+│   │   ├── shadows.ts
+│   │   ├── radii.ts
+│   │   ├── breakpoints.ts
+│   │   └── index.ts
+│   │
+│   ├── components/               → componentes organizados por complexidade
+│   │   ├── primitives/           → átomos (Button, Input, Label, Icon)
+│   │   ├── compositions/         → moléculas (Form, Card, Modal)
+│   │   ├── patterns/             → organismos (Header, Sidebar, DataTable)
+│   │   └── index.ts              → re-export público
+│   │
+│   ├── hooks/                    → hooks utilitários do sistema
+│   ├── utils/                    → helpers (cn, formatters, validators)
+│   ├── types/                    → tipos compartilhados
+│   └── index.ts                  → entry point público do pacote
+│
+├── .storybook/                   → configuração do Storybook
+│   ├── main.ts
+│   └── preview.tsx
+│
+├── stories/                      → stories organizados por componente
+│   ├── primitives/
+│   ├── compositions/
+│   └── patterns/
+│
+├── tests/
+│   ├── unit/
+│   └── visual/                   → testes de regressão visual
+│
+├── dist/                         → build gerado (não versionar)
+├── package.json
+├── tsconfig.json
+├── vite.config.ts                → config de build da lib
+├── tailwind.config.ts            (se Tailwind)
+└── .env.example
+```
+
+---
+
+## 📐 Convenções Aplicadas
+
+| Item | Padrão |
+|---|---|
+| Componentes | `PascalCase.tsx` com `index.ts` de barrel |
+| Tokens | `camelCase` no TypeScript, `--kebab-case` no CSS |
+| Stories | `[Componente].stories.tsx` |
+| Variantes | `variant`, `size`, `intent` como props nomeadas |
+| Props de estilo | via `cn()` + variantes de classe — nunca style inline |
+| Exports | sempre re-exportar de `src/index.ts` |
+| Versioning | semântico (major.minor.patch) |
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Detectar se é standalone ou dentro de monorepo
+        ↓
+[2] Detectar stack (React? Vue? Web Components?)
+        ↓
+[3] Criar estrutura de pastas
+        ↓
+[4] Gerar src/tokens/ com valores base
+        ↓
+[5] Configurar Storybook
+        ↓
+[6] Gerar src/components/primitives/ com Button exemplo
+        ↓
+[7] Configurar vite.config.ts no modo biblioteca
+        ↓
+[8] Gerar src/index.ts como entry point
+        ↓
+[9] Registrar decisões em outputs/ARCHITECTURE.md
+```
+
+---
+
+## 🛡️ Regras Obrigatórias
+
+- **Sempre** exportar componentes via `src/index.ts` — consumidores não importam internals
+- **Nunca** hardcodar valores de design — usar tokens
+- **Sempre** criar story para cada componente
+- **Sempre** documentar variantes e props no Storybook
+- **Nunca** incluir lógica de negócio em componentes primitivos
+
+---
+
+## 📤 Output em ARCHITECTURE.md
+
+```markdown
+## Decisão: Design System
+**Data:** [DATA]
+**Stack:** React + Storybook + [extras]
+**Estrutura:** design-system-structure.skill aplicada
+**Organização:** Primitives → Compositions → Patterns (Atomic Design)
+**Entry point:** src/index.ts
+**Tokens:** colors, typography, spacing, shadows, radii, breakpoints
+```

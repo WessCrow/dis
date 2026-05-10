@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#000000" id="meta-theme" />
+    <title>Vercel / Geist — showcase DIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../design%20system/vercel-geist/tokens/geist-semantic.css" />
+    <link rel="stylesheet" href="../design%20system/vercel-geist/tokens/typography-utilities.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 4rem;
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+        margin: 1.5rem 0 2rem;
+      }
+      .swatch {
+        border-radius: var(--ds-radius-md);
+        border: 1px solid var(--ds-c-4);
+        overflow: hidden;
+        box-shadow: var(--ds-shadow-1);
+      }
+      .swatch > div:first-child {
+        height: 3.5rem;
+      }
+      .swatch > div:last-child {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+        color: var(--ds-c-9);
+        background: var(--ds-bg-1);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+        margin: 1rem 0;
+      }
+      .card {
+        border-radius: var(--ds-radius-md);
+        padding: 1.25rem;
+        background: var(--ds-bg-2);
+        border: 1px solid var(--ds-c-4);
+        margin-top: 1rem;
+      }
+
+      /* Skip link + foco visível (alinhado ao laboratório / WCAG 2.4.1, 2.4.7) */
+      .skip-link {
+        position: fixed;
+        top: 0;
+        left: 0.65rem;
+        z-index: 200;
+        padding: 0.5rem 0.85rem;
+        margin: 0;
+        border-radius: 0 0 var(--ds-radius-sm) var(--ds-radius-sm);
+        border: 1px solid var(--ds-c-4);
+        background: var(--ds-bg-2);
+        color: var(--ds-c-10);
+        font-family: var(--font-sans, system-ui, sans-serif);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        line-height: 1.25;
+        text-decoration: none;
+        transform: translateY(-120%);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        pointer-events: none;
+      }
+
+      .skip-link:focus,
+      .skip-link:focus-visible {
+        outline: none;
+        box-shadow: var(--ds-focus-ring);
+        transform: translateY(calc(env(safe-area-inset-top, 0px) + 0.4rem));
+        pointer-events: auto;
+      }
+
+      a:focus-visible {
+        outline: none;
+        box-shadow: var(--ds-focus-ring);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .skip-link {
+          transition: none;
+        }
+      }
+      code.inline {
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        background: var(--ds-c-2);
+        border: 1px solid var(--ds-c-4);
+      }
+    </style>
+  </head>
+  <body class="ds-surface">
+    <a class="skip-link" href="#geist-main">Pular para o conteúdo principal</a>
+    <main id="geist-main" class="wrap" tabindex="-1">
+      <header>
+        <div>
+          <p class="text-label-12" style="text-transform: uppercase; color: var(--ds-c-9); margin: 0 0 0.35rem">
+            Design system clone
+          </p>
+          <h1 class="text-heading-32" style="margin: 0">Geist + Web Interface Guidelines</h1>
+          <p class="text-copy-16 ds-muted" style="margin: 0.75rem 0 0; max-width: 36rem">
+            Protótipo estático para o repositório DIS. Tipos via Google Fonts; tokens em
+            <code class="inline">design system/vercel-geist/tokens/</code>.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="ds-btn text-button-14"
+          id="theme-toggle"
+          aria-pressed="false"
+          aria-label="Alternar entre tema claro e escuro"
+        >
+          Alternar tema
+        </button>
+      </header>
+
+      <section aria-labelledby="sec-type">
+        <h2 class="text-heading-20" id="sec-type">Tipografia</h2>
+        <p class="text-copy-14">
+          Classes espelhadas da doc Geist — exemplo com <strong>Strong</strong> dentro de copy.
+        </p>
+        <p class="text-label-14-mono tabular-nums" style="margin-top: 0.5rem">
+          Tabular: 01:23:45.67 <span class="ds-muted">(font-variant-numeric)</span>
+        </p>
+      </section>
+
+      <section aria-labelledby="sec-colors" style="margin-top: 2rem">
+        <h2 class="text-heading-20" id="sec-colors">Cores semânticas (aprox.)</h2>
+        <div class="swatches">
+          <div class="swatch">
+            <div style="background: var(--ds-bg-1)"></div>
+            <div>bg-1</div>
+          </div>
+          <div class="swatch">
+            <div style="background: var(--ds-bg-2)"></div>
+            <div>bg-2</div>
+          </div>
+          <div class="swatch">
+            <div style="background: var(--ds-c-2)"></div>
+            <div>c-2 hover</div>
+          </div>
+          <div class="swatch">
+            <div style="background: var(--ds-c-4)"></div>
+            <div>c-4 border</div>
+          </div>
+          <div class="swatch">
+            <div style="background: var(--ds-c-10)"></div>
+            <div>c-10 text</div>
+          </div>
+          <div class="swatch">
+            <div style="background: var(--ds-blue)"></div>
+            <div>accent blue</div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="sec-ui" style="margin-top: 1rem">
+        <h2 class="text-heading-20" id="sec-ui">Interações</h2>
+        <p class="text-copy-14 ds-muted">
+          Botões com <code class="inline">:focus-visible</code>, hit target ≥ 32px, sem desativar zoom.
+        </p>
+        <div class="row">
+          <button type="button" class="ds-btn text-button-14">Secundário</button>
+          <button type="button" class="ds-btn ds-btn-primary text-button-14">Primário</button>
+          <a
+            class="ds-btn text-button-14"
+            href="../design%20system/vercel-geist/README.md"
+            style="text-decoration: none; display: inline-flex; align-items: center"
+            >Abrir README</a
+          >
+        </div>
+        <div class="card">
+          <label class="text-label-14" for="demo-input" style="display: block; margin-bottom: 0.35rem">Email</label>
+          <input
+            id="demo-input"
+            class="ds-input text-copy-16"
+            type="email"
+            name="email"
+            autocomplete="email"
+            placeholder="nome@empresa.com…"
+          />
+        </div>
+      </section>
+
+      <footer class="text-label-13 ds-muted" style="margin-top: 3rem">
+        Símbolo Vercel em texto: ▲ (U+25B2) — usar só conforme
+        <a
+          href="https://vercel.com/geist/brands"
+          rel="noopener noreferrer"
+          style="color: var(--ds-blue)"
+          >brand guidelines</a
+        >.
+      </footer>
+    </main>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var meta = document.getElementById("meta-theme");
+        var btn = document.getElementById("theme-toggle");
+        function apply(dark) {
+          if (dark) {
+            root.setAttribute("data-theme", "dark");
+            meta.setAttribute("content", "#000000");
+            btn.setAttribute("aria-pressed", "true");
+          } else {
+            root.removeAttribute("data-theme");
+            meta.setAttribute("content", "#ffffff");
+            btn.setAttribute("aria-pressed", "false");
+          }
+        }
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+        apply(prefersDark.matches);
+        prefersDark.addEventListener("change", function (e) {
+          if (!localStorage.getItem("dis-geist-theme")) apply(e.matches);
+        });
+        var stored = localStorage.getItem("dis-geist-theme");
+        if (stored === "dark") apply(true);
+        if (stored === "light") apply(false);
+        btn.addEventListener("click", function () {
+          var dark = root.getAttribute("data-theme") === "dark";
+          if (dark) {
+            localStorage.setItem("dis-geist-theme", "light");
+            apply(false);
+          } else {
+            localStorage.setItem("dis-geist-theme", "dark");
+            apply(true);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

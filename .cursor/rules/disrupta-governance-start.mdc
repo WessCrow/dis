@@ -1,0 +1,14 @@
+---
+description: DIS — gate de contexto e roteamento (agents/skills/governance/.Start.md)
+alwaysApply: true
+---
+
+# Governança DIS
+
+Em pedidos substantivos neste repositório (implementação, revisão, conteúdo, Git, deploy):
+
+1. **Contexto (gate):** antes de escolher solução, ter claro pedido, objetivo, público, restrições e evidência — conforme Etapa 1 de `agents/skills/governance/.Start.md`. Se faltar o essencial, perguntar ou declarar suposição.
+2. **Roteamento:** classificar tipo/domínio/profundidade e escolher **um** recurso principal — diretriz em `agents/skills/guidelines/`, template em `agents/skills/templates/`, ou skill em `agents/skills/local-skills/` / `agents/skills/linked-skills/`, conforme as tabelas em `agents/skills/governance/.Start.md`.
+3. **Git ou deploy:** seguir `agents/skills/governance/gitprotocol.md`.
+
+O ficheiro `agents/skills/governance/.Start.md` é a fonte completa das tabelas; esta regra só fixa o hábito para o agente não saltar o protocolo.

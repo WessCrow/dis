@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#060608" />
+    <title>Disrupta-v2 — Design System Showcase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="disrupta-v2/disrupta-v2.css" />
+  </head>
+  <body>
+    <main class="v2-shell">
+      <header class="v2-row" style="justify-content: space-between; align-items: flex-end">
+        <div>
+          <p class="v2-copy v2-copy--sm" style="margin-bottom: 0.35rem">DIS · Design System Evolution</p>
+          <h1 class="v2-title v2-title--xl">Disrupta-v2</h1>
+          <p class="v2-copy" style="margin-top: 0.65rem; max-width: 52ch">
+            Base semantica para evolucao do Laboratorio de Ideias, com tokens por intencao, componentes reaproveitaveis e estados
+            visuais previsiveis.
+          </p>
+        </div>
+        <span class="v2-badge v2-badge--info">v2-preview</span>
+      </header>
+
+      <section class="v2-grid v2-grid--2" aria-labelledby="tokens-title">
+        <h2 id="tokens-title" class="v2-title v2-title--md" style="grid-column: 1 / -1">Cores e superficies</h2>
+        <article class="v2-card">
+          <p class="v2-copy v2-copy--sm">Canvas + superficies</p>
+          <div class="v2-grid v2-grid--2" style="margin-top: 0.9rem; gap: 0.7rem">
+            <div class="v2-card v2-card--subtle" style="padding: 0.75rem">canvas</div>
+            <div class="v2-card" style="padding: 0.75rem">surface-1</div>
+            <div class="v2-card v2-card--subtle" style="padding: 0.75rem">surface-2</div>
+            <div class="v2-card v2-card--strong" style="padding: 0.75rem">surface-3</div>
+          </div>
+        </article>
+        <article class="v2-card">
+          <p class="v2-copy v2-copy--sm">Status badges</p>
+          <div class="v2-row" style="margin-top: 0.9rem">
+            <span class="v2-badge v2-badge--success">success</span>
+            <span class="v2-badge v2-badge--warning">warning</span>
+            <span class="v2-badge v2-badge--danger">danger</span>
+            <span class="v2-badge v2-badge--info">info</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="v2-grid v2-grid--2" aria-labelledby="components-title">
+        <h2 id="components-title" class="v2-title v2-title--md" style="grid-column: 1 / -1">Componentes base</h2>
+        <article class="v2-card">
+          <p class="v2-copy v2-copy--sm">Acoes e CTA</p>
+          <div class="v2-row" style="margin-top: 0.9rem">
+            <button type="button" class="v2-btn">Secundario</button>
+            <button type="button" class="v2-btn v2-btn--primary">Primario</button>
+            <button type="button" class="v2-btn v2-btn--danger">Perigo</button>
+            <button type="button" class="v2-btn" disabled>Desabilitado</button>
+          </div>
+        </article>
+        <article class="v2-card">
+          <p class="v2-copy v2-copy--sm">Entrada e validacao</p>
+          <div class="v2-grid" style="margin-top: 0.9rem; gap: 0.65rem">
+            <input class="v2-input" placeholder="Descreva a aposta estrategica..." />
+            <input class="v2-input" aria-invalid="true" value="Campo com erro de validacao" />
+          </div>
+        </article>
+      </section>
+
+      <section class="v2-grid" aria-labelledby="iaa-title">
+        <h2 id="iaa-title" class="v2-title v2-title--md">Padrao IAA (Intent Action Audit)</h2>
+        <article class="v2-card v2-card--strong">
+          <div class="v2-row" style="justify-content: space-between">
+            <strong style="font-size: 0.95rem">Intent preview</strong>
+            <span class="v2-badge v2-badge--warning">needs-review</span>
+          </div>
+          <p class="v2-copy" style="margin-top: 0.75rem">
+            O sistema ira transformar a sua ideia em um dossie com estrutura de necessidade, fundamentos e perguntas reflexivas.
+          </p>
+          <div class="v2-row" style="margin-top: 1rem">
+            <span class="v2-chip v2-chip--active">Refinar raciocinio</span>
+            <span class="v2-chip">Contexto amplo</span>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+# monorepo-structure.skill
+
+> **Tipo:** Structure Skill
+> **Camada:** Organização Estrutural
+> **Stack:** Monorepo (Turborepo, Nx, pnpm workspaces)
+> **Ativado por:** Start.md quando detecta: monorepo, múltiplos pacotes, apps + packages
+
+---
+
+## 🎯 Propósito
+
+Gerar arquitetura base de monorepo com separação clara entre aplicações e pacotes compartilhados, workspace configurado e scripts padronizados.
+
+---
+
+## ⚡ Quando usar
+
+- Usuário menciona "monorepo", "workspace", "múltiplos apps"
+- Projeto com frontend + backend no mesmo repositório
+- Design system + aplicações consumidoras
+- Múltiplas aplicações que compartilham código
+
+---
+
+## 🗂️ Arquitetura Gerada
+
+```
+/                                 → raiz do monorepo
+├── apps/                         → aplicações finais
+│   ├── web/                      → app web (Next.js ou React/Vite)
+│   │   ├── src/
+│   │   └── package.json
+│   ├── mobile/                   → app mobile (Expo/RN) se aplicável
+│   │   ├── src/
+│   │   └── package.json
+│   └── api/                      → backend/API
+│       ├── src/
+│       └── package.json
+│
+├── packages/                     → pacotes compartilhados
+│   ├── ui/                       → design system / componentes
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── tokens/
+│   │   │   └── index.ts
+│   │   └── package.json
+│   ├── config/                   → configs compartilhadas
+│   │   ├── eslint/
+│   │   ├── typescript/
+│   │   └── tailwind/
+│   ├── types/                    → tipos TypeScript compartilhados
+│   │   ├── src/
+│   │   └── package.json
+│   └── utils/                    → utilitários compartilhados
+│       ├── src/
+│       └── package.json
+│
+├── tooling/                      → ferramentas de desenvolvimento
+│   ├── eslint-config/
+│   └── prettier-config/
+│
+├── turbo.json                    (se Turborepo)
+├── nx.json                       (se Nx)
+├── pnpm-workspace.yaml           (se pnpm)
+├── package.json                  → root package.json (workspaces)
+├── tsconfig.json                 → tsconfig base
+├── .env.example
+└── .gitignore
+```
+
+---
+
+## 📐 Convenções Aplicadas
+
+| Item | Padrão |
+|---|---|
+| Nomes de pacotes | `@[scope]/[nome]` (ex: `@project/ui`) |
+| Apps | `kebab-case/` |
+| Packages | `kebab-case/` |
+| Scripts no root | `build`, `dev`, `lint`, `test` (propagam para todos) |
+| Imports entre pacotes | sempre via nome do pacote (`@project/ui`) |
+| Versioning | todos os pacotes com mesma versão (lockstep) |
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Detectar ferramenta de monorepo (Turborepo? Nx? pnpm workspaces?)
+        ↓
+[2] Detectar apps necessários (web? api? mobile?)
+        ↓
+[3] Criar estrutura raiz + apps/ + packages/
+        ↓
+[4] Gerar package.json raiz com workspaces
+        ↓
+[5] Gerar turbo.json / nx.json / pnpm-workspace.yaml
+        ↓
+[6] Gerar packages/config/ com configs compartilhadas
+        ↓
+[7] Gerar packages/types/ e packages/utils/ vazios
+        ↓
+[8] Aplicar skill específica em cada app detectado
+    (react-vite, nextjs, backend conforme o caso)
+        ↓
+[9] Registrar decisões em outputs/ARCHITECTURE.md
+```
+
+---
+
+## 🛡️ Regras Obrigatórias
+
+- **Sempre** usar nome de escopo nos pacotes (`@scope/nome`)
+- **Nunca** importar com caminho relativo entre apps (`../../../`)
+- **Sempre** definir `exports` no `package.json` de cada pacote
+- **Sempre** compartilhar configs (TypeScript, ESLint, Tailwind) via `packages/config/`
+- **Nunca** duplicar dependências entre apps — extrair para `packages/`
+
+---
+
+## 📤 Output em ARCHITECTURE.md
+
+```markdown
+## Decisão: Monorepo
+**Data:** [DATA]
+**Ferramenta:** [Turborepo/Nx/pnpm workspaces]
+**Apps:** [lista de apps]
+**Packages compartilhados:** ui, types, utils, config
+**Estrutura:** monorepo-structure.skill aplicada
+**Escopo:** @[nome-do-projeto]
+```

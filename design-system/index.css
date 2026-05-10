@@ -1,0 +1,15 @@
+/**
+ * @dis/design-system — Entry point
+ *
+ * Importe este arquivo único nos consumidores:
+ *   • src/ (estático):   <link rel="stylesheet" href="/design-system/index.css">
+ *   • landing-page/:     @import "@dis/design-system/index.css"; (em globals.css)
+ *
+ * Stack tipográfica:
+ *   --font-display / --font-sans → TTArtnikDemo
+ *   --font-mono                  → Geist Mono
+ */
+
+@import "./fontfaces.css";
+@import "./vercel-geist/tokens/geist-semantic.css";
+@import "./vercel-geist/tokens/typography-utilities.css";

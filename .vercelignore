@@ -1,0 +1,5 @@
+# Manter apenas o que realmente não deve subir
+public
+agents
+docs
+.git

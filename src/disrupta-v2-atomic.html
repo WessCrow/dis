@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>Disrupta-v2 — Atomic Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="disrupta-ui.css" />
+    <link rel="stylesheet" href="disrupta-v2/disrupta-v2.css" />
+    <link rel="stylesheet" href="sb-docs.css" />
+    <style>
+      /* Helpers para a biblioteca atómica */
+      .atomic-row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .atomic-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        max-width: 400px;
+      }
+    </style>
+  </head>
+  <body class="sb-doc-page">
+    <header>
+      <span class="sb-doc-tag">Core</span>
+      <span class="sb-doc-tag">Design System</span>
+      <h1 class="sb-doc-h1">Atomic Overview</h1>
+      <p class="sb-doc-desc">
+        Catálogo base organizado em Átomos e Moléculas, estabelecendo a fundação da interface Disrupta.
+        Todos os componentes respeitam estritamente a estética Bugatti e as regras tipográficas WCAG.
+      </p>
+    </header>
+
+    <section id="atoms">
+      <h2 class="sb-doc-h2">1. Átomos (Atoms)</h2>
+      <div class="sb-doc-uxw">
+        <p><strong>UX Writing (Botões):</strong> Use verbos imperativos curtos (Ex: "Guardar", "Gerar"). Nunca use "Clique aqui".</p>
+        <p><strong>Acessibilidade:</strong> Fonte mínima funcional garantida em 14px (botões) e 16px (inputs). Sem cantos arredondados (border-radius: 0).</p>
+      </div>
+      
+      <div class="sb-doc-canvas">
+        <div class="atomic-stack">
+          <h3 class="sb-doc-h3">Buttons</h3>
+          <div class="atomic-row">
+            <button type="button" class="btn-secondary">Default</button>
+            <button type="button" class="btn-primary">Primary</button>
+            <button type="button" class="btn-danger">Danger</button>
+          </div>
+          
+          <h3 class="sb-doc-h3">Inputs & Badges</h3>
+          <div class="atomic-stack">
+            <input class="lab-input" placeholder="Descreva a ideia principal..." aria-label="Descreva a ideia" />
+            <div class="atomic-row">
+              <span class="lab-pricing__badge">info</span>
+              <span class="lab-pricing__badge" style="background: var(--text); color: var(--void);">success</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="molecules">
+      <h2 class="sb-doc-h2">2. Moléculas (Molecules)</h2>
+      <div class="sb-doc-uxw">
+        <p><strong>Definição:</strong> Combinações de átomos que formam blocos funcionais, como barras de pesquisa ou grupos de filtros.</p>
+        <p><strong>Voz:</strong> Os placeholders de input devem ser descritivos ("Nova aposta..." e não "Escreva algo").</p>
+      </div>
+
+      <div class="sb-doc-canvas">
+        <div class="atomic-stack">
+          <h3 class="sb-doc-h3">Input Row + CTA</h3>
+          <div class="atomic-row" style="display: flex; gap: 0.5rem; width: 100%;">
+            <input class="lab-input" style="flex: 1;" placeholder="Adicione nova aposta..." aria-label="Adicionar aposta" />
+            <button type="button" class="btn-primary">Gerar</button>
+          </div>
+
+          <h3 class="sb-doc-h3">Status Chip Group</h3>
+          <div class="atomic-row">
+            <button type="button" class="btn-secondary" style="border-color: var(--text); color: var(--text);">Refinar raciocínio</button>
+            <button type="button" class="btn-secondary">Contexto amplo</button>
+            <button type="button" class="btn-secondary">Revisão humana</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="organisms">
+      <h2 class="sb-doc-h2">3. Organismos (Organisms)</h2>
+      <div class="sb-doc-uxw">
+        <p><strong>Intent Preview (IA Agêntica):</strong> Aplicação da camada IAA. A IA descreve o que vai fazer antes de agir. Use tom empático mas direto.</p>
+        <p><strong>Regra:</strong> Exiba sempre um rótulo de confiança/revisão quando o agente propõe uma ação destrutiva ou autônoma.</p>
+      </div>
+
+      <div class="sb-doc-canvas">
+        <article style="border: 1px solid var(--sb-doc-border); padding: 1.5rem; background: var(--sb-doc-bg); width: 100%; max-width: 500px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <strong style="font-weight: 500;">Intent Preview</strong>
+            <span class="lab-pricing__badge">needs-review</span>
+          </div>
+          <p style="color: var(--sb-doc-muted); margin-bottom: 1.5rem; line-height: 1.5;">
+            O agente vai consolidar diagnóstico, hipóteses e próximos passos no dossiê do laboratório. Esta ação consumirá 1 token de processamento.
+          </p>
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+            <button type="button" class="btn-secondary">Rever prompt</button>
+            <button type="button" class="btn-primary">Executar Ação</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </body>
+</html>

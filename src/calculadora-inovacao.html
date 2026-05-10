@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>Calculadora de Inovação — Disrupta</title>
+  
+  <link rel="stylesheet" href="design-system/index.css" />
+  <link rel="stylesheet" href="disrupta-ui.css" />
+  <style>
+    /* Ajustes Finos de Posicionamento (Bugatti Aesthetic) */
+    .lab-top-bar__tools {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    /* Box de Tokens Replicada do Print */
+    .lab-tokens-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--ds-c-4);
+      height: 40px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .lab-tokens-val {
+      padding: 0 12px;
+      border-right: 1px solid var(--ds-c-4);
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .lab-tokens-btn {
+      width: 32px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* Sino e Perfil (Bordas Quadradas) */
+    .lab-tool-item {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--ds-c-4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .lab-tool-badge {
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      background: white;
+      color: black;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border: 1px solid var(--ds-c-4);
+    }
+
+    /* Conteúdo Principal (Alinhado ao Centro) */
+    .lab-main__grid {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 8rem 0 6rem 0; /* Zero nas laterais para centralização pura */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Override de segurança para o Shell */
+    .lab-body {
+      padding-left: 0 !important;
+    }
+
+    .calc-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 4rem;
+      margin-top: 2rem;
+      width: 100%;
+    }
+
+    .calc-banner {
+      background: var(--ds-c-2);
+      border: 1px solid var(--ds-c-4);
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4rem;
+    }
+
+    .calc-field { margin-bottom: 2.5rem; }
+    .calc-field label { display: block; font-weight: 600; font-size: 1rem; margin-bottom: 1rem; font-family: var(--font-display); }
+    .calc-input { width: 100%; background: var(--ds-c-1); border: 1px solid var(--ds-c-4); color: var(--text); padding: 1.25rem; font-family: var(--font-sans); font-size: 1rem; resize: vertical; }
+    
+    .siid-card { background: var(--ds-c-2); border: 1px solid var(--ds-c-4); padding: 2.5rem; position: sticky; top: 8rem; }
+    .siid-card__score { font-size: 3rem; font-weight: 700; font-family: var(--font-mono); line-height: 1; }
+    
+    .siid-criteria { margin-top: 6rem; border-top: 1px solid var(--ds-c-4); padding-top: 4rem; }
+    .criterion-item { display: grid; grid-template-columns: 1fr 260px 320px; gap: 3rem; padding: 2rem 0; border-bottom: 1px solid var(--ds-c-3); align-items: center; }
+    .criterion-item__question { font-size: 1.05rem; font-weight: 500; }
+    .scale-group { display: flex; gap: 6px; }
+    .scale-btn { width: 44px; height: 44px; border: 1px solid var(--ds-c-4); background: transparent; color: var(--text); cursor: pointer; font-family: var(--font-mono); font-weight: 600; font-size: 1rem; transition: all 0.2s ease; }
+    .scale-btn.active { background: var(--text); color: var(--ds-c-1); border-color: var(--text); }
+    .criterion-item__feedback { background: var(--ds-c-2); padding: 1rem; font-size: 0.85rem; min-height: 5rem; display: flex; align-items: center; color: var(--text-muted); }
+  </style>
+</head>
+<body class="page-laboratorio-ideias">
+  <div class="lab-app">
+    <!-- Menu Lateral (Float Dash) -->
+    <nav id="float-dash" class="float-dash">
+      <div class="float-dash__surface">
+        <div class="float-dash__collapsed">
+          <ul class="float-dash__icon-stack">
+            <li><a class="float-dash__icon-btn" href="#"><svg width="22" height="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/></svg></a></li>
+            <li><a class="float-dash__icon-btn is-active" href="calculadora-inovacao.html"><svg width="22" height="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></a></li>
+            <li><a class="float-dash__icon-btn" href="laboratorio-ideias.html"><svg width="22" height="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" d="M9.663 17h4.673M12 3v1M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="lab-body">
+      <!-- Header Estabilizado -->
+      <header class="lab-top-bar">
+        <div class="lab-top-bar__start">
+          <a class="lab-brand" href="laboratorio-ideias.html">
+            <img class="brand-logo" src="img/Dis-branco-vert-txt.svg" width="120" alt="Disrupta" />
+          </a>
+        </div>
+        
+        <div class="lab-top-bar__end">
+          <div class="lab-top-bar__tools">
+            <div class="lab-tokens-box">
+              <span class="lab-tokens-val">Tokens: ∞</span>
+              <button class="lab-tokens-btn">+</button>
+            </div>
+            
+            <button class="lab-tool-item" id="lab-notify-trigger">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7"/><path d="M12 22a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z"/>
+              </svg>
+              <span class="lab-tool-badge">1</span>
+            </button>
+
+            <button class="lab-tool-item" id="lab-profile-trigger">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 4px;">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="lab-main" id="lab-main-content">
+        <div class="lab-main__grid">
+          <div style="margin-bottom: 4rem;">
+            <h1 class="lab-context__headline" style="margin-bottom: 0.75rem;">Calculadora de Inovação</h1>
+            <p class="muted" style="font-size: 1.15rem;">Refine sua tese através da metodologia quantitativa SIID.</p>
+          </div>
+
+          <div class="calc-banner">
+            <div class="calc-banner__content">
+              <h2>Amadurecimento de Ideia</h2>
+              <p>Precisa de ajuda para descrever o cenário? Use o Laboratório antes da validação.</p>
+            </div>
+            <a href="laboratorio-ideias.html" class="btn-primary" style="text-decoration: none; padding: 1rem 2rem;">Acessar Laboratório</a>
+          </div>
+
+          <div class="calc-container">
+            <section>
+              <div class="calc-field">
+                <label for="idea-phrase">Sua ideia em uma frase *</label>
+                <textarea id="idea-phrase" class="calc-input" rows="4" placeholder="Ex: Uma plataforma que conecta agricultores familiares..."></textarea>
+              </div>
+
+              <div class="calc-field">
+                <label for="pain-description">Que problema isso resolve?</label>
+                <p class="muted" style="font-size: 0.85rem; margin-top: -0.5rem; margin-bottom: 1rem;">Opcional: descreva o problema ou a frustração que sua solução ataca.</p>
+                <textarea id="pain-description" class="calc-input" rows="6" placeholder="Ex: Hoje o pequeno produtor perde 30% da safra por falta de logística..."></textarea>
+              </div>
+            </section>
+
+            <aside class="siid-card">
+              <div class="siid-card__header">
+                <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.15em; font-weight: 600;">Score de Validação</span>
+                <div class="siid-card__score" id="total-score">0/40</div>
+              </div>
+              <button id="btn-validate" class="btn-primary" disabled style="width: 100%; min-height: 4.5rem; font-weight: 700;">VALIDAR IDEIA</button>
+            </aside>
+          </div>
+
+          <section class="siid-criteria">
+            <h2 style="font-size: 2rem; margin-bottom: 4rem; letter-spacing: -0.02em;">Dimensões da Metodologia SIID</h2>
+            <div id="criteria-list">
+              <div class="criterion-item" data-dimension="Ajuste Estratégico">
+                <div class="criterion-item__question">O quanto essa ideia se alinha aos seus objetivos de longo prazo?</div>
+                <div class="scale-group">
+                  <button class="scale-btn" data-value="1">1</button>
+                  <button class="scale-btn" data-value="2">2</button>
+                  <button class="scale-btn" data-value="3">3</button>
+                  <button class="scale-btn" data-value="4">4</button>
+                  <button class="scale-btn" data-value="5">5</button>
+                </div>
+                <div class="criterion-item__feedback">Selecione uma nota para ver o feedback estratégico.</div>
+              </div>
+              <div class="criterion-item" data-dimension="Potencial de Inovação">
+                <div class="criterion-item__question">Quão única é a solução comparada ao que já existe no mercado?</div>
+                <div class="scale-group">
+                  <button class="scale-btn" data-value="1">1</button>
+                  <button class="scale-btn" data-value="2">2</button>
+                  <button class="scale-btn" data-value="3">3</button>
+                  <button class="scale-btn" data-value="4">4</button>
+                  <button class="scale-btn" data-value="5">5</button>
+                </div>
+                <div class="criterion-item__feedback">A inovação é o motor da ruptura.</div>
+              </div>
+              <div class="criterion-item" data-dimension="Dificuldade">
+                <div class="criterion-item__question">Quão difícil é construir e operar essa solução tecnicamente?</div>
+                <div class="scale-group">
+                  <button class="scale-btn" data-value="1">1</button>
+                  <button class="scale-btn" data-value="2">2</button>
+                  <button class="scale-btn" data-value="3">3</button>
+                  <button class="scale-btn" data-value="4">4</button>
+                  <button class="scale-btn" data-value="5">5</button>
+                </div>
+                <div class="criterion-item__feedback">Considere a complexidade do MVP.</div>
+              </div>
+              <div class="criterion-item" data-dimension="Demanda">
+                <div class="criterion-item__question">Existe um público claro e disposto a pagar por isso hoje?</div>
+                <div class="scale-group">
+                  <button class="scale-btn" data-value="1">1</button>
+                  <button class="scale-btn" data-value="2">2</button>
+                  <button class="scale-btn" data-value="3">3</button>
+                  <button class="scale-btn" data-value="4">4</button>
+                  <button class="scale-btn" data-value="5">5</button>
+                </div>
+                <div class="criterion-item__feedback">Sem demanda não há negócio.</div>
+              </div>
+              <div class="criterion-item" data-dimension="Vantagem Competitiva">
+                <div class="criterion-item__question">Temos ativos ou conhecimentos difíceis de serem copiados?</div>
+                <div class="scale-group">
+                  <button class="scale-btn" data-value="1">1</button>
+                  <button class="scale-btn" data-value="2">2</button>
+                  <button class="scale-btn" data-value="3">3</button>
+                  <button class="scale-btn" data-value="4">4</button>
+                  <button class="scale-btn" data-value="5">5</button>
+                </div>
+                <div class="criterion-item__feedback">O seu fosso (moat) defensável.</div>
+              </div>
+              <div class="criterion-item" data-dimension="Recursos">
+                <div class="criterion-item__question">Temos o capital e o time necessário para o MVP?</div>
+                <div class="scale-group">
+                  <button class="scale-btn" data-value="1">1</button>
+                  <button class="scale-btn" data-value="2">2</button>
+                  <button class="scale-btn" data-value="3">3</button>
+                  <button class="scale-btn" data-value="4">4</button>
+                  <button class="scale-btn" data-value="5">5</button>
+                </div>
+                <div class="criterion-item__feedback">Capacidade de execução imediata.</div>
+              </div>
+              <div class="criterion-item" data-dimension="Risco">
+                <div class="criterion-item__question">Quais as chances de falha catastrófica ou regulatória?</div>
+                <div class="scale-group">
+                  <button class="scale-btn" data-value="1">1</button>
+                  <button class="scale-btn" data-value="2">2</button>
+                  <button class="scale-btn" data-value="3">3</button>
+                  <button class="scale-btn" data-value="4">4</button>
+                  <button class="scale-btn" data-value="5">5</button>
+                </div>
+                <div class="criterion-item__feedback">Mapeie as fragilidades do modelo.</div>
+              </div>
+              <div class="criterion-item" data-dimension="Escalabilidade">
+                <div class="criterion-item__question">O negócio cresce sem aumentar os custos na mesma proporção?</div>
+                <div class="scale-group">
+                  <button class="scale-btn" data-value="1">1</button>
+                  <button class="scale-btn" data-value="2">2</button>
+                  <button class="scale-btn" data-value="3">3</button>
+                  <button class="scale-btn" data-value="4">4</button>
+                  <button class="scale-btn" data-value="5">5</button>
+                </div>
+                <div class="criterion-item__feedback">Potencial de escala global.</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modais Replicados do Laboratório -->
+  <!-- Diálogo de Perfil (Oficial Disrupta) -->
+  <dialog id="lab-profile-dialog" class="lab-profile-dialog">
+    <div class="lab-profile-dialog__surface" style="padding: 2.5rem; text-align: center;">
+      <button type="button" class="lab-profile-dialog__close" onclick="this.closest('dialog').close()" style="position: absolute; top: 1.5rem; right: 1.5rem;">×</button>
+      
+      <!-- Avatar & Identity -->
+      <div class="profile-avatar" style="width: 80px; height: 80px; border: 1px solid var(--ds-c-4); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; font-family: var(--font-display);">Nome do Usuário</h2>
+      <div style="background: var(--ds-c-2); display: inline-block; padding: 0.25rem 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; margin-bottom: 1rem; color: var(--text-muted);">ADMIN MASTER</div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2.5rem;">admin@disrupta.app</p>
+      
+      <!-- Idioma do Sistema -->
+      <div style="text-align: left; width: 100%;">
+        <span style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase;">Idioma do Sistema</span>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--ds-c-4); margin-top: 0.75rem; margin-bottom: 2.5rem;">
+          <button type="button" class="lang-btn is-active" style="padding: 1rem; border-right: 1px solid var(--ds-c-4); background: var(--ds-c-2); cursor: pointer; color: var(--text); border: none; display: flex; align-items: center; justify-content: center; gap: 8px;">🇧🇷 PT</button>
+          <button type="button" class="lang-btn" style="padding: 1rem; border-right: 1px solid var(--ds-c-4); background: transparent; cursor: pointer; color: var(--text-muted); border: none; display: flex; align-items: center; justify-content: center; gap: 8px;">🇺🇸 EN</button>
+          <button type="button" class="lang-btn" style="padding: 1rem; background: transparent; cursor: pointer; color: var(--text-muted); border: none; display: flex; align-items: center; justify-content: center; gap: 8px;">🇪🇸 ES</button>
+        </div>
+      </div>
+      
+      <button class="btn-primary" style="width: 100%; letter-spacing: 0.15em; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        SAIR DA PLATAFORMA
+      </button>
+    </div>
+  </dialog>
+
+  <!-- Diálogo de Pricing / Tokens (Oficial Disrupta) -->
+  <dialog id="lab-pricing-dialog" class="lab-pricing-dialog" aria-labelledby="lab-pricing-title">
+    <div class="lab-pricing-dialog__panel">
+      <header class="lab-pricing-dialog__head">
+        <h2 id="lab-pricing-title" class="lab-pricing-dialog__title">Planos e tokens</h2>
+        <button type="button" class="lab-pricing-dialog__close" aria-label="Fechar" onclick="this.closest('dialog').close()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+      <div class="lab-pricing">
+        <div class="lab-pricing__period" role="group" aria-label="Período de cobrança">
+          <div class="lab-pricing__period-inner">
+            <button type="button" class="lab-pricing__period-btn is-active" id="btn-period-monthly">Mensal</button>
+            <button type="button" class="lab-pricing__period-btn" id="btn-period-yearly">Anual</button>
+          </div>
+        </div>
+        <div class="lab-pricing__plans">
+          <button type="button" class="lab-pricing__plan is-active" data-plan="gratis">
+            <div class="lab-pricing__plan-main">
+              <p class="lab-pricing__plan-name">Grátis</p>
+              <p class="lab-pricing__plan-meta">
+                <span class="lab-pricing__currency">R$</span><span class="lab-pricing__amount">0,00</span><span class="lab-pricing__suffix">/mês</span>
+              </p>
+            </div>
+            <span class="lab-pricing__radio"><span class="lab-pricing__radio-dot"></span></span>
+          </button>
+          <button type="button" class="lab-pricing__plan" data-plan="starter">
+            <div class="lab-pricing__plan-main">
+              <p class="lab-pricing__plan-name">Starter <span class="lab-pricing__badge">Popular</span></p>
+              <p class="lab-pricing__plan-meta">
+                <span class="lab-pricing__currency">R$</span><span class="lab-pricing__amount" id="price-starter">49,90</span><span class="lab-pricing__suffix">/mês</span>
+              </p>
+            </div>
+            <span class="lab-pricing__radio"><span class="lab-pricing__radio-dot"></span></span>
+          </button>
+          <button type="button" class="lab-pricing__plan" data-plan="pro">
+            <div class="lab-pricing__plan-main">
+              <p class="lab-pricing__plan-name">Pro</p>
+              <p class="lab-pricing__plan-meta">
+                <span class="lab-pricing__currency">R$</span><span class="lab-pricing__amount" id="price-pro">99,90</span><span class="lab-pricing__suffix">/mês</span>
+              </p>
+            </div>
+            <span class="lab-pricing__radio"><span class="lab-pricing__radio-dot"></span></span>
+          </button>
+        </div>
+        <button type="button" class="lab-pricing__cta">Começar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Diálogo de Histórico / Notificações (Oficial Disrupta) -->
+  <dialog id="lab-notify-dialog" class="lab-notify-dialog" aria-labelledby="lab-notify-title">
+    <div class="lab-notify-dialog__panel">
+      <header class="lab-notify-dialog__head">
+        <h2 id="lab-notify-title" class="lab-notify-dialog__title">Histórico</h2>
+        <button type="button" class="lab-notify-dialog__close" onclick="this.closest('dialog').close()" aria-label="Fechar">
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+      <div class="lab-notify-dialog__tabs" role="tablist">
+        <button type="button" role="tab" aria-selected="true" data-target="panel-all" class="lab-notify-dialog__tab">Todas</button>
+        <button type="button" role="tab" aria-selected="false" data-target="panel-notifications" class="lab-notify-dialog__tab">Notificações</button>
+        <button type="button" role="tab" aria-selected="false" data-target="panel-hist-lab" class="lab-notify-dialog__tab">Histórico lab</button>
+        <button type="button" role="tab" aria-selected="false" data-target="panel-hist-calc" class="lab-notify-dialog__tab">Histórico Calculadora</button>
+      </div>
+
+      <div class="lab-notify-dialog__content" id="panel-all">
+        <ol class="lab-notify-dialog__list">
+          <li class="lab-notify-dialog__item">
+            <a href="#" class="lab-notify-dialog__link">
+              <span class="lab-notify-dialog__item-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <div class="lab-notify-dialog__item-text">
+                <span class="lab-notify-dialog__item-title">Novo relatório disponível</span>
+                <span class="lab-notify-dialog__item-time">2 min atrás</span>
+              </div>
+            </a>
+          </li>
+          <li class="lab-notify-dialog__item">
+            <a href="#" class="lab-notify-dialog__link">
+              <span class="lab-notify-dialog__item-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <div class="lab-notify-dialog__item-text">
+                <span class="lab-notify-dialog__item-title">Bem-vindo ao Laboratório</span>
+                <span class="lab-notify-dialog__item-time">1h atrás</span>
+              </div>
+            </a>
+          </li>
+        </ol>
+      </div>
+
+      <div class="lab-notify-dialog__content" id="panel-notifications" hidden>
+        <div class="lab-notify-dialog__empty">
+          <p class="muted">Sem notificações novas.</p>
+        </div>
+      </div>
+
+      <div class="lab-notify-dialog__content" id="panel-hist-lab" hidden>
+        <div class="lab-notify-dialog__empty">
+          <p class="muted">O histórico do laboratório está vazio.</p>
+        </div>
+      </div>
+
+      <div class="lab-notify-dialog__content" id="panel-hist-calc" hidden>
+        <div class="lab-notify-dialog__empty">
+          <p class="muted">Nenhuma simulação salva ainda.</p>
+        </div>
+      </div>
+
+      <footer class="lab-notify-dialog__foot">
+        <button type="button" class="lab-notify-dialog__view-all">VER TODAS</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script src="js/disrupta-shell.js"></script>
+  <script>
+    // 1. Lógica de Cliques do Header, Pricing e Notificações
+    const profileDialog = document.getElementById('lab-profile-dialog');
+    const pricingDialog = document.getElementById('lab-pricing-dialog');
+    const notifyDialog = document.getElementById('lab-notify-dialog');
+
+    document.getElementById('lab-profile-trigger')?.addEventListener('click', () => profileDialog?.showModal());
+    document.querySelector('.lab-tokens-add')?.addEventListener('click', () => pricingDialog?.showModal());
+    document.querySelector('.lab-tokens-val')?.addEventListener('click', () => pricingDialog?.showModal());
+    document.getElementById('lab-notify-trigger')?.addEventListener('click', () => notifyDialog?.showModal());
+    
+    // Toggle de Abas no Histórico
+    document.querySelectorAll('.lab-notify-dialog__tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.lab-notify-dialog__tab').forEach(t => t.setAttribute('aria-selected', 'false'));
+        tab.setAttribute('aria-selected', 'true');
+        
+        const targetId = tab.dataset.target;
+        document.querySelectorAll('.lab-notify-dialog__content').forEach(content => {
+          content.hidden = content.id !== targetId;
+        });
+      });
+    });
+
+    // Toggle de Período (Mensal / Anual) no Pricing
+    const btnMonthly = document.getElementById('btn-period-monthly');
+    const btnYearly = document.getElementById('btn-period-yearly');
+    const priceStarter = document.getElementById('price-starter');
+    const pricePro = document.getElementById('price-pro');
+
+    btnMonthly?.addEventListener('click', () => {
+      btnMonthly.classList.add('is-active');
+      btnYearly.classList.remove('is-active');
+      priceStarter.textContent = '49,90';
+      pricePro.textContent = '99,90';
+    });
+
+    btnYearly?.addEventListener('click', () => {
+      btnYearly.classList.add('is-active');
+      btnMonthly.classList.remove('is-active');
+      priceStarter.textContent = '39,90';
+      pricePro.textContent = '79,90';
+    });
+
+    // Seleção de Planos no Pricing
+    document.querySelectorAll('.lab-pricing__plan').forEach(plan => {
+      plan.addEventListener('click', () => {
+        document.querySelectorAll('.lab-pricing__plan').forEach(p => p.classList.remove('is-active'));
+        plan.classList.add('is-active');
+      });
+    });
+
+    // 2. Lógica da Metodologia SIID (Feedback Dinâmico)
+    const ideaInput = document.getElementById('idea-phrase');
+    const btnValidate = document.getElementById('btn-validate');
+    const totalScoreDisplay = document.getElementById('total-score');
+    let scores = {};
+
+    document.querySelectorAll('.scale-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const parent = btn.closest('.criterion-item');
+        const dimension = parent.dataset.dimension;
+        const value = parseInt(btn.dataset.value);
+
+        parent.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        scores[dimension] = value;
+        const total = Object.values(scores).reduce((a, b) => a + b, 0);
+        totalScoreDisplay.textContent = `${total}/40`;
+
+        const feedbackEl = parent.querySelector('.criterion-item__feedback');
+        const feedbacks = {
+          1: "Nível Crítico: Alinhamento mínimo ou alto risco identificado.",
+          2: "Nível Baixo: Necessita de pivoteamento ou mais evidências.",
+          3: "Nível Moderado: Potencial existente, mas com gaps de execução.",
+          4: "Nível Significativo: Forte tese de inovação com viabilidade clara.",
+          5: "Nível Excelente: Diferencial disruptivo e alto potencial de escala."
+        };
+        
+        feedbackEl.textContent = feedbacks[value];
+        feedbackEl.style.color = "var(--text)";
+
+        btnValidate.disabled = ideaInput.value.trim().length < 10 || Object.keys(scores).length < 8;
+      });
+    });
+
+    ideaInput.addEventListener('input', () => {
+      btnValidate.disabled = ideaInput.value.trim().length < 10 || Object.keys(scores).length < 8;
+    });
+  </script>
+</body>
+</html>

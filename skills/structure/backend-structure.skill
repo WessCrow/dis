@@ -1,0 +1,135 @@
+# backend-structure.skill
+
+> **Tipo:** Structure Skill
+> **Camada:** Organização Estrutural
+> **Stack:** Backend (Node.js, Python, Go — agnóstico de framework)
+> **Ativado por:** Start.md quando detecta: API, backend, servidor, serviço
+
+---
+
+## 🎯 Propósito
+
+Gerar arquitetura base para projetos backend com separação clara de responsabilidades, independente do framework ou linguagem escolhidos.
+
+---
+
+## ⚡ Quando usar
+
+- Usuário menciona "API", "backend", "servidor", "microserviço"
+- Projetos Node.js (Express, Fastify, Hono), Python (FastAPI, Django), Go, etc.
+- Quando não se aplica nextjs-structure (sem SSR integrado)
+
+---
+
+## 🗂️ Arquitetura Gerada
+
+```
+/
+├── src/
+│   ├── app/                      → bootstrap e configuração central
+│   │   ├── app.ts                → criação da instância do servidor
+│   │   └── server.ts             → entrada principal (listen)
+│   │
+│   ├── modules/                  → features encapsuladas por domínio
+│   │   └── [feature]/
+│   │       ├── [feature].controller.ts
+│   │       ├── [feature].service.ts
+│   │       ├── [feature].repository.ts
+│   │       ├── [feature].schema.ts    → validação (Zod/Joi)
+│   │       ├── [feature].types.ts
+│   │       └── [feature].routes.ts
+│   │
+│   ├── shared/                   → código compartilhado entre módulos
+│   │   ├── middleware/           → middlewares globais
+│   │   ├── guards/               → autenticação e autorização
+│   │   ├── decorators/           → decorators (se aplicável)
+│   │   ├── exceptions/           → classes de erro customizadas
+│   │   └── pipes/                → transformação de dados
+│   │
+│   ├── config/                   → variáveis de ambiente e configuração
+│   │   ├── env.ts                → validação de env vars
+│   │   └── database.ts           → configuração de banco
+│   │
+│   ├── database/                 → ORM, migrations, seeds
+│   │   ├── migrations/
+│   │   ├── seeds/
+│   │   └── schema/
+│   │
+│   ├── services/                 → serviços externos (email, storage, etc.)
+│   ├── utils/                    → funções utilitárias puras
+│   ├── types/                    → tipos TypeScript globais
+│   └── constants/                → constantes e enums
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── e2e/
+│
+├── scripts/                      → scripts de CI, seed, build
+├── docs/                         → documentação de API (OpenAPI/Swagger)
+├── .env.example
+├── .gitignore
+├── tsconfig.json
+├── package.json
+└── docker-compose.yml            (se banco de dados local)
+```
+
+---
+
+## 📐 Convenções Aplicadas
+
+| Item | Padrão |
+|---|---|
+| Controllers | `[nome].controller.ts` |
+| Services | `[nome].service.ts` |
+| Repositories | `[nome].repository.ts` |
+| Schemas | `[nome].schema.ts` |
+| Rotas | `[nome].routes.ts` |
+| Tipos | `[nome].types.ts` |
+| Pastas de módulo | `kebab-case/` |
+| Variáveis de ambiente | `SCREAMING_SNAKE_CASE` |
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Detectar linguagem + framework (Node/Python/Go? Express/Fastify/FastAPI?)
+        ↓
+[2] Detectar banco de dados (PostgreSQL? MongoDB? SQLite?)
+        ↓
+[3] Criar estrutura de pastas
+        ↓
+[4] Gerar src/app/ com bootstrap
+        ↓
+[5] Gerar src/config/env.ts com validação de variáveis
+        ↓
+[6] Gerar .env.example com variáveis esperadas
+        ↓
+[7] Criar docker-compose.yml se banco detectado
+        ↓
+[8] Registrar decisões em outputs/ARCHITECTURE.md
+```
+
+---
+
+## 🛡️ Regras Obrigatórias
+
+- **Sempre** separar Controller (HTTP) de Service (lógica) de Repository (dados)
+- **Nunca** acessar banco diretamente em controllers
+- **Sempre** validar entrada via schema (Zod, Joi, Pydantic)
+- **Sempre** tipar variáveis de ambiente — nunca usar `process.env.X` sem validação
+- **Sempre** criar `.env.example` com todas as variáveis necessárias
+
+---
+
+## 📤 Output em ARCHITECTURE.md
+
+```markdown
+## Decisão: Arquitetura Backend
+**Data:** [DATA]
+**Stack:** [linguagem] + [framework] + [banco]
+**Estrutura:** backend-structure.skill aplicada
+**Padrão:** Controller → Service → Repository
+**Validação:** [Zod/Joi/Pydantic]
+```

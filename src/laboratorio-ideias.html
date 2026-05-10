@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>Laboratório de Ideias — Disrupta</title>
+  <!--
+    Planejamento: skills/governance/Start.md (roteamento de skills + etapa de contexto antes da execução).
+    UI: disrupta-ui.css?v=20260430-1215 — painel de contexto à esquerda (drawer com seta no modo resposta), float-dash à direita, coluna central (pré-visualização #lab-center-preview até Gerar ideia; depois dossié #lab-result-dossier).
+    Superfície: Vercel Geist — design system/vercel-geist/README.md (tokens geist-semantic + typography-utilities).
+    Guidelines: skills/guidelines/disrupta-laboratorio-design-system.md
+  -->
+  <link rel="stylesheet" href="design-system/index.css" />
+  <link rel="stylesheet" href="disrupta-ui.css?v=20260430-1215" />
+</head>
+<body class="page-laboratorio-ideias lab-mode-hero">
+  <a class="skip-link" href="#lab-main-content">Pular para o conteúdo principal</a>
+  <a class="skip-link skip-link--secondary" href="#float-dash">Pular para o menu</a>
+  <div class="lab-app">
+    <nav
+      id="float-dash"
+      class="float-dash"
+      tabindex="-1"
+      data-expanded="false"
+      aria-label="Navegação principal"
+    >
+      <div class="float-dash__surface">
+        <div class="float-dash__collapsed" id="float-dash-collapsed">
+          <button
+            type="button"
+            class="float-dash__icon-btn float-dash__spark-btn"
+            id="float-dash-open"
+            hidden
+            tabindex="-1"
+            aria-hidden="true"
+            aria-expanded="false"
+            aria-controls="float-dash-expanded"
+            title="Menu expandido desativado nesta página"
+          >
+            <span class="visually-hidden">Menu expandido desativado</span>
+            <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.35"
+                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+              />
+            </svg>
+          </button>
+          <ul class="float-dash__icon-stack" role="list">
+            <li>
+              <a class="float-dash__icon-btn" href="#" title="Dashboard" data-float-tip="Dashboard">
+                <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.35"
+                    d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"
+                  />
+                </svg>
+                <span class="visually-hidden">Dashboard</span>
+              </a>
+            </li>
+
+            <li>
+              <a class="float-dash__icon-btn" href="evaluation.html" title="Avaliação de Inovação" data-float-tip="Avaliação de Inovação">
+                <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span class="visually-hidden">Avaliação de Inovação</span>
+              </a>
+            </li>
+
+            <li>
+              <a
+                class="float-dash__icon-btn is-active"
+                href="laboratorio-ideias.html"
+                title="Laboratório de Ideias"
+                data-float-tip="Laboratório de Ideias"
+                aria-current="page"
+              >
+                <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.35"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  />
+                </svg>
+                <span class="visually-hidden">Laboratório de Ideias</span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="float-dash__expanded" id="float-dash-expanded" hidden>
+          <div class="float-dash__expanded-head">
+            <div class="float-dash__brand-row">
+              <span class="float-dash__spark-ico" aria-hidden="true">
+                <svg class="float-dash__ico" width="20" height="20" viewBox="0 0 24 24">
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.35"
+                    d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+                  />
+                </svg>
+              </span>
+              <span class="float-dash__menu-label">Navegação</span>
+            </div>
+            <button
+              type="button"
+              class="float-dash__collapse"
+              id="float-dash-close"
+              title="Fechar menu"
+              aria-label="Fechar menu"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="1.5" d="M14 7l-7 7M7 7l7 7" />
+              </svg>
+            </button>
+          </div>
+          <div class="float-dash__columns float-dash__columns--lab">
+            <div class="float-dash__col float-dash__col--primary">
+              <ul class="float-dash__list" role="list">
+                <li>
+                  <a class="float-dash__row" href="#">
+                    <span class="float-dash__row-ico" aria-hidden="true">
+                      <svg class="float-dash__ico" width="18" height="18" viewBox="0 0 24 24">
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.35"
+                          d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="float-dash__row-label">Dashboard</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="float-dash__row" href="evaluation.html">
+                    <span class="float-dash__row-ico" aria-hidden="true">
+                      <svg class="float-dash__ico" width="18" height="18" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    </span>
+                    <span class="float-dash__row-label">Avaliação de Inovação</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="float-dash__row" href="laboratorio-ideias.html">
+                    <span class="float-dash__row-ico" aria-hidden="true">
+                      <svg class="float-dash__ico" width="18" height="18" viewBox="0 0 24 24">
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.35"
+                          stroke-linecap="round"
+                          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="float-dash__row-label">Laboratório de Ideias</span>
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="lab-body">
+      <header class="lab-top-bar">
+        <a class="lab-brand" href="laboratorio-ideias.html" aria-label="Disrupta — início (Laboratório de Ideias)">
+          <img
+            id="brand-logo"
+            class="brand-logo"
+            src="../img/Dis-branco-vert-txt.svg"
+            width="405"
+            height="111"
+            alt="Disrupta"
+          />
+        </a>
+        <div class="lab-top-bar__end">
+
+          <div class="lab-top-bar__tools">
+            <div class="lab-tokens" role="group" aria-label="Saldo de tokens">
+              <button
+                type="button"
+                class="lab-tokens__label lab-tokens__open-pricing"
+                id="lab-tokens-open-pricing"
+                aria-haspopup="dialog"
+                aria-controls="lab-pricing-dialog"
+              >
+                Tokens: ∞
+              </button>
+              <button
+                type="button"
+                class="lab-tokens__add lab-tokens__open-pricing"
+                aria-label="Planos e tokens — adicionar"
+                aria-haspopup="dialog"
+                aria-controls="lab-pricing-dialog"
+              >
+                +
+              </button>
+            </div>
+            <button
+              type="button"
+              id="lab-notify-trigger"
+              class="lab-notify"
+              aria-haspopup="dialog"
+              aria-controls="lab-notify-dialog"
+              aria-expanded="false"
+              aria-label="Notificações, 1 não lida"
+            >
+              <span class="lab-notify__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+                  <path d="M12 22a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z" />
+                  <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7" />
+                </svg>
+              </span>
+              <span class="lab-notify__badge">1</span>
+              <span class="visually-hidden">1 nova notificação</span>
+            </button>
+            <button type="button" id="lab-profile-trigger" class="lab-profile" aria-label="Menu do perfil" aria-haspopup="dialog" aria-controls="lab-profile-dialog" aria-expanded="false">
+              <span class="lab-profile__avatar" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </span>
+              <svg class="lab-profile__chev" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="1.5" d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="lab-context-drawer" id="lab-context-drawer" data-expanded="true">
+        <aside class="lab-context" id="lab-context-panel" aria-labelledby="lab-context-title">
+          <div class="lab-context__chrome">
+            <h1 id="lab-context-title" class="lab-context__headline">
+              <span class="lab-context__headline-text">Qual é a sua próxima grande aposta?</span>
+            </h1>
+          </div>
+
+          <section class="lab-card forge" aria-label="Edição da ideia, atalho de geração e dossié">
+            <div class="forge-panel lab-forge-panel">
+            <p id="forge-input-requirements" class="visually-hidden">
+              Para ativar o botão Gerar ideia, escreva pelo menos três palavras e doze caracteres.
+            </p>
+            <label id="lab-forge-label" class="lab-forge-label visually-hidden" for="forge-input">
+              insira aqui a ideia que deseja refinar ou o problema que deseja resolver.
+            </label>
+            <textarea
+              id="forge-input"
+              rows="10"
+              spellcheck="true"
+              aria-describedby="forge-input-requirements"
+              placeholder="Descreva o cenário de ruptura. Onde a dor dói mais? Onde reside a ineficiência?"
+            ></textarea>
+            
+
+
+            <div
+              class="forge-footer lab-field-context-bar"
+              aria-label="Atalho de teclado e saldo de tokens"
+            >
+              <p class="lab-field-context-bar__kbd-hint">
+                <span class="lab-field-context-bar__kbd-lead">Pressione</span>
+                <kbd class="lab-kbd lab-kbd--mod" translate="no">⌘</kbd>
+                <span class="lab-field-context-bar__kbd-plus" aria-hidden="true">+</span>
+                <kbd class="lab-kbd" translate="no">Enter</kbd>
+                <span class="lab-field-context-bar__kbd-trail">para gerar</span>
+              </p>
+              <div class="lab-token-pill" role="status">
+                <span class="lab-token-pill__gem" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M12 2l2.2 6.8H21l-5.5 4 2.1 6.5L12 17.8 6.4 19.3l2.1-6.5L3 8.8h6.8L12 2z"
+                      fill="currentColor"
+                      stroke="color-mix(in srgb, currentColor 40%, transparent)"
+                      stroke-width="0.5"
+                    />
+                  </svg>
+                </span>
+                <span class="lab-token-pill__label">10 tokens</span>
+              </div>
+            </div>
+            <div class="forge-process" role="region" aria-label="Geração de ideia">
+              <button
+                type="button"
+                class="btn-primary forge-process__cta"
+                id="btn-process"
+                data-ready="false"
+                aria-describedby="intent-hint"
+              >
+                Gerar ideia
+              </button>
+              <div id="progressive-disclosure-overlay" class="progressive-overlay" hidden>
+                <p>Sua tese está <span id="maturity-percent">65%</span> madura. Quantificar o impacto agora acelerará o diagnóstico em 40%.</p>
+                <div class="progressive-overlay__actions">
+                  <button type="button" class="btn-ghost" id="btn-refine">Refinar tese</button>
+                  <button type="button" class="btn-primary" id="btn-force-generate">Gerar mesmo assim</button>
+                </div>
+              </div>
+              <p class="intent-hint forge-process__hint" id="intent-hint">
+                Este comando forjará um Dossiê de Viabilidade com 12 módulos analíticos.
+              </p>
+            </div>
+          </div>
+          </section>
+        </aside>
+        <button
+          type="button"
+          class="lab-context-drawer__toggle"
+          id="lab-context-drawer-toggle"
+          aria-controls="lab-context-panel"
+          aria-expanded="true"
+          aria-label="Recolher painel da ideia"
+          title="Recolher painel da ideia"
+        >
+          <svg
+            class="lab-context-drawer__toggle-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+
+      <main class="lab-main" id="lab-main-content" tabindex="-1">
+        <div class="lab-main__grid">
+          <div class="lab-main__primary">
+            <div
+              id="lab-center-preview"
+              class="lab-center-preview"
+              role="region"
+              aria-label="Pré-visualização do laboratório"
+            >
+              <section class="lab-center-preview__content">
+                <header class="lab-center-preview__headline">
+                  <p class="lab-center-preview__title">Qual é a sua próxima grande aposta?</p>
+                </header>
+                <div
+                  id="lab-center-command"
+                  class="lab-center-preview__command"
+                  role="group"
+                  aria-labelledby="lab-center-command-legend"
+                  data-lab-chat-command=""
+                >
+                  <p id="lab-center-command-legend" class="visually-hidden">
+                    Descreva a ideia ou o problema; em seguida use Gerar ideia para preencher o dossié.
+                  </p>
+                  <div class="lab-center-preview__command-row">
+                    <div class="lab-center-preview__input-cell">
+                      <label id="lab-forge-label-center" class="visually-hidden" for="forge-input-center">
+                        Insira o problema ou oportunidade de negócio que deseja explorar.
+                      </label>
+                      <div class="lab-center-preview__input-wrap">
+                        <textarea
+                          id="forge-input-center"
+                          class="lab-center-preview__input"
+                          rows="1"
+                          spellcheck="true"
+                          aria-describedby="forge-input-requirements"
+                          placeholder="Em que cenário de ruptura estamos atuando?"
+                          data-lab-chat-input=""
+                        ></textarea>
+                        <div
+                          id="lab-center-chat-placeholder"
+                          class="lab-chat-placeholder-layer"
+                          aria-hidden="true"
+                          hidden
+                        >
+                          <span class="lab-chat-placeholder-layer__text"></span>
+                        </div>
+                      </div>
+                    </div>
+                  <button
+                    type="button"
+                    class="btn-primary lab-center-preview__cta"
+                    id="btn-process-center"
+                    data-ready="false"
+                    aria-describedby="intent-hint"
+                  >
+                    Gerar ideia
+                  </button>
+                  </div>
+
+                  <div id="progressive-disclosure-overlay-center" class="progressive-overlay" hidden>
+                    <p>Sua tese está <span id="maturity-percent-center">65%</span> madura. Quantificar o impacto acelera o diagnóstico.</p>
+                    <div class="progressive-overlay__actions">
+                      <button type="button" class="btn-ghost" id="btn-refine-center">Refinar</button>
+                      <button type="button" class="btn-primary" id="btn-force-generate-center">Gerar mesmo assim</button>
+                    </div>
+                  </div>
+                  <div
+                    id="lab-center-chat-context"
+                    class="lab-center-preview__chat-context"
+                    aria-hidden="true"
+                  >
+                    <div class="lab-center-preview__chat-context-row" role="toolbar" aria-label="Modos de contexto para a ideia">
+                      <button
+                        type="button"
+                        class="lab-chat-chip"
+                        id="lab-chip-refinar"
+                        aria-pressed="false"
+                        title="Pedir raciocínio mais explícito na geração (protótipo)"
+                      >
+                        <span class="lab-chat-chip__ico" aria-hidden="true">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+                            <path d="M9 18h6M10 22h4M12 3a6 6 0 0 0-6 6c0 1 .2 2 .6 2.9L5 15l3.1-.6c.9.4 1.9.6 2.9.6a6 6 0 0 0 0-12Z" />
+                          </svg>
+                        </span>
+                        <span class="lab-chat-chip__label">Refinar raciocínio</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="lab-chat-chip"
+                        id="lab-chip-contexto"
+                        aria-pressed="false"
+                        title="Incluir leitura mais ampla de contexto na geração (protótipo)"
+                      >
+                        <span class="lab-chat-chip__ico" aria-hidden="true">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />
+                          </svg>
+                        </span>
+                        <span class="lab-chat-chip__label">Contexto amplo</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="lab-field-context-bar lab-field-context-bar--below-preview-command" aria-label="Atalho e tokens">
+                  <p class="lab-field-context-bar__kbd-hint">
+                    <span class="lab-field-context-bar__kbd-lead">Pressione</span>
+                    <kbd class="lab-kbd lab-kbd--mod" translate="no">⌘</kbd>
+                    <span class="lab-field-context-bar__kbd-plus" aria-hidden="true">+</span>
+                    <kbd class="lab-kbd" translate="no">Enter</kbd>
+                    <span class="lab-field-context-bar__kbd-trail">para gerar</span>
+                  </p>
+                  <div class="lab-token-pill" role="status">
+                    <span class="lab-token-pill__gem" aria-hidden="true">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M12 2l2.2 6.8H21l-5.5 4 2.1 6.5L12 17.8 6.4 19.3l2.1-6.5L3 8.8h6.8L12 2z"
+                          fill="currentColor"
+                          stroke="color-mix(in srgb, currentColor 40%, transparent)"
+                          stroke-width="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span class="lab-token-pill__label">10 tokens</span>
+                  </div>
+                </div>
+                <section
+                  id="lab-prompt-suggestions"
+                  class="lab-prompt-suggestions"
+                  aria-labelledby="lab-prompt-suggestions-title"
+                >
+                  <h2 id="lab-prompt-suggestions-title" class="lab-prompt-suggestions__title">
+                    Experimente estas sugestões:
+                  </h2>
+                  <ul class="lab-prompt-suggestions__grid" role="list">
+                    <li class="lab-prompt-suggestions__cell">
+                      <button
+                        type="button"
+                        class="lab-prompt-suggestions__card"
+                        data-suggestion="Uma plataforma que ajuda pequenas empresas a gerenciar seu estoque usando IA"
+                      >
+                        <span class="lab-prompt-suggestions__icon-wrap" aria-hidden="true">
+                          <svg
+                            class="float-dash__ico lab-prompt-suggestions__ico"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.35"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                            />
+                          </svg>
+                        </span>
+                        <span class="lab-prompt-suggestions__text">Uma plataforma que ajuda pequenas empresas a gerenciar seu estoque usando IA</span>
+                      </button>
+                    </li>
+                    <li class="lab-prompt-suggestions__cell">
+                      <button
+                        type="button"
+                        class="lab-prompt-suggestions__card"
+                        data-suggestion="Um app que conecta freelancers com oportunidades de projetos baseado em habilidades"
+                      >
+                        <span class="lab-prompt-suggestions__icon-wrap" aria-hidden="true">
+                          <svg
+                            class="float-dash__ico lab-prompt-suggestions__ico"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.35"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                            />
+                          </svg>
+                        </span>
+                        <span class="lab-prompt-suggestions__text">Um app que conecta freelancers com oportunidades de projetos baseado em habilidades</span>
+                      </button>
+                    </li>
+                    <li class="lab-prompt-suggestions__cell">
+                      <button
+                        type="button"
+                        class="lab-prompt-suggestions__card"
+                        data-suggestion="Uma ferramenta que automatiza a criação de conteúdo para redes sociais de marcas"
+                      >
+                        <span class="lab-prompt-suggestions__icon-wrap" aria-hidden="true">
+                          <svg
+                            class="float-dash__ico lab-prompt-suggestions__ico"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.35"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                            />
+                          </svg>
+                        </span>
+                        <span class="lab-prompt-suggestions__text">Uma ferramenta que automatiza a criação de conteúdo para redes sociais de marcas</span>
+                      </button>
+                    </li>
+                    <li class="lab-prompt-suggestions__cell">
+                      <button
+                        type="button"
+                        class="lab-prompt-suggestions__card"
+                        data-suggestion="Um serviço que usa blockchain para verificar a autenticidade de produtos"
+                      >
+                        <span class="lab-prompt-suggestions__icon-wrap" aria-hidden="true">
+                          <svg
+                            class="float-dash__ico lab-prompt-suggestions__ico"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.35"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                            />
+                          </svg>
+                        </span>
+                        <span class="lab-prompt-suggestions__text">Um serviço que usa blockchain para verificar a autenticidade de produtos</span>
+                      </button>
+                    </li>
+                  </ul>
+                </section>
+              </section>
+            </div>
+
+            <article
+              class="lab-result-dossier"
+              id="lab-result-dossier"
+              aria-labelledby="lab-result-dossier-title"
+              hidden
+            >
+              <header class="lab-result-dossier__masthead">
+                <div class="lab-result-dossier__masthead-text">
+                  <p class="lab-result-dossier__eyebrow">Dossié a partir do teu prompt · leitura guiada</p>
+                  <h2 id="lab-result-dossier-title" class="lab-result-dossier__title">
+                    Método Disrupta
+                  </h2>
+                  <p class="lab-result-dossier__subtitle">
+                    Data:
+                    <time id="lab-result-dossier-date" datetime="2026-04-22">22/04/2026</time>
+                    <span class="lab-result-dossier__sep" aria-hidden="true">|</span>
+                    Gerado por Disrupta
+                  </p>
+                </div>
+                <div
+                  class="lab-result-dossier__toolbar"
+                  role="toolbar"
+                  aria-label="Ações do relatório"
+                  aria-orientation="horizontal"
+                >
+                  <button type="button" class="lab-result-dossier__icon-btn" aria-label="Descarregar PDF">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M12 3v12M8 11l4 4 4-4M5 21h14" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  <button type="button" class="lab-result-dossier__icon-btn" aria-label="Partilhar relatório">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <circle cx="18" cy="5" r="3" />
+                      <circle cx="6" cy="12" r="3" />
+                      <circle cx="18" cy="19" r="3" />
+                      <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke-linecap="round" />
+                    </svg>
+                  </button>
+                  <button type="button" class="lab-result-dossier__icon-btn" aria-label="Arquivar relatório">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 7h16M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2M6 7v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7" stroke-linecap="round" />
+                      <path d="M10 11v6M14 11v6" stroke-linecap="round" />
+                    </svg>
+                  </button>
+                </div>
+              </header>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-1"
+                aria-labelledby="lab-rd-prompt-h"
+              >
+                <h4 id="lab-rd-prompt-h" class="lab-result-dossier__h3">Prompt original</h4>
+                <p class="lab-result-dossier__rational">
+                  O texto bruto que gerou este dossié. Responde: «O que foi pedido, palavra a palavra?» Serve para
+                  conferir alinhamento antes de ler as interpretações abaixo.
+                </p>
+                <blockquote class="lab-result-dossier__quote" id="lab-rd-prompt-quote"></blockquote>
+              </section>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-1"
+                aria-labelledby="lab-rd-need-st-h"
+              >
+                <div class="lab-section-header-row">
+                  <h4 id="lab-rd-need-st-h" class="lab-result-dossier__h3">Declaração de necessidade (need statement)</h4>
+                  <button type="button" class="lab-why-btn" data-tooltip="O Método Disrupta utiliza o Need Statement para ancorar a solução em problemas reais, evitando o desperdício em ideias sem mercado.">
+                    <span class="lab-why-btn__label">Por que?</span>
+                  </button>
+                </div>
+                <p class="lab-result-dossier__rational">
+                  Traduz o pedido em problema, público, métrica e uma frase-síntese. Responde: «A necessidade já está
+                  formulável?» Serve de base para todas as secções seguintes.
+                </p>
+                <dl class="lab-result-dossier__dl">
+                  <div class="lab-result-dossier__dl-row">
+                    <dt>Problem</dt>
+                    <dd>
+                      Marcas enfrentam dificuldades em criar conteúdo relevante e consistente para as suas redes sociais.
+                    </dd>
+                  </div>
+                  <div class="lab-result-dossier__dl-row">
+                    <dt>Target population</dt>
+                    <dd>Empresas e marcas que utilizam redes sociais para marketing.</dd>
+                  </div>
+                  <div class="lab-result-dossier__dl-row">
+                    <dt>Measurable outcome</dt>
+                    <dd>
+                      Aumento no envolvimento e na frequência de publicações nas redes sociais.
+                    </dd>
+                  </div>
+                  <div class="lab-result-dossier__dl-row">
+                    <dt>Statement</dt>
+                    <dd>
+                      A criação de conteúdo para redes sociais é um desafio para muitas marcas, resultando em baixa
+                      frequência e envolvimento. Uma ferramenta que automatiza esse processo pode melhorar
+                      significativamente a presença digital das empresas.
+                    </dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-1"
+                aria-labelledby="lab-rd-need-id-h"
+              >
+                <h4 id="lab-rd-need-id-h" class="lab-result-dossier__h3">Identificação da necessidade (need identification)</h4>
+                <p class="lab-result-dossier__rational">
+                  Mostra quem é afectado, onde, com que frequência e o custo de não resolver. Responde: «Em que
+                  situação real esta dor aparece?» Serve para evitar soluções desligadas do contexto.
+                </p>
+                <dl class="lab-result-dossier__dl">
+                  <div class="lab-result-dossier__dl-row">
+                    <dt>Who suffers</dt>
+                    <dd>
+                      Marcas e profissionais de marketing que não têm tempo ou recursos para criar conteúdo de
+                      qualidade.
+                    </dd>
+                  </div>
+                  <div class="lab-result-dossier__dl-row">
+                    <dt>Context</dt>
+                    <dd>No ambiente digital, onde a presença nas redes sociais é crucial para o sucesso.</dd>
+                  </div>
+                  <div class="lab-result-dossier__dl-row">
+                    <dt>Frequency</dt>
+                    <dd>Diariamente, ou sempre que há necessidade de novas publicações.</dd>
+                  </div>
+                  <div class="lab-result-dossier__dl-row">
+                    <dt>Consequences</dt>
+                    <dd>
+                      Se não resolvido, as marcas podem perder relevância, envolvimento e oportunidades de vendas.
+                    </dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-2"
+                aria-labelledby="lab-rd-pf-h"
+              >
+                <h4 id="lab-rd-pf-h" class="lab-result-dossier__h3">Fundamentos do problema (problem fundamentals)</h4>
+                <p class="lab-result-dossier__rational">
+                  Ancora a ideia num setor e lista forças de mercado relevantes. Responde: «Em que terreno
+                  competitivo estamos?» Serve para alinhar vocabulário e risco com o mercado.
+                </p>
+                <p><strong class="lab-result-dossier__strong-label">Setor</strong> — Marketing Digital</p>
+                <p class="lab-result-dossier__trend-head"><strong class="lab-result-dossier__strong-label">Trends</strong></p>
+                <ul class="lab-result-dossier__list">
+                  <li>Aumento do uso de inteligência artificial na criação de conteúdo.</li>
+                  <li>Busca por automação em processos de marketing.</li>
+                  <li>Crescimento do marketing de conteúdo.</li>
+                </ul>
+              </section>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-2"
+                aria-labelledby="lab-rd-class-h"
+              >
+                <div class="lab-section-header-row">
+                  <h4 id="lab-rd-class-h" class="lab-result-dossier__h3">Classificação da ideia (idea classification)</h4>
+                  <button type="button" class="lab-why-btn" data-tooltip="A IA analisou a escala de mercado e o nível de inovação técnica para determinar se esta é uma ideia disruptiva ou incremental.">
+                    <span class="lab-why-btn__label">Racional?</span>
+                  </button>
+                </div>
+                <p class="lab-result-dossier__rational">
+                  Resume o tipo e o grau de concretude da hipótese (etiquetas + texto curto). Responde: «Que género
+                  de aposta é esta?» Serve para calibrar risco e o tipo de prova que precisas.
+                </p>
+                <p class="lab-result-dossier__tags" role="list">
+                  <span class="lab-result-dossier__tag" role="listitem">Nova solução</span>
+                  <span class="lab-result-dossier__tag-sep" aria-hidden="true">|</span>
+                  <span class="lab-result-dossier__tag" role="listitem">Concreta</span>
+                </p>
+                <p class="lab-result-dossier__body">
+                  A ideia apresenta uma solução prática e viável para um problema específico na criação de conteúdo,
+                  utilizando tecnologia para automatizar tarefas repetitivas.
+                </p>
+              </section>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-2"
+                aria-labelledby="lab-rd-rq-h"
+              >
+                <h4 id="lab-rd-rq-h" class="lab-result-dossier__h3">Questões reflexivas (reflective questions)</h4>
+                <p class="lab-result-dossier__rational">
+                  Lista perguntas de tensão para testar a tese. Responde: «O que ainda pode falhar ou ficar por
+                  demonstrar?» Serve para moldar a decisão antes de investir.
+                </p>
+                <ol class="lab-result-dossier__reflect-list">
+                  <li class="lab-result-dossier__reflect-item">
+                    <div class="lab-result-dossier__reflect-block">
+                      <div class="lab-result-dossier__reflect-meta" aria-hidden="true">
+                        <span class="lab-rd-section-tag">Pergunta</span>
+                        <span class="lab-rd-section-tag lab-rd-section-tag--muted">Leitura</span>
+                      </div>
+                      <div class="lab-result-dossier__reflect-body">
+                        <span class="lab-result-dossier__q">
+                          Quais são os principais desafios que as marcas enfrentam na criação de conteúdo atualmente?
+                        </span>
+                        <span class="lab-result-dossier__purpose">
+                          Objetivo: identificar as necessidades reais do utilizador.
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="lab-result-dossier__reflect-item">
+                    <div class="lab-result-dossier__reflect-block">
+                      <div class="lab-result-dossier__reflect-meta" aria-hidden="true">
+                        <span class="lab-rd-section-tag">Pergunta</span>
+                        <span class="lab-rd-section-tag lab-rd-section-tag--muted">Leitura</span>
+                      </div>
+                      <div class="lab-result-dossier__reflect-body">
+                        <span class="lab-result-dossier__q">
+                          Como as marcas estão atualmente a medir o sucesso das suas publicações nas redes sociais?
+                        </span>
+                        <span class="lab-result-dossier__purpose">
+                          Objetivo: entender as métricas que importam para os utilizadores.
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="lab-result-dossier__reflect-item">
+                    <div class="lab-result-dossier__reflect-block">
+                      <div class="lab-result-dossier__reflect-meta" aria-hidden="true">
+                        <span class="lab-rd-section-tag">Pergunta</span>
+                        <span class="lab-rd-section-tag lab-rd-section-tag--muted">Leitura</span>
+                      </div>
+                      <div class="lab-result-dossier__reflect-body">
+                        <span class="lab-result-dossier__q">
+                          Que tipo de conteúdo é mais eficaz para envolver o público-alvo?
+                        </span>
+                        <span class="lab-result-dossier__purpose">Objetivo: explorar as preferências do mercado.</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="lab-result-dossier__reflect-item">
+                    <div class="lab-result-dossier__reflect-block">
+                      <div class="lab-result-dossier__reflect-meta" aria-hidden="true">
+                        <span class="lab-rd-section-tag">Pergunta</span>
+                        <span class="lab-rd-section-tag lab-rd-section-tag--muted">Leitura</span>
+                      </div>
+                      <div class="lab-result-dossier__reflect-body">
+                        <span class="lab-result-dossier__q">
+                          Como a automação pode impactar a criatividade na criação de conteúdo?
+                        </span>
+                        <span class="lab-result-dossier__purpose">
+                          Objetivo: avaliar a relação entre automação e criatividade.
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="lab-result-dossier__reflect-item">
+                    <div class="lab-result-dossier__reflect-block">
+                      <div class="lab-result-dossier__reflect-meta" aria-hidden="true">
+                        <span class="lab-rd-section-tag">Pergunta</span>
+                        <span class="lab-rd-section-tag lab-rd-section-tag--muted">Leitura</span>
+                      </div>
+                      <div class="lab-result-dossier__reflect-body">
+                        <span class="lab-result-dossier__q">
+                          Quais plataformas de redes sociais são mais utilizadas pelas marcas?
+                        </span>
+                        <span class="lab-result-dossier__purpose">
+                          Objetivo: identificar onde concentrar esforços de automação.
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                </ol>
+              </section>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-3"
+                aria-labelledby="lab-rd-var-h"
+              >
+                <h4 id="lab-rd-var-h" class="lab-result-dossier__h3">Variações da ideia (idea variations)</h4>
+                <p class="lab-result-dossier__rational">
+                  Propõe caminhos alternativos de execução. Responde: «Que variações valem um segundo olhar?» Serve para
+                  ampliar opções sem perder o foco na dor.
+                </p>
+                <ul class="lab-result-dossier__variation-list">
+                  <li>
+                    <p class="lab-result-dossier__variation-title">Variação 1: ferramenta de sugestão de conteúdo</p>
+                    <p class="lab-result-dossier__variation-focus">
+                      <strong>Focus:</strong> ajustar a ideia para incluir sugestões baseadas em dados de tendências.
+                    </p>
+                  </li>
+                  <li>
+                    <p class="lab-result-dossier__variation-title">Variação 2: integração de agendamento de publicações</p>
+                    <p class="lab-result-dossier__variation-focus">
+                      <strong>Focus:</strong> adicionar funcionalidade de agendamento para maior conveniência.
+                    </p>
+                  </li>
+                </ul>
+              </section>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-3 lab-result-dossier__section--devil"
+                aria-labelledby="lab-rd-devil-h"
+              >
+                <div class="lab-section-header-row">
+                  <h4 id="lab-rd-devil-h" class="lab-result-dossier__h3">O Advogado do Diabo (Devil's Advocate)</h4>
+                  <span class="lab-rd-section-tag lab-rd-section-tag--critical">Tensão Crítica</span>
+                </div>
+                <p class="lab-result-dossier__rational">
+                  Desafia a tese com riscos e contra-argumentos. Responde: «Por que esta ideia pode NÃO funcionar?» 
+                  Serve para evitar o viés de confirmação e fortalecer a resiliência da aposta.
+                </p>
+                <div class="lab-result-dossier__devil-content">
+                  <div class="lab-result-dossier__devil-card">
+                    <p class="lab-result-dossier__devil-title">Risco de Commodities</p>
+                    <p class="lab-result-dossier__body">
+                      Se a IA gerar conteúdo similar para todos os clientes, a marca perde sua autenticidade e "voz única", tornando o marketing indistinguível dos competidores.
+                    </p>
+                  </div>
+                  <div class="lab-result-dossier__devil-card">
+                    <p class="lab-result-dossier__devil-title">Barreira de Confiança</p>
+                    <p class="lab-result-dossier__body">
+                      Usuários podem hesitar em delegar a "alma" da marca para um algoritmo, temendo erros de tom ou alinhamento cultural que podem causar crises de imagem.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section
+                id="lab-rd-viz-section"
+                class="lab-result-dossier__section lab-result-dossier__section--layer-3 lab-result-dossier__section--placeholder"
+                aria-labelledby="lab-rd-viz-h"
+              >
+                <h4 id="lab-rd-viz-h" class="lab-result-dossier__h3">Elementos visuais e gráficos</h4>
+                <span class="lab-result-dossier__head-tag lab-rd-section-tag lab-rd-section-tag--generating"
+                  >Em geração</span>
+                <p class="lab-result-dossier__rational" id="lab-rd-viz-rational">
+                  Números e mapas num relance (protótipo). Responde: «Qual é o “termómetro” da ideia agora?» Serve para
+                  leitura executiva antes de mergulhar no texto.
+                </p>
+                <div id="lab-rd-viz-root" class="lab-rd-viz-root" role="region" aria-label="Painel visual da ideia"></div>
+              </section>
+
+              <section
+                class="lab-result-dossier__section lab-result-dossier__section--layer-3"
+                id="lab-rd-sources-section"
+                aria-labelledby="lab-rd-sources-h"
+              >
+                <h4 id="lab-rd-sources-h" class="lab-result-dossier__h3">Fontes e materiais</h4>
+                <p class="lab-result-dossier__rational">
+                  Liga cada evidência a uma pergunta e a oportunidades (exemplo). Responde: «De onde veio isto e por
+                  que conta?» Serve para rastreio e confiança na leitura curta.
+                </p>
+                <div class="matrix-wrap lab-sources-matrix-wrap">
+                  <table
+                    class="matrix matrix--sources"
+                    id="lab-rd-source-evidence-table"
+                    aria-labelledby="lab-rd-sources-h"
+                  >
+                    <thead>
+                      <tr>
+                        <th scope="col">Dado bruto (fonte)</th>
+                        <th scope="col">Tema inicial / Portfólio</th>
+                        <th scope="col">Tipo de dado</th>
+                        <th scope="col">Justificativa de inclusão</th>
+                        <th scope="col">Resumo do achado</th>
+                        <th scope="col">Destaques (dados, números, citações)</th>
+                        <th scope="col">Pergunta Desafio</th>
+                        <th scope="col">Oportunidades Preliminares</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          McKinsey (2024). <em>The gathering storm: hybrid work and services</em>. PDF simulado.
+                        </td>
+                        <td>Plataformas digitais e produtividade em serviços profissionais</td>
+                        <td>Relatório de mercado / consultoria</td>
+                        <td>Referência de mercado para pressão sobre modelo operacional e adoção de automação.</td>
+                        <td>
+                          O relatório descreve tensão entre trabalho híbrido e expectativas de serviço; não prescreve stack tecnológico.
+                        </td>
+                        <td>Citação de “serviços intensivos em conhecimento” com crescimento de custo unitário citado em faixas percentuais (mock).</td>
+                        <td>Onde a automação deixa de ser custo e passa a ser requisito contratual nos próximos 18 meses?</td>
+                        <td>SKU de diagnóstico rápido de processo ligado a benchmarks do setor.</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Hootsuite (2024). <em>Social Media Trends Report</em>. Relatório de mercado.
+                        </td>
+                        <td>Plataformas digitais e produção de conteúdo em redes sociais</td>
+                        <td>Relatório de mercado / referência setorial</td>
+                        <td>Referência de mercado para pressão sobre criação de conteúdo e demanda por automação.</td>
+                        <td>
+                          O relatório aponta que marcas publicam em média 11 posts/semana e enfrentam gargalo de criação; IA generativa é citada como principal alavanca de produtividade.
+                        </td>
+                        <td>"72% das marcas planejam aumentar uso de IA na criação de conteúdo em 2025" (dado simulado).</td>
+                        <td>Em que ponto a automação deixa de ser ganho de eficiência e começa a comprometer a autenticidade da marca?</td>
+                        <td>Módulo de voz da marca integrado ao fluxo de geração, garantindo consistência de tom.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="lab-result-dossier__rational lab-result-dossier__rational--list-lead">
+                  Lista rápida de materiais citados (formato anterior do protótipo):
+                </p>
+                <ul class="lab-sources" role="list">
+                  <li class="lab-sources__item">
+                    <span class="lab-sources__type lab-sources__type--pdf" aria-hidden="true">PDF</span>
+                    <div class="lab-sources__body">
+                      <a class="lab-sources__link" href="#">McKinsey — The gathering storm: hybrid work and services (2024)</a>
+                      <span class="lab-sources__meta">PDF · consultado na análise</span>
+                    </div>
+                  </li>
+                  <li class="lab-sources__item">
+                    <span class="lab-sources__type lab-sources__type--web" aria-hidden="true">Web</span>
+                    <div class="lab-sources__body">
+                      <a class="lab-sources__link" href="https://www.hootsuite.com/research/social-trends" rel="noopener noreferrer">Hootsuite — Social Media Trends Report 2024</a>
+                      <span class="lab-sources__meta">Ligação externa</span>
+                    </div>
+                  </li>
+                  <li class="lab-sources__item">
+                    <span class="lab-sources__type lab-sources__type--pdf" aria-hidden="true">PDF</span>
+                    <div class="lab-sources__body">
+                      <a class="lab-sources__link" href="#">IBGE — PNAD contínua: trabalho e rendimento (série histórica)</a>
+                      <span class="lab-sources__meta">PDF / tabelas</span>
+                    </div>
+                  </li>
+                </ul>
+              </section>
+            </article>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <template id="lab-viz-board-tmpl">
+    <div class="lab-viz-board">
+      <div class="lab-viz-modules" role="list">
+        <article class="lab-viz-module" role="listitem">
+          <h4 class="lab-viz-module__label">Prontidão da tese</h4>
+          <p class="lab-viz-module__value">78<span class="lab-viz-module__unit">%</span></p>
+          <p class="lab-viz-module__meta">Síntese automática do prompt</p>
+        </article>
+        <article class="lab-viz-module" role="listitem">
+          <h4 class="lab-viz-module__label">Matriz de risco</h4>
+          <p class="lab-viz-module__value lab-viz-module__value--word">Médio</p>
+          <p class="lab-viz-module__meta">Incerteza de mercado moderada</p>
+        </article>
+        <article class="lab-viz-module" role="listitem">
+          <h4 class="lab-viz-module__label">Sinais de mercado</h4>
+          <p class="lab-viz-module__value">4<span class="lab-viz-module__unit">/5</span></p>
+          <p class="lab-viz-module__meta">Tendências alinhadas à aposta</p>
+        </article>
+      </div>
+      <div class="lab-viz-charts">
+        <figure class="lab-viz-figure">
+          <figcaption class="lab-viz-figure__cap">Peso por dimensão</figcaption>
+          
+          <div class="lab-viz-bars-html" role="img" aria-label="Gráfico de barras interativo de peso por dimensão">
+            <!-- Clareza -->
+            <div class="lab-viz-bar-row" tabindex="0" aria-label="Clareza: 80%" data-chart-tip="Nível de foco e coesão da tese">
+              <span class="lab-viz-bar-lbl" aria-hidden="true">Clareza</span>
+              <div class="lab-viz-bar-track" aria-hidden="true">
+                <div class="lab-viz-bar-fill" style="width: 80%;"></div>
+              </div>
+            </div>
+            
+            <!-- Diferenciação -->
+            <div class="lab-viz-bar-row" tabindex="0" aria-label="Diferenciação: 60%" data-chart-tip="Vantagem competitiva e fosso defensivo">
+              <span class="lab-viz-bar-lbl" aria-hidden="true">Diferenciação</span>
+              <div class="lab-viz-bar-track" aria-hidden="true">
+                <div class="lab-viz-bar-fill" style="width: 60%;"></div>
+              </div>
+            </div>
+            
+            <!-- Mercado -->
+            <div class="lab-viz-bar-row" tabindex="0" aria-label="Mercado: 90%" data-chart-tip="Tamanho do mercado e tração">
+              <span class="lab-viz-bar-lbl" aria-hidden="true">Mercado</span>
+              <div class="lab-viz-bar-track" aria-hidden="true">
+                <div class="lab-viz-bar-fill" style="width: 90%;"></div>
+              </div>
+            </div>
+            
+            <!-- Execução -->
+            <div class="lab-viz-bar-row" tabindex="0" aria-label="Execução: 70%" data-chart-tip="Viabilidade técnica e operacional">
+              <span class="lab-viz-bar-lbl" aria-hidden="true">Execução</span>
+              <div class="lab-viz-bar-track" aria-hidden="true">
+                <div class="lab-viz-bar-fill" style="width: 70%;"></div>
+              </div>
+            </div>
+          </div>
+          
+        </figure>
+        <figure class="lab-viz-figure">
+          <figcaption class="lab-viz-figure__cap">Índice de confiança</figcaption>
+          <div class="lab-viz-donut-wrap">
+            <svg class="lab-viz-donut" viewBox="0 0 120 120" role="img" aria-label="Confiança sintética 72 por cento">
+              <circle cx="60" cy="60" r="44" class="lab-viz-donut__ring" />
+              <circle
+                cx="60"
+                cy="60"
+                r="44"
+                class="lab-viz-donut__arc"
+                stroke-dasharray="276.46"
+                stroke-dashoffset="77.41"
+                transform="rotate(-90 60 60)"
+              />
+            </svg>
+            <div class="lab-viz-donut__label">
+              <span class="lab-viz-donut__value">72</span>
+              <span class="lab-viz-donut__pct">%</span>
+            </div>
+          </div>
+        </figure>
+      </div>
+      <div class="lab-viz-matrix" role="img" aria-label="Matriz impacto versus esforço com três variações">
+        <p class="lab-viz-matrix__title">Mapa impacto × esforço</p>
+        <div class="lab-viz-matrix__grid">
+          <span class="lab-viz-matrix__axis lab-viz-matrix__axis--y">Impacto</span>
+          <div class="lab-viz-matrix__plot">
+            <span class="lab-viz-matrix__dot lab-viz-matrix__dot--a" title="Variação A">A</span>
+            <span class="lab-viz-matrix__dot lab-viz-matrix__dot--b" title="Variação B">B</span>
+            <span class="lab-viz-matrix__dot lab-viz-matrix__dot--c" title="Variação C">C</span>
+          </div>
+          <span class="lab-viz-matrix__axis lab-viz-matrix__axis--x">Esforço</span>
+        </div>
+      </div>
+
+      <section class="lab-viz-panel" aria-labelledby="lab-viz-value-title">
+        <h4 id="lab-viz-value-title" class="lab-viz-panel__title">Valor da ideia</h4>
+        <div class="lab-viz-panel__grid lab-viz-panel__grid--value">
+          <ul class="lab-viz-value-legend">
+            <li>
+              <span class="lab-viz-value-legend__swatch" aria-hidden="true"></span>
+              Valor funcional
+            </li>
+            <li>
+              <span class="lab-viz-value-legend__swatch" aria-hidden="true"></span>
+              Valor estratégico
+            </li>
+            <li>
+              <span class="lab-viz-value-legend__swatch lab-viz-value-legend__swatch--muted" aria-hidden="true"></span>
+              Valor transformacional
+            </li>
+          </ul>
+          <div class="lab-viz-value-ripple" role="img" aria-label="Raios concêntricos: impacto considerável">
+            <svg class="lab-viz-value-ripple__svg" viewBox="0 0 200 200" aria-hidden="true">
+              <circle cx="100" cy="100" r="88" fill="none" class="lab-viz-value-ripple__ring lab-viz-value-ripple__ring--3" />
+              <circle cx="100" cy="100" r="62" fill="none" class="lab-viz-value-ripple__ring lab-viz-value-ripple__ring--2" />
+              <circle cx="100" cy="100" r="36" fill="none" class="lab-viz-value-ripple__ring lab-viz-value-ripple__ring--1" />
+            </svg>
+            <p class="lab-viz-value-ripple__core">Impacto considerável</p>
+          </div>
+        </div>
+        <div class="lab-viz-panel__tags">
+          <span class="lab-viz-tag lab-viz-tag--purple">Tipo de valor: Social</span>
+          <span class="lab-viz-tag lab-viz-tag--amber">Magnitude: Significativo</span>
+        </div>
+        <div class="lab-viz-panel__callout">
+          <span class="lab-viz-panel__callout-label">Justificativa</span>
+          <p class="lab-viz-panel__callout-text">
+            A ferramenta pode transformar o fluxo de produção de conteúdo digital, reduzindo tempo de criação e aumentando a consistência da voz da marca nas redes sociais.
+          </p>
+        </div>
+      </section>
+
+      <div class="lab-viz-panel-row">
+        <section class="lab-viz-panel lab-viz-panel--tight" aria-labelledby="lab-viz-cog-title">
+          <h4 id="lab-viz-cog-title" class="lab-viz-panel__title">Classificação cognitiva da ideia</h4>
+          <div class="lab-viz-cognitive" role="img" aria-label="Matriz incremental versus disruptivo e mercado emergente versus consolidado">
+            <span class="lab-viz-cognitive__axis-y">Mercado emergente <span aria-hidden="true">|</span> Mercado consolidado</span>
+            <div class="lab-viz-cognitive__plot">
+              <span class="lab-viz-cognitive__corner lab-viz-cognitive__corner--tl">Optimizer</span>
+              <span class="lab-viz-cognitive__corner lab-viz-cognitive__corner--tr">Challenger</span>
+              <span class="lab-viz-cognitive__corner lab-viz-cognitive__corner--bl">Pioneer</span>
+              <span class="lab-viz-cognitive__corner lab-viz-cognitive__corner--br">Speculative</span>
+              <span class="lab-viz-cognitive__dot" title="Posição da ideia"></span>
+            </div>
+            <span class="lab-viz-cognitive__axis-x">Incremental <span aria-hidden="true">↔</span> Disruptivo</span>
+          </div>
+          <div class="lab-viz-panel__tags">
+            <span class="lab-viz-tag lab-viz-tag--outline">Tipo: Nova solução para dor existente</span>
+            <span class="lab-viz-tag lab-viz-tag--outline">Nível de abstração: Semi-abstrata</span>
+          </div>
+          <div class="lab-viz-panel__callout lab-viz-panel__callout--cognitive">
+            <span class="lab-viz-panel__callout-label">Descrição</span>
+            <p class="lab-viz-panel__callout-text">
+              Uma plataforma que automatiza a criação de conteúdo para redes sociais, combinando IA com diretrizes da marca para gerar publicações relevantes e consistentes.
+            </p>
+          </div>
+        </section>
+
+        <section class="lab-viz-panel lab-viz-panel--tight" aria-labelledby="lab-viz-unc-title">
+          <h4 id="lab-viz-unc-title" class="lab-viz-panel__title">Mapa de incertezas</h4>
+          <div class="lab-viz-uncertainty" role="img" aria-label="Impacto versus facilidade de resolver incertezas">
+            <span class="lab-viz-uncertainty__axis-y">Baixo impacto <span aria-hidden="true">|</span> Alto impacto</span>
+            <div class="lab-viz-uncertainty__plot">
+              <span class="lab-viz-uncertainty__corner lab-viz-uncertainty__corner--tl">Ir avaliar</span>
+              <span class="lab-viz-uncertainty__corner lab-viz-uncertainty__corner--tr">Resolver já</span>
+              <span class="lab-viz-uncertainty__corner lab-viz-uncertainty__corner--bl">Ignorar por agora</span>
+              <span class="lab-viz-uncertainty__corner lab-viz-uncertainty__corner--br">Secundário</span>
+              <span class="lab-viz-uncertainty__dot" style="left: 48%; top: 22%">1</span>
+              <span class="lab-viz-uncertainty__dot" style="left: 12%; top: 46%">2</span>
+              <span class="lab-viz-uncertainty__dot" style="left: 88%; top: 48%">3</span>
+            </div>
+            <span class="lab-viz-uncertainty__axis-x">Difícil de resolver <span aria-hidden="true">↔</span> Fácil de resolver</span>
+          </div>
+          <ol class="lab-viz-uncertainty__legend">
+            <li>
+              Não sabemos se as marcas estão dispostas a pagar por um serviço de geração automática de conteúdo.
+            </li>
+            <li>
+              Ainda é incerto se o conteúdo gerado por IA será aceito pelos algoritmos das plataformas de redes sociais.
+            </li>
+            <li>Não sabemos se as equipes de marketing adotarão a ferramenta sem resistência ao mudar fluxos existentes.</li>
+          </ol>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <dialog
+    id="lab-pricing-dialog"
+    class="lab-pricing-dialog"
+    aria-labelledby="lab-pricing-title"
+  >
+    <div class="lab-pricing-dialog__panel">
+      <header class="lab-pricing-dialog__head">
+        <h2 id="lab-pricing-title" class="lab-pricing-dialog__title">Planos e tokens</h2>
+        <button type="button" class="lab-pricing-dialog__close" aria-label="Fechar">
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+      <div class="lab-pricing">
+        <div class="lab-pricing__period" role="group" aria-label="Período de cobrança">
+          <div class="lab-pricing__period-inner" data-period="0">
+            <div id="lab-pricing-period-knob" class="lab-pricing__period-knob" aria-hidden="true"></div>
+            <button
+              type="button"
+              class="lab-pricing__period-btn is-active"
+              id="lab-pricing-period-0"
+              data-period="0"
+              aria-pressed="true"
+            >
+              Mensal
+            </button>
+            <button
+              type="button"
+              class="lab-pricing__period-btn"
+              id="lab-pricing-period-1"
+              data-period="1"
+              aria-pressed="false"
+            >
+              Anual
+            </button>
+          </div>
+        </div>
+        <div class="lab-pricing__plans" id="lab-pricing-plans">
+          <button type="button" class="lab-pricing__plan" data-plan="0" aria-pressed="true">
+            <div class="lab-pricing__plan-main">
+              <p class="lab-pricing__plan-name">Grátis</p>
+              <p class="lab-pricing__plan-meta">
+                <span class="lab-pricing__currency">R$</span><span class="lab-pricing__amount">0,00</span
+                ><span class="lab-pricing__suffix">/mês</span>
+              </p>
+            </div>
+            <span class="lab-pricing__radio" aria-hidden="true"><span class="lab-pricing__radio-dot"></span></span>
+          </button>
+          <button type="button" class="lab-pricing__plan" data-plan="1" aria-pressed="false">
+            <div class="lab-pricing__plan-main">
+              <p class="lab-pricing__plan-name">
+                Starter <span class="lab-pricing__badge">Popular</span>
+              </p>
+              <p class="lab-pricing__plan-meta">
+                <span class="lab-pricing__currency">R$</span>
+                <span id="lab-pricing-starter" class="lab-pricing__amount lab-pricing__amount--flow">49,90</span>
+                <span class="lab-pricing__suffix">/mês</span>
+              </p>
+            </div>
+            <span class="lab-pricing__radio" aria-hidden="true"><span class="lab-pricing__radio-dot"></span></span>
+          </button>
+          <button type="button" class="lab-pricing__plan" data-plan="2" aria-pressed="false">
+            <div class="lab-pricing__plan-main">
+              <p class="lab-pricing__plan-name">Pro</p>
+              <p class="lab-pricing__plan-meta">
+                <span class="lab-pricing__currency">R$</span>
+                <span id="lab-pricing-pro" class="lab-pricing__amount lab-pricing__amount--flow">99,90</span>
+                <span class="lab-pricing__suffix">/mês</span>
+              </p>
+            </div>
+            <span class="lab-pricing__radio" aria-hidden="true"><span class="lab-pricing__radio-dot"></span></span>
+          </button>
+          <div id="lab-pricing-ring" class="lab-pricing__ring" aria-hidden="true"></div>
+        </div>
+        <button type="button" class="lab-pricing__cta">Começar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog
+    id="lab-notify-dialog"
+    class="lab-notify-dialog"
+    aria-labelledby="lab-notify-title"
+  >
+    <div class="lab-notify-dialog__panel">
+      <header class="lab-notify-dialog__head">
+        <h2 id="lab-notify-title" class="lab-notify-dialog__title">Histórico</h2>
+        <button type="button" class="lab-notify-dialog__close" id="lab-notify-close" aria-label="Fechar">
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+      <div class="lab-notify-dialog__tabs" role="tablist" aria-label="Filtro de Histórico">
+        <button type="button" role="tab" aria-selected="true" aria-controls="lab-notify-panel-all" id="lab-notify-tab-all" class="lab-notify-dialog__tab">Todas</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="lab-notify-panel-notifications" id="lab-notify-tab-notifications" class="lab-notify-dialog__tab">Notificações</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="lab-notify-panel-hist-lab" id="lab-notify-tab-hist-lab" class="lab-notify-dialog__tab">Histórico lab</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="lab-notify-panel-hist-calc" id="lab-notify-tab-hist-calc" class="lab-notify-dialog__tab">Histórico Calculadora</button>
+      </div>
+
+      <div class="lab-notify-dialog__content" role="tabpanel" id="lab-notify-panel-all" aria-labelledby="lab-notify-tab-all">
+        <ol class="lab-notify-dialog__list">
+          <li class="lab-notify-dialog__item">
+            <a href="#" class="lab-notify-dialog__link">
+              <span class="lab-notify-dialog__item-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <div class="lab-notify-dialog__item-text">
+                <span class="lab-notify-dialog__item-title">Novo relatório disponível</span>
+                <span class="lab-notify-dialog__item-time">2 min atrás</span>
+              </div>
+              <button type="button" class="lab-notify-dialog__item-action" title="Arquivar" aria-label="Arquivar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+              </button>
+            </a>
+          </li>
+          <li class="lab-notify-dialog__item">
+            <a href="#" class="lab-notify-dialog__link">
+              <span class="lab-notify-dialog__item-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <div class="lab-notify-dialog__item-text">
+                <span class="lab-notify-dialog__item-title">Bem-vindo ao Laboratório</span>
+                <span class="lab-notify-dialog__item-time">1h atrás</span>
+              </div>
+              <button type="button" class="lab-notify-dialog__item-action" title="Arquivar" aria-label="Arquivar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+              </button>
+            </a>
+          </li>
+        </ol>
+      </div>
+
+      <div class="lab-notify-dialog__content" role="tabpanel" id="lab-notify-panel-notifications" aria-labelledby="lab-notify-tab-notifications" hidden>
+        <ol class="lab-notify-dialog__list">
+          <li class="lab-notify-dialog__item">
+            <a href="#" class="lab-notify-dialog__link">
+              <span class="lab-notify-dialog__item-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <div class="lab-notify-dialog__item-text">
+                <span class="lab-notify-dialog__item-title">Novo relatório disponível</span>
+                <span class="lab-notify-dialog__item-time">2 min atrás</span>
+              </div>
+              <button type="button" class="lab-notify-dialog__item-action" title="Arquivar" aria-label="Arquivar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+              </button>
+            </a>
+          </li>
+        </ol>
+      </div>
+
+      <div class="lab-notify-dialog__content" role="tabpanel" id="lab-notify-panel-hist-lab" aria-labelledby="lab-notify-tab-hist-lab" hidden>
+        <div class="lab-notify-dialog__empty">
+          <span class="lab-notify-dialog__empty-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+          </span>
+          <h3 class="lab-notify-dialog__empty-title">NADA POR AQUI</h3>
+          <p class="lab-notify-dialog__empty-desc">Suas ideias e projetos arquivados no laboratório aparecerão nesta aba.</p>
+        </div>
+      </div>
+
+      <div class="lab-notify-dialog__content" role="tabpanel" id="lab-notify-panel-hist-calc" aria-labelledby="lab-notify-tab-hist-calc" hidden>
+        <div class="lab-notify-dialog__empty">
+          <span class="lab-notify-dialog__empty-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="8" x2="16" y1="10" y2="10"/><line x1="8" x2="16" y1="14" y2="14"/><line x1="8" x2="16" y1="18" y2="18"/></svg>
+          </span>
+          <h3 class="lab-notify-dialog__empty-title">HISTÓRICO LIMPO</h3>
+          <p class="lab-notify-dialog__empty-desc">Realize simulações de viabilidade para salvar e auditar seus resultados aqui.</p>
+        </div>
+      </div>
+
+      <footer class="lab-notify-dialog__foot">
+        <button type="button" class="lab-notify-dialog__view-all">Ver todas</button>
+      </footer>
+    </div>
+  </dialog>
+
+    <dialog id="lab-profile-dialog" class="lab-profile-dialog" aria-labelledby="profile-user-name">
+      <div class="lab-profile-dialog__panel">
+        <div class="lab-profile-dialog__header">
+          <div class="lab-profile-dialog__avatar">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
+          <div class="lab-profile-dialog__info">
+            <h3 id="profile-user-name" class="lab-profile-dialog__name">Nome do Usuário</h3>
+            <span class="lab-profile-dialog__role">Admin Master</span>
+            <span class="lab-profile-dialog__email">admin@disrupta.app</span>
+          </div>
+        </div>
+
+        <div class="lab-profile-dialog__languages">
+          <p class="lab-profile-dialog__section-title">Idioma do Sistema</p>
+          <div class="lab-profile-dialog__lang-list" role="radiogroup" aria-label="Escolher idioma">
+            <button type="button" class="lab-profile-dialog__lang-item" aria-selected="true" role="radio">
+              <span class="flag-icon">🇧🇷</span> PT
+            </button>
+            <button type="button" class="lab-profile-dialog__lang-item" aria-selected="false" role="radio">
+              <span class="flag-icon">🇺🇸</span> EN
+            </button>
+            <button type="button" class="lab-profile-dialog__lang-item" aria-selected="false" role="radio">
+              <span class="flag-icon">🇪🇸</span> ES
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="lab-profile-dialog__logout" onclick="location.reload()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" x2="9" y1="12" y2="12" />
+          </svg>
+          Sair da plataforma
+        </button>
+      </div>
+    </dialog>
+
+
+    <dialog
+      id="lab-intent-preview-dialog"
+      class="lab-intent-dialog"
+      aria-labelledby="lab-intent-dialog-title"
+    >
+      <div class="lab-intent-dialog__panel">
+        <header class="lab-intent-dialog__head">
+          <div class="lab-intent-dialog__head-label">
+            <span class="lab-intent-dialog__eyebrow">Intent Preview · IAA</span>
+            <h2 id="lab-intent-dialog-title" class="lab-intent-dialog__title">Confirmação de Rota</h2>
+          </div>
+          <button type="button" class="lab-intent-dialog__close" id="lab-intent-cancel" aria-label="Fechar e ajustar ideia">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </header>
+
+        <div class="lab-intent-dialog__body">
+          <p class="lab-intent-dialog__lede">Entendi que sua ideia foca em:</p>
+          <blockquote class="lab-intent-dialog__quote">
+            <p id="lab-intent-preview-summary" class="lab-intent-dialog__summary-text"></p>
+          </blockquote>
+          <p class="lab-intent-dialog__question">Confirme para processar e consumir <strong>10 tokens</strong>. Se não for isso, ajuste o texto antes.</p>
+        </div>
+
+        <footer class="lab-intent-dialog__foot">
+          <button type="button" class="lab-intent-dialog__btn-secondary" id="lab-intent-adjust">Ajustar ideia</button>
+          <button type="button" class="lab-intent-dialog__btn-primary" id="lab-intent-confirm">Confirmar e Gerar</button>
+        </footer>
+      </div>
+    </dialog>
+
+    <div id="lab-processing-overlay" class="lab-processing-overlay" hidden aria-hidden="true">
+      <div class="lab-processing-overlay__content">
+        <div class="lab-processing-spinner"></div>
+        <div class="lab-processing-logs" id="lab-processing-logs">
+          <p class="lab-processing-log-item">Iniciando motor Disrupta...</p>
+        </div>
+      </div>
+    </div>
+
+  <script src="js/laboratorio-ideias.js?v=20260430-1900" defer></script>
+
+  </body>
+</html>

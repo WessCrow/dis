@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação de Inovação — Disrupta</title>
+  <link rel="stylesheet" href="design-system/index.css">
+  <link rel="stylesheet" href="disrupta-ui.css">
+  <style>
+    /* 3. MOTION & INTERACTION SPECS */
+    /* Transition (Entry): Staggered fade-in */
+    .stagger-entry {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: 100ms; }
+    .delay-2 { animation-delay: 200ms; }
+    .delay-3 { animation-delay: 300ms; }
+    .delay-4 { animation-delay: 400ms; }
+    .delay-5 { animation-delay: 500ms; }
+    .delay-6 { animation-delay: 600ms; }
+    
+    /* Radar Animation */
+    .radar-path {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: drawIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes drawIn {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Modal Overlay */
+    dialog::backdrop {
+      background-color: #000000e6;
+    }
+
+    /* Grid for Heatmap */
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+    .heatmap-cell {
+      height: 3rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+
+    /* Magnetic Action Wrapper */
+    .magnetic-wrap {
+      display: inline-block;
+      padding: 30px;
+      margin: -30px;
+    }
+  </style>
+</head>
+<body class="page-evaluation">
+  <div class="shell" style="padding-bottom: calc(var(--cta-min-height) + 5rem);">
+    
+    <!-- [HEADER]: Meta-data + Confidence Pill -->
+    <header class="top-bar stagger-entry delay-1">
+      <div class="brand">
+        <a href="#" class="brand-logo-link" aria-label="Disrupta — início">
+          <img src="../img/Dis-branco-vert.svg" alt="Disrupta" class="brand-logo">
+        </a>
+      </div>
+      <div class="meta">
+        <time datetime="2026-04-30">30 ABR 2026</time>
+        <code>v2.1.0</code>
+        <span class="confidence-pill" data-level="alto">Alta Confiança</span>
+      </div>
+    </header>
+
+    <main class="report">
+      
+      <!-- [HERO SECTION]: Original Prompt Display + Action -->
+      <section class="card card--prompt stagger-entry delay-2">
+        <h2 class="eyebrow">Prompt Original</h2>
+        <p class="muted">Redução de tempo de espera em emergências hospitalares usando IA preditiva para triagem inteligente e alocação dinâmica de leitos em tempo real.</p>
+        <button id="btn-nova-moldagem" class="btn-ghost" style="margin-top: 1rem;">Nova Moldagem</button>
+      </section>
+
+      <!-- [VISUAL DATA LAYER]: Radar Chart & Heatmap -->
+      <section class="need-grid stagger-entry delay-3">
+        <!-- Risk Radar Chart (Pure SVG) -->
+        <div class="card">
+          <h2>Radar de Risco</h2>
+          <div style="display: flex; justify-content: center; padding: 1rem 0;">
+            <svg viewBox="0 0 100 100" width="100%" height="220" style="overflow: visible; max-width: 250px;">
+              <!-- Background Hexagons -->
+              <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="var(--border)" stroke-width="1"/>
+              <polygon points="50,30 67,40 67,60 50,70 33,60 33,40" fill="none" stroke="var(--border)" stroke-width="1"/>
+              <!-- Data Shape -->
+              <polygon points="50,20 75,35 60,70 50,80 25,65 30,35" fill="var(--radar-fill-idea)" stroke="var(--radar-stroke-idea)" stroke-width="2" class="radar-path"/>
+              <!-- Axes -->
+              <line x1="50" y1="50" x2="50" y2="10" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2" />
+              <line x1="50" y1="50" x2="85" y2="30" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2" />
+              <line x1="50" y1="50" x2="85" y2="70" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2" />
+              <line x1="50" y1="50" x2="50" y2="90" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2" />
+              <line x1="50" y1="50" x2="15" y2="70" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2" />
+              <line x1="50" y1="50" x2="15" y2="30" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2" />
+              <!-- Labels -->
+              <text x="50" y="5" font-family="var(--font-mono)" font-size="5" fill="var(--text-muted)" text-anchor="middle">Tecnologia</text>
+              <text x="88" y="30" font-family="var(--font-mono)" font-size="5" fill="var(--text-muted)">Mercado</text>
+              <text x="88" y="75" font-family="var(--font-mono)" font-size="5" fill="var(--text-muted)">Adoção</text>
+              <text x="50" y="98" font-family="var(--font-mono)" font-size="5" fill="var(--text-muted)" text-anchor="middle">Regulação</text>
+              <text x="12" y="75" font-family="var(--font-mono)" font-size="5" fill="var(--text-muted)" text-anchor="end">Operação</text>
+              <text x="12" y="30" font-family="var(--font-mono)" font-size="5" fill="var(--text-muted)" text-anchor="end">Capital</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Momentum Heatmap (Time x Impact) -->
+        <div class="card">
+          <h2>Momentum de Impacto</h2>
+          <div class="heatmap-grid" style="margin-top: 1.5rem;">
+            <!-- Low Impact row -->
+            <div class="heatmap-cell" style="background: rgba(255,255,255,0.05);">T1</div>
+            <div class="heatmap-cell" style="background: rgba(255,255,255,0.1);">T2</div>
+            <div class="heatmap-cell" style="background: rgba(255,255,255,0.2); color: var(--text);">T3</div>
+            <div class="heatmap-cell" style="background: rgba(255,255,255,0.3); color: var(--text);">T4</div>
+            <!-- High Impact row -->
+            <div class="heatmap-cell" style="background: rgba(255,255,255,0.05);">T1</div>
+            <div class="heatmap-cell" style="background: rgba(255,255,255,0.15); color: var(--text);">T2</div>
+            <div class="heatmap-cell" style="background: rgba(255,255,255,0.1);">T3</div>
+            <div class="heatmap-cell" style="background: rgba(255,255,255,0.05);">T4</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">
+            <span>Atratividade Cedo</span>
+            <span>Atratividade Tardia</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- [SCORE MATRIX]: Feasibility, Friction, Moat -->
+      <section class="need-grid stagger-entry delay-4" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="need-cell">
+          <dt>Feasibility (Viabilidade)</dt>
+          <dd>Alta</dd>
+          <div class="tags"><span class="tag">APIs Prontas</span><span class="tag">Integração FHIR</span></div>
+        </div>
+        <div class="need-cell">
+          <dt>Friction (Fricção de Uso)</dt>
+          <dd>Média</dd>
+          <div class="tags"><span class="tag">Treinamento Clínico</span></div>
+        </div>
+        <div class="need-cell">
+          <dt>Moat Defense (Defesa)</dt>
+          <dd>Forte</dd>
+          <div class="tags"><span class="tag">Dados Proprietários</span><span class="tag">Fine-tuned Model</span></div>
+        </div>
+      </section>
+
+      <!-- [INTEL TABLE]: Sources Matrix -->
+      <section class="card stagger-entry delay-5">
+        <h2>Lastro de Evidências <span class="muted" style="font-size: 0.75rem; font-weight: normal; margin-left: 0.5rem;">Sinais de Viabilidade</span></h2>
+        <div class="matrix-wrap">
+          <table class="matrix matrix--sources">
+            <thead>
+              <tr>
+                <th>Fonte</th>
+                <th>Status</th>
+                <th>Impacto Analisado</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Estudo Clínico Johns Hopkins</td>
+                <td><span style="color: #4ade80;">Verified</span></td>
+                <td>Redução de 30% no tempo de triagem com IA na ala de emergência.</td>
+                <td><a href="#">Visualizar Estudo</a></td>
+              </tr>
+              <tr>
+                <td>Relatório Gartner Hype Cycle 2025</td>
+                <td><span style="color: #4ade80;">Verified</span></td>
+                <td>Pico de expectativas infladas para GenAI em Saúde B2B.</td>
+                <td><a href="#">Acessar Relatório</a></td>
+              </tr>
+              <tr>
+                <td>Startup Health Insights</td>
+                <td><span style="color: var(--text-muted);">Unverified</span></td>
+                <td>Competidor direto pivotou para modelo B2B Enterprise.</td>
+                <td><a href="#">Ver Fonte</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- [CLOSURE]: Accordion Provocations -->
+      <section class="molding stagger-entry delay-6">
+        <h2>5 Provocações Estratégicas</h2>
+        <p class="muted">Reflexões críticas para blindar a tese de falhas prematuras.</p>
+        <div class="accordion" style="margin-top: 1.5rem;">
+          <details style="margin-bottom: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; background: var(--panel);">
+            <summary style="cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text); outline: none;">01. O que acontece se o modelo falhar na triagem de uma condição crítica?</summary>
+            <p class="muted" style="margin-top: 0.75rem; font-size: 0.9rem; margin-bottom: 0;">Necessidade inegociável de definir um protocolo de fallback humano obrigatório em menos de 30 segundos.</p>
+          </details>
+          <details style="margin-bottom: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; background: var(--panel);">
+            <summary style="cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text); outline: none;">02. Como você adquire os dados de treinamento iniciais legalmente?</summary>
+            <p class="muted" style="margin-top: 0.75rem; font-size: 0.9rem; margin-bottom: 0;">Firmar parceria de dados anonimizados com hospitais acadêmicos meses antes de qualquer lançamento comercial.</p>
+          </details>
+          <details style="margin-bottom: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; background: var(--panel);">
+            <summary style="cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text); outline: none;">03. Qual é o incentivo real do enfermeiro-chefe para adotar a ferramenta?</summary>
+            <p class="muted" style="margin-top: 0.75rem; font-size: 0.9rem; margin-bottom: 0;">Deve ser focado em redução absoluta da carga administrativa e responsabilidade legal compartilhada/diluída com o sistema.</p>
+          </details>
+          <details style="margin-bottom: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; background: var(--panel);">
+            <summary style="cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text); outline: none;">04. E se um player legado gigante (ex: Epic, Cerner) clonar a funcionalidade?</summary>
+            <p class="muted" style="margin-top: 0.75rem; font-size: 0.9rem; margin-bottom: 0;">O fosso defensivo não pode ser a feature. Tem de ser o pipeline de dados fluídos em tempo real e uma UX clínica com zero fricção.</p>
+          </details>
+          <details style="border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; background: var(--panel);">
+            <summary style="cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text); outline: none;">05. O modelo de precificação suporta o custo constante de inferência da IA?</summary>
+            <p class="muted" style="margin-top: 0.75rem; font-size: 0.9rem; margin-bottom: 0;">Precificar com base em leitos efetivamente otimizados (ROI comprovado) e não por requisição avulsa de API.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <!-- Fixed Sticky Action Bar -->
+    <div class="cta-bar">
+      <div class="inner" style="display: flex; justify-content: flex-end;">
+        <div class="magnetic-wrap" id="magnetic-btn-wrap">
+          <button class="btn-primary" id="btn-validar" style="width: auto; min-width: 140px;">Validar Ideia</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <dialog id="modal-moldagem">
+      <div class="modal-body">
+        <h2>Nova Moldagem</h2>
+        <p class="muted" style="margin-top: 0.5rem; font-size: 0.85rem;">Ajuste os parâmetros de risco ou adicione novas restrições para recalcular a viabilidade estrutural da ideia.</p>
+        <div style="margin-top: 1.5rem;">
+          <label class="block">Parâmetros da tese</label>
+          <textarea placeholder="Ex: Priorizar integração com sistemas legados ou focar exclusivamente em mobilidade..."></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="btn-cancelar">Cancelar</button>
+        <button class="btn-primary">Processar</button>
+      </div>
+    </dialog>
+  </div>
+
+  <script>
+    // Magnetic Action Interaction
+    const magneticWrap = document.getElementById('magnetic-btn-wrap');
+    const btnValidar = document.getElementById('btn-validar');
+
+    magneticWrap.addEventListener('mousemove', (e) => {
+      const rect = magneticWrap.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      // Radius limit to 20px
+      const distance = Math.sqrt(x*x + y*y);
+      const maxDist = 20;
+      let moveX = x;
+      let moveY = y;
+      
+      if (distance > maxDist) {
+        moveX = (x / distance) * maxDist;
+        moveY = (y / distance) * maxDist;
+      }
+      
+      // Apply translate
+      btnValidar.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+
+    magneticWrap.addEventListener('mouseleave', () => {
+      // Reset position with smooth transition
+      btnValidar.style.transform = 'translate(0px, 0px)';
+      btnValidar.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    });
+
+    magneticWrap.addEventListener('mouseenter', () => {
+      // Remove transition for immediate following
+      btnValidar.style.transition = 'none';
+    });
+
+    // Modal Interaction
+    const modalMoldagem = document.getElementById('modal-moldagem');
+    const btnNovaMoldagem = document.getElementById('btn-nova-moldagem');
+    const btnCancelar = document.getElementById('btn-cancelar');
+
+    btnNovaMoldagem.addEventListener('click', () => {
+      modalMoldagem.showModal();
+    });
+
+    btnCancelar.addEventListener('click', () => {
+      modalMoldagem.close();
+    });
+  </script>
+</body>
+</html>

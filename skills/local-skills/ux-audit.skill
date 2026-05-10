@@ -1,0 +1,114 @@
+# ux-audit.skill
+
+> **Tipo:** Local Skill
+> **Domínio:** critique-audit · ux-product
+> **Ação:** analisar · corrigir
+> **Ativado por:** Start.md quando intenção = avaliar UX, identificar problemas de usabilidade
+
+---
+
+## 🎯 Propósito
+
+Realizar auditoria estruturada de UX identificando:
+- problemas de usabilidade e fluxo
+- fricção desnecessária
+- inconsistências de padrão
+- falhas de acessibilidade
+- oportunidades de melhoria priorizadas
+
+---
+
+## ⚡ Quando usar
+
+- "Auditoria" ou "review" de UX é mencionado
+- Usuário pede para encontrar problemas em um produto/interface
+- Fluxo de usuário precisa ser avaliado criticamente
+- Antes de refatorar um projeto existente
+- Quando `redesign-existing-projects` precisa de diagnóstico antes do redesign
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Ler contexto do projeto em outputs/ (se disponível)
+        ↓
+[2] Identificar escopo da auditoria
+    - Qual tela, fluxo ou produto?
+    - Qual é o objetivo do usuário nesse contexto?
+        ↓
+[3] Aplicar framework de análise (ver abaixo)
+        ↓
+[4] Priorizar achados por impacto
+        ↓
+[5] Gerar relatório estruturado
+        ↓
+[6] Atualizar outputs/ se relevante para o projeto
+```
+
+---
+
+## 🔍 Framework de Análise
+
+### Dimensão 1 — Clareza
+- O usuário sabe onde está?
+- O próximo passo é óbvio?
+- Os textos/labels são compreensíveis sem contexto?
+
+### Dimensão 2 — Fluxo
+- Quantos passos para concluir a ação principal?
+- Há pontos de abandono óbvios?
+- O fluxo segue a lógica mental do usuário?
+
+### Dimensão 3 — Consistência
+- Padrões visuais são mantidos entre componentes?
+- Comportamentos similares têm respostas similares?
+- Terminologia é consistente em todo o produto?
+
+### Dimensão 4 — Feedback
+- O sistema responde às ações do usuário?
+- Estados de erro são claros e acionáveis?
+- Há confirmação de sucesso quando necessário?
+
+### Dimensão 5 — Acessibilidade
+- Contraste de cores adequado (WCAG AA mínimo)?
+- Hierarquia tipográfica clara?
+- Fluxo navegável por teclado?
+- Alt texts e labels semânticos?
+
+---
+
+## 📊 Template de Relatório
+
+```markdown
+## UX Audit — [Nome do Produto/Tela]
+**Data:** [DATA]
+**Escopo:** [O que foi auditado]
+
+### Achados Críticos (Alta Prioridade)
+1. [Problema] — [Impacto] — [Recomendação]
+
+### Achados Moderados (Média Prioridade)
+1. [Problema] — [Impacto] — [Recomendação]
+
+### Melhorias Sugeridas (Baixa Prioridade)
+1. [Oportunidade] — [Benefício esperado]
+
+### Pontos Positivos
+- [O que está funcionando bem]
+```
+
+---
+
+## 🛡️ Governance
+
+- Consultar `guidelines/designer2627.md` para padrões de design aplicáveis
+- Skill secundária sugerida: `redesign-existing-projects` (linked) se auditoria levar a redesign
+
+---
+
+## 📤 Outputs Gerados
+
+- Relatório de auditoria em formato markdown
+- Lista priorizada de problemas (crítico / moderado / sugestão)
+- Atualização de `outputs/ROADMAP.md` com itens de correção (se aplicável)

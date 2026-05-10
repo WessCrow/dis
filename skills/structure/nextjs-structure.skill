@@ -1,0 +1,139 @@
+# nextjs-structure.skill
+
+> **Tipo:** Structure Skill
+> **Camada:** Organização Estrutural
+> **Stack:** Next.js (App Router)
+> **Ativado por:** Start.md quando detecta: Next.js
+
+---
+
+## 🎯 Propósito
+
+Gerar arquitetura base de projeto Next.js com App Router — estrutura de pastas, convenções de nomenclatura e boilerplates iniciais — antes que qualquer skill funcional seja executada.
+
+---
+
+## ⚡ Quando usar
+
+- Usuário menciona "Next.js", "Next", "App Router" ou "SSR"
+- Projeto com server-side rendering, SSG ou rotas de API
+- Stack: Next.js + TypeScript + Tailwind + shadcn/ui ou similares
+
+---
+
+## 🗂️ Arquitetura Gerada
+
+```
+/
+├── app/                          → App Router (Next.js 13+)
+│   ├── (auth)/                   → grupo de rotas autenticadas
+│   │   ├── login/
+│   │   │   └── page.tsx
+│   │   └── layout.tsx
+│   ├── (marketing)/              → grupo público/marketing
+│   │   ├── page.tsx              → home
+│   │   └── layout.tsx
+│   ├── api/                      → Route Handlers
+│   │   └── [endpoint]/
+│   │       └── route.ts
+│   ├── globals.css
+│   ├── layout.tsx                → Root Layout
+│   └── not-found.tsx
+│
+├── components/                   → componentes reutilizáveis
+│   ├── ui/                       → primitivos (shadcn/ui ou próprios)
+│   └── shared/                   → componentes de negócio compartilhados
+│
+├── modules/                      → features encapsuladas por domínio
+│   └── [feature]/
+│       ├── components/
+│       ├── hooks/
+│       ├── actions/              → Server Actions da feature
+│       ├── services/
+│       └── types/
+│
+├── lib/                          → utilitários e configurações
+│   ├── utils.ts                  → cn() e helpers
+│   ├── auth.ts                   → configuração de auth
+│   └── db.ts                     → cliente de banco de dados
+│
+├── services/                     → integrações externas e APIs
+├── hooks/                        → hooks customizados globais
+├── providers/                    → context providers client-side
+├── types/                        → tipos TypeScript globais
+├── constants/                    → constantes e enums
+├── assets/                       → imagens e recursos estáticos
+│
+├── public/                       → arquivos públicos estáticos
+├── prisma/                       → schema e migrations (se Prisma)
+├── middleware.ts                 → Next.js middleware
+├── next.config.ts
+├── tsconfig.json
+├── tailwind.config.ts
+├── components.json               (se shadcn/ui)
+├── .env.example
+└── .env.local
+```
+
+---
+
+## 📐 Convenções Aplicadas
+
+| Item | Padrão |
+|---|---|
+| Pages (App Router) | `page.tsx` dentro da pasta de rota |
+| Layouts | `layout.tsx` |
+| Server Components | padrão (sem `"use client"`) |
+| Client Components | `"use client"` no topo |
+| Server Actions | `actions/[nome].ts` com `"use server"` |
+| API Routes | `app/api/[rota]/route.ts` |
+| Componentes | `PascalCase.tsx` |
+| Hooks | `use[Nome].ts` |
+| Alias | `@/` → raiz do projeto |
+| Grupos de rota | `(nome-grupo)/` |
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Detectar variantes (Prisma? Auth.js? tRPC? Stripe? i18n?)
+        ↓
+[2] Criar estrutura de pastas
+        ↓
+[3] Gerar app/layout.tsx (Root Layout com providers)
+        ↓
+[4] Gerar app/page.tsx (home placeholder)
+        ↓
+[5] Configurar next.config.ts com alias @/
+        ↓
+[6] Gerar lib/utils.ts com cn()
+        ↓
+[7] Gerar middleware.ts se auth detectado
+        ↓
+[8] Registrar decisões em outputs/ARCHITECTURE.md
+```
+
+---
+
+## 🛡️ Regras Obrigatórias
+
+- **Sempre** usar App Router (nunca `pages/` em projetos novos)
+- **Sempre** preferir Server Components — marcar Client Components explicitamente
+- **Nunca** usar `fetch` diretamente em Client Components — usar hooks ou Server Actions
+- **Sempre** separar Server Actions em `actions/` (nunca inline em componentes)
+- **Sempre** usar grupos de rota `()` para organizar layouts distintos
+
+---
+
+## 📤 Output em ARCHITECTURE.md
+
+```markdown
+## Decisão: Stack Next.js App Router
+**Data:** [DATA]
+**Stack:** Next.js + TypeScript + [extras detectados]
+**Estrutura:** nextjs-structure.skill aplicada
+**Roteamento:** App Router com grupos de rota
+**Renderização:** Server Components por padrão
+**Alias:** @/ → raiz do projeto
+```

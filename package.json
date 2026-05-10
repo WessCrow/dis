@@ -1,0 +1,8 @@
+{
+  "name": "dis-disrupta-prototype",
+  "private": true,
+  "description": "Protótipo estático DIS — deploy Vercel (public gerado em build). Storybook: npm run dev → http://localhost:5173/storybook.html",
+  "scripts": {
+    "dev": "python3 -m http.server 5173 --bind 127.0.0.1 --directory src"
+  }
+}

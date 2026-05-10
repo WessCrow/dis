@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* DIS Design System — tokens (sincronizados via scripts/sync-design-system.sh) */
+@import "../styles/tokens/geist-semantic.css";
+@import "../styles/tokens/typography-utilities.css";
+
+/* TTArtnikDemo — local em public/fonts/ (espelho de design-system/fonts/) */
+@font-face { font-family: 'TTArtnikDemo'; src: url('/fonts/TTArtnikDemo-Thin.ttf') format('truetype'); font-weight: 100; font-display: swap; }
+@font-face { font-family: 'TTArtnikDemo'; src: url('/fonts/TTArtnikDemo-ExtraLight.ttf') format('truetype'); font-weight: 200; font-display: swap; }
+@font-face { font-family: 'TTArtnikDemo'; src: url('/fonts/TTArtnikDemo-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TTArtnikDemo'; src: url('/fonts/TTArtnikDemo-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TTArtnikDemo'; src: url('/fonts/TTArtnikDemo-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'TTArtnikDemo'; src: url('/fonts/TTArtnikDemo-SemiBold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'TTArtnikDemo'; src: url('/fonts/TTArtnikDemo-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'TTArtnikDemo'; src: url('/fonts/TTArtnikDemo-ExtraBold.ttf') format('truetype'); font-weight: 800; font-display: swap; }
+
+@theme {
+  /* Surface Colors - Mapping to Official DS Tokens */
+  --color-ds-bg-1: var(--ds-bg-1);
+  --color-ds-bg-2: var(--ds-bg-2);
+  
+  /* UI Colors */
+  --color-ds-c-1: var(--ds-c-1);
+  --color-ds-c-2: var(--ds-c-2);
+  --color-ds-c-3: var(--ds-c-3);
+  --color-ds-c-4: var(--ds-c-4);
+  --color-ds-c-5: var(--ds-c-5);
+  --color-ds-c-6: var(--ds-c-6);
+  --color-ds-c-7: var(--ds-c-7);
+  --color-ds-c-8: var(--ds-c-8);
+  --color-ds-c-9: var(--ds-c-9);
+  --color-ds-c-10: var(--ds-c-10);
+
+  /* Functional Colors */
+  --color-ds-blue: var(--ds-blue);
+  --color-ds-red: var(--ds-red);
+  --color-ds-green: var(--ds-green);
+  --color-ds-amber: var(--ds-amber);
+
+  /* Animation */
+  --ease-bugatti: cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* Fonts — DIS stack: TTArtnikDemo + Geist Mono */
+  --font-sans:    "TTArtnikDemo", system-ui, -apple-system, sans-serif;
+  --font-display: "TTArtnikDemo", system-ui, sans-serif;
+  --font-mono:    var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
+  --font-artnik:  "TTArtnikDemo", sans-serif;
+  
+  /* Custom Grid Background */
+  --bg-dot-color: rgba(255, 255, 255, 0.08);
+}
+
+:root {
+  --background: var(--ds-bg-1);
+  --foreground: var(--ds-c-10);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  
+  /* Dot Grid Fallback - Original Disrupta Pattern */
+  background-image: radial-gradient(
+    circle at center,
+    var(--bg-dot-color) 0.95px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+  background-attachment: fixed;
+}
+
+/* --- Official Disrupta UI Inheritance --- */
+
+.btn-primary {
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid var(--ds-c-10);
+  border-radius: 9999px;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-artnik);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--ds-c-10);
+  background: transparent;
+  transition: all 0.3s var(--ease-bugatti);
+}
+
+.btn-primary:hover {
+  background: var(--ds-c-10);
+  color: var(--ds-bg-1);
+}
+
+.btn-ghost {
+  display: flex;
+  items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--ds-c-4);
+  background: transparent;
+  border-radius: 5px;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ds-c-10);
+  cursor: pointer;
+  transition: all 0.25s var(--ease-bugatti);
+}
+
+.btn-ghost:hover {
+  border-color: var(--ds-c-10);
+  background: var(--ds-c-2);
+}
+
+/* Header Spacing Parity */
+.header-container {
+  padding-left: clamp(1rem, 5vw, 2.5rem);
+  padding-right: clamp(1rem, 5vw, 2.5rem);
+}
+
+/* SIID Card Legacy Style */
+.siid-molding {
+  background: var(--ds-bg-1);
+  border: 1px solid var(--ds-c-4);
+  border-left: 2px solid var(--ds-c-10);
+  border-radius: 5px;
+  transition: all 0.5s var(--ease-bugatti);
+}
+
+.siid-molding:hover {
+  border-color: var(--ds-c-6);
+  background: var(--ds-c-1);
+}

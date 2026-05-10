@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>Organism — Float Dash</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="disrupta-ui.css" />
+  <link rel="stylesheet" href="sb-docs.css" />
+</head>
+<body class="page-laboratorio-ideias sb-doc-page">
+
+  <header>
+    <span class="sb-doc-tag">Organismo</span>
+    <span class="sb-doc-tag">Interface Principal</span>
+    <h1 class="sb-doc-h1">Float Dash (Dock Menu)</h1>
+    <p class="sb-doc-desc">Navegação global fixa na lateral direita, comportando-se como um Dock de macOS. Foco em economia espacial e interações por proximidade do cursor.</p>
+  </header>
+
+  <section>
+    <h2 class="sb-doc-h2">UX Writing & Identidade</h2>
+    <div class="sb-doc-uxw">
+      <p><strong>Voz:</strong> Utilitária e silenciosa.</p>
+      <p><strong>Tom:</strong> Neutro. Este componente existe para acelerar fluxos, não para conversar.</p>
+      <p><strong>Regra de Ouro:</strong> Os "Tooltips" (`data-float-tip`) no estado retraído não devem terminar com ponto final, devem ter 1 a 2 palavras no máximo.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sb-doc-h2">Canvas (Interativo)</h2>
+    <div class="sb-doc-canvas" style="min-height: 400px;">
+      
+      <!-- Container falso simulando o app layout para ancorar o nav à direita -->
+      <div class="lab-app" style="width: 100%; height: 350px; position: relative;">
+        <!-- The Component -->
+        <nav id="float-dash" class="float-dash" tabindex="-1" data-expanded="false" aria-label="Navegação principal">
+          <div class="float-dash__surface">
+            <div class="float-dash__collapsed" id="float-dash-collapsed">
+              <button type="button" class="float-dash__icon-btn float-dash__spark-btn" id="float-dash-open" hidden tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="float-dash-expanded" title="Menu expandido desativado nesta página">
+                <span class="visually-hidden">Menu expandido desativado</span>
+                <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="none" stroke="currentColor" stroke-width="1.35" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+              </button>
+              <ul class="float-dash__icon-stack" role="list">
+                <li>
+                  <a class="float-dash__icon-btn" href="#" title="Dashboard" data-float-tip="Dashboard">
+                    <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="none" stroke="currentColor" stroke-width="1.35" d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z" />
+                    </svg>
+                    <span class="visually-hidden">Dashboard</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="float-dash__icon-btn is-active" href="#" title="Laboratório de Ideias" data-float-tip="Laboratório de Ideias" aria-current="page">
+                    <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    <span class="visually-hidden">Laboratório de Ideias</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="float-dash__expanded" id="float-dash-expanded" hidden>
+              <div class="float-dash__expanded-head">
+                <div class="float-dash__brand-row">
+                  <span class="float-dash__spark-ico" aria-hidden="true">
+                    <svg class="float-dash__ico" width="20" height="20" viewBox="0 0 24 24">
+                      <path fill="none" stroke="currentColor" stroke-width="1.35" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                    </svg>
+                  </span>
+                  <span class="float-dash__menu-label">Navegação</span>
+                </div>
+                <button type="button" class="float-dash__collapse" id="float-dash-close" title="Fechar menu" aria-label="Fechar menu">
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="none" stroke="currentColor" stroke-width="1.5" d="M14 7l-7 7M7 7l7 7" />
+                  </svg>
+                </button>
+              </div>
+              <div class="float-dash__columns float-dash__columns--lab">
+                <div class="float-dash__col float-dash__col--primary">
+                  <ul class="float-dash__list" role="list">
+                    <li>
+                      <a class="float-dash__row" href="#">
+                        <span class="float-dash__row-ico" aria-hidden="true">
+                          <svg class="float-dash__ico" width="18" height="18" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-width="1.35" d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z" />
+                          </svg>
+                        </span>
+                        <span class="float-dash__row-label">Dashboard</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="float-dash__row is-active" href="#" aria-current="page">
+                        <span class="float-dash__row-ico" aria-hidden="true">
+                          <svg class="float-dash__ico" width="18" height="18" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                          </svg>
+                        </span>
+                        <span class="float-dash__row-label">Laboratório de Ideias</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sb-doc-h2">Matriz FEER (Technical Rigor)</h2>
+    
+    <h3 class="sb-doc-h3">Fluxos (Flows)</h3>
+    <table class="sb-doc-table">
+      <thead>
+        <tr>
+          <th>Passo</th>
+          <th>Ação do Usuário</th>
+          <th>Resposta do Sistema</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Aproxima o cursor do menu (150px de distância)</td>
+          <td>O menu aumenta ligeiramente a opacidade e a escala num efeito de magnetismo leve (Proximity JS).</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Pausa (hover) sobre um ícone</td>
+          <td>Tooltip nativo CSS aparece flutuando à esquerda do ícone.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Clica no botão "Spark" <code>#float-dash-open</code></td>
+          <td>Alterna <code>data-expanded="true"</code>, ocultando a pilha de ícones e revelando a navegação textual com animação CSS *clip-path* ou opacidade.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sb-doc-h3">Estados de UI (States)</h3>
+    <table class="sb-doc-table">
+      <thead>
+        <tr>
+          <th>Estado</th>
+          <th>Descrição Visual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Collapsed (<code>data-expanded="false"</code>)</td>
+          <td>Apenas a coluna de ícones visível. Fundo transparente que se materializa com hover.</td>
+        </tr>
+        <tr>
+          <td>Expanded (<code>data-expanded="true"</code>)</td>
+          <td>Painel estendido exibindo listas verticais (`.float-dash__row`). Superfície escura texturada ou de fundo absoluto.</td>
+        </tr>
+        <tr>
+          <td>Item Ativo (<code>.is-active</code>)</td>
+          <td>Ícone fica branco puro <code>var(--text)</code> com contorno de acentuação leve à direita, oposto ao padrão de sidebar tradicional.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sb-doc-h3">Acessibilidade (POUR)</h3>
+    <table class="sb-doc-table">
+      <thead>
+        <tr>
+          <th>Princípio</th>
+          <th>Aplicação (HTML/CSS)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Compreensível</td>
+          <td>Ícones ambíguos usam <code>.visually-hidden</code> para screen readers e <code>data-float-tip</code> para leitura visual rápida.</td>
+        </tr>
+        <tr>
+          <td>Robusto</td>
+          <td>A animação de proximidade deteta <code>pointer: fine</code> e <code>prefers-reduced-motion: no-preference</code>. Se falhar, CSS fallback mantém operação estática e segura.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <script src="js/laboratorio-ideias.js"></script>
+</body>
+</html>

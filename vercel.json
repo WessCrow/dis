@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "echo 'no deps'",
+  "buildCommand": "bash scripts/vercel-assemble-public.sh",
+  "outputDirectory": "public",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/laboratorio-ideias.html",
+      "permanent": false
+    }
+  ]
+}

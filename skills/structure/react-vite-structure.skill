@@ -1,0 +1,126 @@
+# react-vite-structure.skill
+
+> **Tipo:** Structure Skill
+> **Camada:** Organização Estrutural
+> **Stack:** React + Vite
+> **Ativado por:** Start.md quando detecta: frontend + React + Vite
+
+---
+
+## 🎯 Propósito
+
+Gerar a arquitetura base de um projeto React com Vite — estrutura de pastas padronizada, boilerplates iniciais e convenções de nomenclatura — antes que qualquer skill funcional seja executada.
+
+---
+
+## ⚡ Quando usar
+
+- Usuário menciona "React" + "Vite"
+- Projeto de dashboard, SPA ou app frontend com Vite como bundler
+- Stack: React, TypeScript, Tailwind, shadcn/ui ou similares
+
+---
+
+## 🗂️ Arquitetura Gerada
+
+```
+/src
+├── app/                  → configuração global (providers, router root)
+├── components/           → componentes reutilizáveis e genéricos
+│   ├── ui/               → componentes primitivos (button, input, card)
+│   └── shared/           → componentes de negócio compartilhados
+├── modules/              → features encapsuladas por domínio
+│   └── [feature]/
+│       ├── components/
+│       ├── hooks/
+│       ├── services/
+│       └── types/
+├── pages/                → rotas/páginas da aplicação
+├── services/             → chamadas de API e integrações externas
+├── hooks/                → hooks customizados globais
+├── providers/            → context providers e wrappers
+├── contexts/             → definições de contexto React
+├── routes/               → configuração de rotas (React Router / TanStack)
+├── assets/               → imagens, fonts, ícones estáticos
+├── styles/               → CSS global, tokens, variáveis
+├── tests/                → testes unitários e de integração
+├── types/                → tipos TypeScript globais e interfaces
+├── utils/                → funções utilitárias puras
+└── constants/            → constantes e enums globais
+```
+
+---
+
+## 📋 Arquivos Raiz Gerados
+
+```
+/
+├── index.html
+├── vite.config.ts
+├── tsconfig.json
+├── tsconfig.app.json
+├── tailwind.config.ts    (se Tailwind detectado)
+├── components.json       (se shadcn/ui detectado)
+├── .env.example
+├── .gitignore
+└── package.json
+```
+
+---
+
+## 📐 Convenções Aplicadas
+
+| Item | Padrão |
+|---|---|
+| Componentes | `PascalCase.tsx` |
+| Hooks | `use[Nome].ts` |
+| Services | `[nome].service.ts` |
+| Types | `[nome].types.ts` |
+| Utils | `camelCase.ts` |
+| Constants | `SCREAMING_SNAKE.ts` |
+| Pastas de feature | `kebab-case/` |
+| Imports | Alias `@/` apontando para `src/` |
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Detectar variantes (TypeScript? Tailwind? shadcn? TanStack Query?)
+        ↓
+[2] Criar estrutura de pastas
+        ↓
+[3] Gerar arquivos de configuração raiz (vite.config, tsconfig, tailwind)
+        ↓
+[4] Gerar index.html e src/main.tsx boilerplate
+        ↓
+[5] Criar src/app/ com App.tsx e providers wrapper
+        ↓
+[6] Configurar alias @/ em vite.config + tsconfig
+        ↓
+[7] Registrar decisões em outputs/ARCHITECTURE.md
+```
+
+---
+
+## 🛡️ Regras Obrigatórias
+
+- **Nunca** criar componentes diretamente em `src/` — sempre dentro de `components/`, `modules/` ou `pages/`
+- **Nunca** misturar lógica de negócio em componentes de UI (`components/ui/`)
+- **Sempre** tipar props com TypeScript (sem `any` explícito)
+- **Sempre** configurar alias `@/` antes de qualquer import
+
+---
+
+## 📤 Output em ARCHITECTURE.md
+
+Após execução, registrar:
+
+```markdown
+## Decisão: Stack React + Vite
+**Data:** [DATA]
+**Stack:** React + Vite + TypeScript + [extras detectados]
+**Estrutura:** react-vite-structure.skill aplicada
+**Alias:** @/ → src/
+**Convenções:** PascalCase componentes, use* hooks, kebab-case pastas
+```

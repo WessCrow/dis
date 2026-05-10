@@ -1,0 +1,71 @@
+/**
+ * @dis/design-system — Font Faces
+ *
+ * Stack oficial DIS:
+ *   --font-display / --font-sans → TTArtnikDemo (8 pesos locais)
+ *   --font-mono                  → Geist Mono   (Google Fonts CDN)
+ *
+ * Path local assume DS servido na raiz do projeto (`/design-system/fonts/...`).
+ * Para uso em Next.js (landing-page), as fontes são carregadas via next/font.
+ */
+
+/* ── TTArtnikDemo — 8 pesos (Thin → ExtraBold) ───────────────────────────── */
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('./fonts/TTArtnikDemo-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('./fonts/TTArtnikDemo-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('./fonts/TTArtnikDemo-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('./fonts/TTArtnikDemo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('./fonts/TTArtnikDemo-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('./fonts/TTArtnikDemo-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('./fonts/TTArtnikDemo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('./fonts/TTArtnikDemo-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Geist Mono — via Google Fonts ───────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');

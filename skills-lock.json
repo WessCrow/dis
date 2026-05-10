@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "ux-writing": {
+      "source": "owl-listener/designer-skills",
+      "sourceType": "github",
+      "skillPath": "designer-toolkit/skills/ux-writing/SKILL.md",
+      "computedHash": "05eba31804518a2f674c67ba320e2ddb9acc8cab7150a931aa33216fa615e427"
+    }
+  }
+}

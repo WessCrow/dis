@@ -1,0 +1,159 @@
+# clean-architecture.skill
+
+> **Tipo:** Structure Skill
+> **Camada:** Organização Estrutural
+> **Stack:** Agnóstica (aplicável a frontend, backend ou fullstack)
+> **Ativado por:** Start.md quando detecta: "clean architecture", "DDD", alta complexidade de negócio, projeto enterprise
+
+---
+
+## 🎯 Propósito
+
+Gerar arquitetura baseada nos princípios de Clean Architecture e DDD: separação estrita entre domínio, aplicação, infraestrutura e apresentação. Ideal para projetos com alta complexidade de regras de negócio.
+
+---
+
+## ⚡ Quando usar
+
+- Usuário menciona "clean architecture", "DDD", "hexagonal", "ports and adapters"
+- Projeto enterprise com domínio complexo
+- Sistema que precisará durar e evoluir por anos
+- Múltiplos casos de uso bem definidos
+
+---
+
+## 🗂️ Arquitetura Gerada
+
+```
+/src
+│
+├── domain/                       → núcleo — sem dependências externas
+│   ├── entities/                 → entidades de negócio
+│   │   └── [Entity].ts
+│   ├── value-objects/            → objetos de valor imutáveis
+│   │   └── [ValueObject].ts
+│   ├── repositories/             → interfaces (ports) — não implementações
+│   │   └── I[Repository].ts
+│   ├── services/                 → serviços de domínio puro
+│   │   └── [DomainService].ts
+│   ├── events/                   → eventos de domínio
+│   │   └── [Event].ts
+│   └── errors/                   → erros de domínio
+│       └── [DomainError].ts
+│
+├── application/                  → casos de uso — orquestra o domínio
+│   ├── use-cases/
+│   │   └── [FeatureName]/
+│   │       ├── [UseCase].ts      → implementação do caso de uso
+│   │       ├── [UseCase].dto.ts  → input/output DTOs
+│   │       └── [UseCase].spec.ts → teste unitário
+│   ├── ports/                    → interfaces para infra (output ports)
+│   │   ├── repositories/
+│   │   └── services/
+│   └── services/                 → application services (orquestradores)
+│
+├── infrastructure/               → implementações concretas (adapters)
+│   ├── persistence/              → acesso a banco de dados
+│   │   ├── repositories/         → implementação dos I[Repository]
+│   │   ├── entities/             → entidades ORM (Prisma, TypeORM)
+│   │   └── migrations/
+│   ├── http/                     → camada HTTP (controllers, routes)
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   └── middlewares/
+│   ├── external/                 → integrações externas
+│   │   ├── email/
+│   │   ├── storage/
+│   │   └── payments/
+│   └── config/                   → env vars e configurações de infra
+│
+├── presentation/                 → UI / saída (opcional, se fullstack)
+│   ├── components/
+│   ├── pages/
+│   └── view-models/
+│
+├── shared/                       → código verdadeiramente transversal
+│   ├── errors/                   → erros base e tratamento
+│   ├── utils/                    → funções puras sem dependência
+│   ├── types/                    → tipos globais
+│   └── constants/
+│
+└── main/                         → composição raiz (Dependency Injection)
+    ├── container.ts              → container de DI
+    └── app.ts                    → bootstrap da aplicação
+```
+
+---
+
+## 📐 Regra de Dependência (Core Rule)
+
+```
+presentation → application → domain ← (nunca aponta para fora)
+infrastructure → application → domain
+```
+
+- `domain` **nunca** importa de nenhuma outra camada
+- `application` importa apenas de `domain`
+- `infrastructure` implementa interfaces definidas em `domain/application`
+- `presentation` consome apenas `application` (use cases e DTOs)
+
+---
+
+## 📐 Convenções Aplicadas
+
+| Item | Padrão |
+|---|---|
+| Entidades | `PascalCase.ts` com `id` obrigatório |
+| Value Objects | `PascalCase.ts` imutáveis |
+| Interfaces (ports) | `I[Nome].ts` ou `[Nome].port.ts` |
+| Use Cases | `[Verbo][Substantivo]UseCase.ts` |
+| DTOs | `[UseCase].dto.ts` |
+| Repositories (impl) | `Prisma[Nome]Repository.ts` |
+| Eventos | `[Nome]Event.ts` |
+| Erros de domínio | `[Nome]Error.ts` extends `DomainError` |
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Mapear domínios de negócio principais
+        ↓
+[2] Criar estrutura de camadas
+        ↓
+[3] Gerar domain/entities/ com entidade base
+        ↓
+[4] Gerar domain/repositories/ com interface exemplo
+        ↓
+[5] Gerar application/use-cases/ com caso de uso exemplo
+        ↓
+[6] Gerar infrastructure/ com implementação exemplo
+        ↓
+[7] Configurar container de DI em main/
+        ↓
+[8] Registrar decisões em outputs/ARCHITECTURE.md
+```
+
+---
+
+## 🛡️ Regras Obrigatórias
+
+- **Nunca** violar a regra de dependência — domínio não conhece infraestrutura
+- **Sempre** depender de abstrações (interfaces), não de implementações concretas
+- **Sempre** testar casos de uso sem dependência de banco (mock repositories)
+- **Nunca** colocar lógica de negócio em controllers ou repositories
+- **Sempre** usar DTOs para cruzar fronteiras de camada
+
+---
+
+## 📤 Output em ARCHITECTURE.md
+
+```markdown
+## Decisão: Clean Architecture
+**Data:** [DATA]
+**Padrão:** Clean Architecture + DDD
+**Estrutura:** clean-architecture.skill aplicada
+**Camadas:** domain → application → infrastructure → presentation
+**Regra de dependência:** camadas internas nunca dependem das externas
+**DI:** container em main/container.ts
+```
