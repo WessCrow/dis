@@ -60,7 +60,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  
+
   /* Dot Grid Fallback - Original Disrupta Pattern */
   background-image: radial-gradient(
     circle at center,
@@ -124,6 +124,55 @@ body {
   padding-right: clamp(1rem, 5vw, 2.5rem);
 }
 
+/* ── WasteNotSection: Responsive left column ── */
+.wastecol-left {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .wastecol-left {
+    width: var(--col-w, 48%);
+    flex-shrink: 0;
+  }
+}
+
+/* ── Acessibilidade: Skip Navigation ── */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1.25rem;
+  background: var(--ds-blue);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-to-content:focus {
+  top: 1rem;
+}
+
+/* ── Acessibilidade: Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Framer Motion elements with will-change */
+  [style*="transform"],
+  [style*="opacity"] {
+    transition: none !important;
+  }
+}
+
 /* SIID Card Legacy Style */
 .siid-molding {
   background: var(--ds-bg-1);
@@ -137,3 +186,17 @@ body {
   border-color: var(--ds-c-6);
   background: var(--ds-c-1);
 }
+
+/* ScannerCardStream animations */
+@keyframes glitch {
+  0%, 16%, 50%, 100% { opacity: 1; }
+  15%, 99% { opacity: 0.9; }
+  49% { opacity: 0.8; }
+}
+.animate-glitch { animation: glitch 0.1s infinite linear alternate-reverse; }
+
+@keyframes scanPulse {
+  0% { opacity: 0.75; transform: scaleY(1); }
+  100% { opacity: 1; transform: scaleY(1.03); }
+}
+.animate-scan-pulse { animation: scanPulse 1.5s infinite alternate ease-in-out; }
