@@ -44,6 +44,14 @@ export interface ScannerConfig {
   offsetX: number;
   offsetY: number;
   viewportWidth: number;
+  // Container
+  containerHeight: number;
+  containerWidth: number;
+  containerBgOpacity: number;
+  containerBorderOpacity: number;
+  containerMarginX: number;
+  containerX: number;
+  containerY: number;
 }
 
 type ScannerCardStreamProps = {
@@ -61,23 +69,42 @@ const ScannerCardStream = ({
     cardGap: 60,
     friction: 0.95,
     scanEffect: 'clip',
-    repeat: 6,
+    repeat: 12,
     showConsole: false,
-    intensity: 1.0,
-    scale: 1.2,
+    intensity: 1.5,
+    scale: 1.35,
     rotation: -90,
     rotationX: 0,
     rotationY: 0,
     lateralPadding: 0,
-    offsetX: 420,
-    offsetY: -390,
+    offsetX: 0,
+    offsetY: 0,
     viewportWidth: 580,
+    // Container
+    containerHeight: 640,
+    containerWidth: 100,
+    containerBgOpacity: 0,
+    containerBorderOpacity: 0,
+    containerMarginX: -132,
+    containerX: 0,
+    containerY: 0,
   });
 
   const configRef = useRef(config);
   useEffect(() => {
     configRef.current = config;
   }, [config]);
+
+  // Shift+S para abrir/fechar console do ScannerCardStream
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.key.toLowerCase() === "s") {
+        setConfig(c => ({ ...c, showConsole: !c.showConsole }));
+      }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
 
   const [mounted, setMounted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -322,28 +349,22 @@ const ScannerCardStream = ({
 
   return (
     <>
-      <div 
-        className="relative w-full h-[400px] flex items-center justify-center overflow-hidden bg-ds-bg-1 border-y border-white/5 mx-auto"
-        style={{ 
+      <div
+        className="relative flex items-center justify-center overflow-hidden"
+        style={{
+          width: `${config.containerWidth}%`,
+          height: `${config.containerHeight}px`,
+          backgroundColor: `rgba(0,0,0,${config.containerBgOpacity / 100})`,
+          borderTop: `1px solid rgba(255,255,255,${config.containerBorderOpacity / 100})`,
+          borderBottom: `1px solid rgba(255,255,255,${config.containerBorderOpacity / 100})`,
+          marginLeft: `${config.containerMarginX}px`,
+          marginRight: `${config.containerMarginX}px`,
           maxWidth: `${config.viewportWidth}px`,
-          paddingLeft: `${config.lateralPadding}px`, 
+          paddingLeft: `${config.lateralPadding}px`,
           paddingRight: `${config.lateralPadding}px`,
-          transform: `perspective(2000px) translate3d(${config.offsetX}px, ${config.offsetY}px, 0) scale(${config.scale}) rotateX(${config.rotationX}deg) rotateY(${config.rotationY}deg) rotateZ(${config.rotation}deg)`
+          transform: `translate(${config.containerX}px, ${config.containerY}px) perspective(2000px) translate3d(${config.offsetX}px, ${config.offsetY}px, 0) scale(${config.scale}) rotateX(${config.rotationX}deg) rotateY(${config.rotationY}deg) rotateZ(${config.rotation}deg)`
         }}
       >
-        <style jsx global>{`
-          @keyframes glitch { 0%, 16%, 50%, 100% { opacity: 1; } 15%, 99% { opacity: 0.9; } 49% { opacity: 0.8; } }
-          .animate-glitch { animation: glitch 0.1s infinite linear alternate-reverse; }
-          
-          @keyframes scanPulse {
-            0% { opacity: 0.75; transform: scaleY(1); }
-            100% { opacity: 1; transform: scaleY(1.03); }
-          }
-          .animate-scan-pulse {
-            animation: scanPulse 1.5s infinite alternate ease-in-out;
-          }
-        `}</style>
-        
         <canvas ref={particleCanvasRef} className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[250px] z-0 pointer-events-none" />
         <canvas ref={scannerCanvasRef} className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[300px] z-10 pointer-events-none" />
         
@@ -368,7 +389,7 @@ const ScannerCardStream = ({
             {cards.map(card => (
               <div key={card.id} className="card-wrapper relative w-[400px] h-[250px] shrink-0">
                 <div className="card-normal card absolute top-0 left-0 w-full h-full rounded-none overflow-hidden bg-transparent shadow-[0_15px_40px_rgba(0,0,0,0.4)] z-[2] [clip-path:inset(0_0_0_var(--clip-right,0%))]">
-                  <img src={card.image} alt="Card" className="w-full h-full object-cover rounded-none transition-all duration-300 ease-in-out brightness-110 contrast-110 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)]" />
+                  <img src={card.image} alt="" role="presentation" className="w-full h-full object-cover rounded-none transition-all duration-300 ease-in-out brightness-110 contrast-110 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)]" />
                 </div>
                 <div className="card-ascii card absolute top-0 left-0 w-full h-full rounded-none overflow-hidden bg-transparent z-[1] [clip-path:inset(0_calc(100%-var(--clip-left,0%))_0_0)]">
                   <pre className="ascii-content absolute top-0 left-0 w-full h-full text-[rgba(220,210,255,0.6)] font-mono text-[11px] leading-[13px] overflow-hidden whitespace-pre m-0 p-0 text-left align-top box-border [mask-image:linear-gradient(to_right,rgba(0,0,0,1)_0%,rgba(0,0,0,0.8)_30%,rgba(0,0,0,0.6)_50%,rgba(0,0,0,0.4)_80%,rgba(0,0,0,0.2)_100%)] animate-glitch">
@@ -390,9 +411,10 @@ const ScannerCardStream = ({
                 <div className="w-2 h-2 rounded-full bg-[#29BDF2] animate-pulse" />
                 <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-white/80">Stark Optical Engine</span>
               </div>
-              <button 
+              <button
                 onClick={() => setConfig(c => ({...c, showConsole: false}))}
                 className="text-white/40 hover:text-white text-[10px] uppercase font-mono"
+                aria-label="Fechar console Stark Optical Engine"
               >
                 [X]
               </button>
@@ -469,6 +491,41 @@ const ScannerCardStream = ({
                   <ScannerSlider 
                     label="Nodal Offset Y" value={config.offsetY} min={-500} max={500} step={5}
                     onChange={(v: number) => setConfig(c => ({...c, offsetY: v}))}
+                  />
+                </div>
+              </div>
+
+              {/* Container */}
+              <div className="pt-4 border-t border-white/5 space-y-4">
+                <span className="font-mono text-[9px] uppercase text-[#29BDF2] block">Container</span>
+                <ScannerSlider
+                  label="Height (px)" value={config.containerHeight} min={100} max={1200} step={10}
+                  onChange={(v: number) => setConfig(c => ({...c, containerHeight: v}))}
+                />
+                <ScannerSlider
+                  label="Width (%)" value={config.containerWidth} min={10} max={100} step={1}
+                  onChange={(v: number) => setConfig(c => ({...c, containerWidth: v}))}
+                />
+                <ScannerSlider
+                  label="BG Opacidade (%)" value={config.containerBgOpacity} min={0} max={100} step={1}
+                  onChange={(v: number) => setConfig(c => ({...c, containerBgOpacity: v}))}
+                />
+                <ScannerSlider
+                  label="Border Opacidade (%)" value={config.containerBorderOpacity} min={0} max={100} step={1}
+                  onChange={(v: number) => setConfig(c => ({...c, containerBorderOpacity: v}))}
+                />
+                <ScannerSlider
+                  label="Margin X (px)" value={config.containerMarginX} min={-400} max={400} step={4}
+                  onChange={(v: number) => setConfig(c => ({...c, containerMarginX: v}))}
+                />
+                <div className="grid grid-cols-2 gap-4">
+                  <ScannerSlider
+                    label="Position X (px)" value={config.containerX} min={-800} max={800} step={4}
+                    onChange={(v: number) => setConfig(c => ({...c, containerX: v}))}
+                  />
+                  <ScannerSlider
+                    label="Position Y (px)" value={config.containerY} min={-800} max={800} step={4}
+                    onChange={(v: number) => setConfig(c => ({...c, containerY: v}))}
                   />
                 </div>
               </div>

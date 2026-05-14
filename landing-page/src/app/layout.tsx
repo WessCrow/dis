@@ -41,6 +41,9 @@ export default function RootLayout({
             });
           `}
         </Script>
+        <a href="#main-content" className="skip-to-content">
+          Ir para o conteúdo
+        </a>
         {children}
       </body>
     </html>

@@ -8,26 +8,36 @@
  */
 
 // ── Badge (tag de status acima do título) ─────────────────────────────────────
-export const HERO_BADGE = "Protocolo de Inovação 2026";
+export const HERO_BADGE = "Protocolo de Inovação 2026 • Auditoria de Risco";
 
-// ── Intervalo de rotação dos headlines (em milissegundos) ─────────────────────
-// Recomendado: mínimo 7000ms para headlines de 8–12 palavras
+// ── Intervalo de rotação dos slides (em milissegundos) ────────────────────────
 export const HERO_ROTATION_INTERVAL = 8000;
 
-
-// ── Headlines rotativos (troca a cada 5s) ─────────────────────────────────────
-export const HERO_HEADLINES = [
-  "Evite o buraco negro do achismo: valide seu negócio com dados reais.",
-  "O \"eu acho\" ameaça seu capital. Troque a intuição pelo rigor da Disrupta.",
-  "Empresa ou ilusão? Escape do achismo antes de consumir seu investimento.",
+// ── Slides rotativos — headline + subhead sincronizados ───────────────────────
+export const HERO_SLIDES = [
+  {
+    headline: "O achismo é o buraco negro da inovação.",
+    subhead:
+      "Onde a intuição orbita, o capital desaparece. Escape da incerteza com o rigor da Disrupta.",
+  },
+  {
+    headline: "Sem auditoria, o carisma é um risco oculto.",
+    subhead:
+      "O mercado não é gentil com a sua intuição. Transforme “eu acho” em vereditos técnicos.",
+  },
+  {
+    headline: "Métricas de ego são o horizonte de eventos.",
+    subhead:
+      "Não deixe seu investimento cruzar o ponto de não retorno. Valide a viabilidade em 5 minutos.",
+  },
 ];
 
-// ── Subtítulo / parágrafo de suporte ─────────────────────────────────────────
-export const HERO_SUBTITLE =
-  "Saia do \u201cachismo\u201d estratégico em menos de 5 minutos. Mapeie riscos invisíveis e obtenha um veredito documental sobre sua viabilidade.";
+// ── Compat: arrays individuais derivados dos slides ───────────────────────────
+export const HERO_HEADLINES = HERO_SLIDES.map((s) => s.headline);
+export const HERO_SUBTITLE = HERO_SLIDES[0].subhead;
 
 // ── CTA Principal ─────────────────────────────────────────────────────────────
-export const HERO_CTA_PRIMARY = "Calcular o valor da minha ideia";
+export const HERO_CTA_PRIMARY = "Iniciar Escape Gravitacional";
 
 // ── Status indicator ─────────────────────────────────────────────────────────
 export const HERO_STATUS_LABEL = "Objetivo Disrupta";

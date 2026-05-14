@@ -11,10 +11,8 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 export const WovenLightHero = ({ children }: { children?: React.ReactNode }) => {
   return (
-    <div className="relative w-full h-full min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <div className="relative w-full h-full min-h-screen flex items-center justify-center overflow-hidden bg-transparent">
       <StarkOpticalEngine />
-      {/* Cinematic Vignette Overlay */}
-      <div className="absolute inset-0 z-10 pointer-events-none bg-[radial-gradient(circle,transparent_20%,black_120%)]" />
       <div className="relative z-20 w-full h-full pointer-events-none">
         <div className="pointer-events-auto w-full h-full">{children}</div>
       </div>
@@ -24,53 +22,62 @@ export const WovenLightHero = ({ children }: { children?: React.ReactNode }) => 
 
 const StarkOpticalEngine = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // ── Configuration State ──
+
   const [config, setConfig] = useState({
     showConsole: false,
     // Physics
-    bhRadius: 5.0,
-    gravityStrength: 30.0,
+    bhRadius: 10.0,
+    gravityStrength: 0,
     viscosity: 0.995,
     particleCount: 12000,
     // Accretion Disk
-    diskTilt: -1.0,
+    diskTilt: 0,
     diskSpeed: 0.1,
     diskInnerRel: 1.1,
-    diskOuterRel: 5.7,
-    diskOpacity: 0.65,
+    diskOuterRel: 4,
+    diskOpacity: 0.85,
     // Camera & Motion
     cameraY: 2.5,
     cameraZ: 18,
     autoRotateSpeed: 0.15,
     damping: 0.04,
     // Blackhole Transform
-    bhPosX: -6.5,
-    bhPosY: 0.0,
+    bhPosX: 20,
+    bhPosY: 3.8,
     bhPosZ: 0,
-    bhRotX: 3,
-    bhRotY: -84,
-    bhRotZ: -41,
-    bhAutoRotateSpeed: 0.0,
+    bhRotX: 9,
+    bhRotY: 68,
+    bhRotZ: -45,
+    bhAutoRotateSpeed: 4,
     // Environment
     gridOpacity: 0.1,
-    fogOpacity: 0.07,
-    asteroidParallax: 5.0,
+    fogOpacity: 0.1,
+    // Deep Space
+    starsOpacity: 0.13,
+    nebula1Opacity: 0.38,
+    nebula2Opacity: 0.4,
+    nebula3Opacity: 0.4,
+    nebulaWarmHue: 0,
+    nebulaCoolHue: 320,
+    nebulaColdHue: 240,
     // Optics
-    bloomStrength: 1.8,
+    bloomStrength: 0.4,
     bloomRadius: 0.6,
     bloomThreshold: 0.15,
-    flareIntensity: 0.15,
+    flareIntensity: 1,
     grainIntensity: 0.0,
     exposure: 0.1,
     // Color
-    hue: 198,
+    hue: 168,
     saturation: 1.0,
     lightness: 0.9
   });
 
   const configRef = useRef(config);
   useEffect(() => { configRef.current = config; }, [config]);
+
+  const scrollRef = useRef(0);
+  const sectionIndexRef = useRef(0);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -86,7 +93,7 @@ const StarkOpticalEngine = () => {
     // ── Camera & Controls ──
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 2000);
     camera.position.set(0, configRef.current.cameraY, configRef.current.cameraZ);
-    
+
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = configRef.current.damping;
@@ -96,7 +103,7 @@ const StarkOpticalEngine = () => {
     controls.autoRotate = true;
     controls.autoRotateSpeed = configRef.current.autoRotateSpeed;
     controls.enablePan = false;
-    controls.enableZoom = false; // Disable zoom to not interfere with scroll
+    controls.enableZoom = false;
 
     // ── Mouse Parallax ──
     const mouse = new THREE.Vector2(0, 0);
@@ -106,6 +113,20 @@ const StarkOpticalEngine = () => {
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
     window.addEventListener('mousemove', onMouseMove);
+
+    // ── Scroll Parallax ──
+    const onScroll = () => {
+      scrollRef.current = window.scrollY;
+      const sections = document.querySelectorAll('section');
+      const centerY = window.innerHeight / 2;
+      let activeIndex = 0;
+      sections.forEach((section, i) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= centerY) activeIndex = i;
+      });
+      sectionIndexRef.current = activeIndex;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     // ── Keyboard Controls ──
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -123,8 +144,6 @@ const StarkOpticalEngine = () => {
     const blackHoleGroup = new THREE.Group();
     scene.add(blackHoleGroup);
 
-    // ── Constants ──
-    const CYAN_PRIMARY = new THREE.Color().setHSL(configRef.current.hue / 360, configRef.current.saturation, configRef.current.lightness);
     let bhRadius = configRef.current.bhRadius;
 
     // 1. BACKGROUND — Blueprint Void Grid
@@ -132,7 +151,7 @@ const StarkOpticalEngine = () => {
       side: THREE.BackSide,
       transparent: true,
       depthWrite: false,
-      uniforms: { 
+      uniforms: {
         uTime: { value: 0 },
         uAlpha: { value: configRef.current.gridOpacity }
       },
@@ -169,7 +188,7 @@ const StarkOpticalEngine = () => {
 
     // 2. BLACK HOLE CORE
     const bhCoreMat = new THREE.ShaderMaterial({
-      uniforms: { 
+      uniforms: {
         uTime: { value: 0 },
         uColor: { value: new THREE.Color().setHSL(configRef.current.hue / 360, configRef.current.saturation, configRef.current.lightness) }
       },
@@ -205,7 +224,7 @@ const StarkOpticalEngine = () => {
     // Photon Sphere Ring
     const photonRingGeo = new THREE.TorusGeometry(bhRadius * 1.06, 0.015, 16, 256);
     const photonRingMat = new THREE.ShaderMaterial({
-      uniforms: { 
+      uniforms: {
         uTime: { value: 0 },
         uColor: { value: new THREE.Color().setHSL(configRef.current.hue / 360, configRef.current.saturation, configRef.current.lightness) }
       },
@@ -284,11 +303,9 @@ const StarkOpticalEngine = () => {
           float filaments = smoothstep(0.3, 0.7, turb);
           float gaps = smoothstep(0.15, 0.25, turb) * smoothstep(0.05, 0.15, abs(turb - 0.5));
           float doppler = 0.7 + 0.3 * sin(angle + uTime * 0.5);
-          
           vec3 innerColor = mix(vec3(1.0), uColor, 0.2);
           vec3 midColor = uColor;
           vec3 outerColor = uColor * 0.4;
-          
           vec3 baseColor = mix(innerColor, midColor, smoothstep(0.0, 0.3, t));
           baseColor = mix(baseColor, outerColor, smoothstep(0.3, 1.0, t));
           float sss = exp(-t * 3.0) * 0.5;
@@ -308,8 +325,8 @@ const StarkOpticalEngine = () => {
 
     // Gravitational Lensing Halo
     const lensHaloMat = new THREE.ShaderMaterial({
-      uniforms: { 
-        uTime: { value: 0 }, 
+      uniforms: {
+        uTime: { value: 0 },
         uRadius: { value: bhRadius },
         uColor: { value: new THREE.Color().setHSL(configRef.current.hue / 360, configRef.current.saturation, configRef.current.lightness) }
       },
@@ -390,7 +407,7 @@ const StarkOpticalEngine = () => {
         sizes[i] = 0.8 + Math.random() * 1.5;
         colors[i * 3] = 0.0; colors[i * 3 + 1] = 0.4 + Math.random() * 0.3; colors[i * 3 + 2] = 0.5 + Math.random() * 0.3;
       } else {
-        const r = BAND_RADII[type - 1] * bhRadius * 2.5;
+        const r = BAND_RADII[type - 1] * configRef.current.bhRadius * 2.5;
         const angle = Math.random() * Math.PI * 2;
         positions[i * 3] = Math.cos(angle) * r;
         positions[i * 3 + 1] = (Math.random() - 0.5) * 0.15;
@@ -479,8 +496,8 @@ const StarkOpticalEngine = () => {
     const fogPlanes: THREE.Mesh[] = [];
     for (let i = 0; i < 8; i++) {
       const fogMat = new THREE.ShaderMaterial({
-        uniforms: { 
-          uTime: { value: 0 }, 
+        uniforms: {
+          uTime: { value: 0 },
           uLayer: { value: i / 8 },
           uOpacity: { value: configRef.current.fogOpacity },
           uColor: { value: new THREE.Color().setHSL(configRef.current.hue / 360, configRef.current.saturation, configRef.current.lightness) }
@@ -525,122 +542,222 @@ const StarkOpticalEngine = () => {
       fogPlanes.push(fogPlane);
     }
 
-    // 6. ASTEROID DEBRIS
-    const asteroidGroup = new THREE.Group();
-    const asteroidData: any[] = [];
-    for (let i = 0; i < 40; i++) {
-      const geo = new THREE.IcosahedronGeometry(0.3 + Math.random() * 0.8, Math.floor(Math.random() * 2));
-      const posAttr = geo.attributes.position;
-      for (let v = 0; v < posAttr.count; v++) {
-        const nx = posAttr.getX(v), ny = posAttr.getY(v), nz = posAttr.getZ(v);
-        const scale = 0.7 + Math.random() * 0.6;
-        posAttr.setXYZ(v, nx * scale, ny * scale, nz * scale);
+    // 6. DEEP SPACE — Starfield + Nebulae
+
+    // 6a. Starfield — 2500 stars distributed on a large sphere
+    const STAR_COUNT = 2500;
+    const starGeo = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(STAR_COUNT * 3);
+    const starColors = new Float32Array(STAR_COUNT * 3);
+    const starSizes = new Float32Array(STAR_COUNT);
+    const starPhases = new Float32Array(STAR_COUNT);
+    const starSpeeds = new Float32Array(STAR_COUNT);
+
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = 300 + Math.random() * 200;
+      starPositions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+      starPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      starPositions[i * 3 + 2] = r * Math.cos(phi);
+
+      // 12% warm amber (missioncontrol.co orange echo), rest blue-white
+      const warm = Math.random() < 0.12;
+      if (warm) {
+        starColors[i * 3]     = 1.0;
+        starColors[i * 3 + 1] = 0.55 + Math.random() * 0.2;
+        starColors[i * 3 + 2] = 0.15 + Math.random() * 0.15;
+      } else {
+        const t = Math.random();
+        starColors[i * 3]     = 0.7 + t * 0.3;
+        starColors[i * 3 + 1] = 0.82 + t * 0.12;
+        starColors[i * 3 + 2] = 0.92 + t * 0.08;
       }
-      geo.computeVertexNormals();
-      const mat = new THREE.ShaderMaterial({
-        uniforms: { uCyanLight: { value: CYAN_PRIMARY }, uTime: { value: 0 } },
-        vertexShader: `
-          varying vec3 vNormal;
-          varying vec3 vWorldPos;
-          void main() {
-            vNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
-            vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          precision highp float;
-          varying vec3 vNormal;
-          varying vec3 vWorldPos;
-          uniform vec3 uCyanLight;
-          void main() {
-            vec3 toCenter = normalize(-vWorldPos);
-            float rim = pow(1.0 - max(dot(vNormal, toCenter), 0.0), 3.0);
-            gl_FragColor = vec4(vec3(0.02, 0.02, 0.03) + uCyanLight * rim * 0.8, 1.0);
-          }
-        `
-      });
-      const mesh = new THREE.Mesh(geo, mat);
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 12 + Math.random() * 25;
-      const base_y = -4.5 - Math.random() * 3;
-      mesh.position.set(Math.cos(angle) * dist, base_y, Math.sin(angle) * dist);
-      mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      asteroidData.push({ mesh, parallaxFactor: 0.3 + Math.random() * 0.7, rotSpeed: (Math.random() - 0.5) * 0.2, orbitSpeed: (Math.random() - 0.5) * 0.01, baseAngle: angle, dist, base_y });
-      asteroidGroup.add(mesh);
+
+      // Power distribution: most stars small, a few large
+      starSizes[i]  = 0.15 + Math.random() * Math.random() * 2.8;
+      starPhases[i] = Math.random() * Math.PI * 2;
+      starSpeeds[i] = 0.25 + Math.random() * 1.8;
     }
-    blackHoleGroup.add(asteroidGroup);
-    
-    // 6.5. MOUNTAIN SILHOUETTE (BACKGROUND)
-    const mountainMat = new THREE.ShaderMaterial({
-      transparent: true,
+
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    starGeo.setAttribute('color',    new THREE.BufferAttribute(starColors, 3));
+    starGeo.setAttribute('size',     new THREE.BufferAttribute(starSizes, 1));
+    starGeo.setAttribute('phase',    new THREE.BufferAttribute(starPhases, 1));
+    starGeo.setAttribute('speed',    new THREE.BufferAttribute(starSpeeds, 1));
+
+    const starMat = new THREE.ShaderMaterial({
       uniforms: {
-        uTime: { value: 0 },
-        uColor: { value: new THREE.Color(0xffffff) }, // 100% White silhouette
-        uOpacity: { value: 1.0 },
-        uPrimaryColor: { value: CYAN_PRIMARY }
+        uTime:       { value: 0 },
+        uOpacity:    { value: configRef.current.starsOpacity },
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) }
       },
+      vertexColors: true,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
       vertexShader: `
-        varying vec2 vUv;
+        attribute float size;
+        attribute float phase;
+        attribute float speed;
+        varying vec3 vColor;
+        varying float vTwinkle;
+        uniform float uTime;
+        uniform float uPixelRatio;
         void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          vColor = color;
+          vTwinkle = 0.55 + 0.45 * sin(uTime * speed + phase);
+          vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = size * uPixelRatio * (280.0 / -mvPos.z);
+          gl_PointSize = clamp(gl_PointSize, 0.3, 5.5);
+          gl_Position = projectionMatrix * mvPos;
         }
       `,
       fragmentShader: `
         precision highp float;
-        varying vec2 vUv;
-        uniform float uTime;
-        uniform vec3 uColor;
-        uniform vec3 uPrimaryColor;
+        varying vec3 vColor;
+        varying float vTwinkle;
         uniform float uOpacity;
-
         void main() {
-          vec2 p = vUv * 2.0 - 1.0;
-          
-          // Peak 1: Large, rounded, left side
-          float peak1 = exp(-pow(p.x + 0.45, 2.0) * 4.5) * 0.55;
-          
-          // Peak 2: Small, rounded, extreme right
-          float peak2 = exp(-pow(p.x - 0.85, 2.0) * 18.0) * 0.18;
-          
-          float mountainLine = peak1 + peak2;
-          
-          // The silhouette mask
-          float mask = smoothstep(mountainLine, mountainLine - 0.02, p.y + 0.4);
-          
-          // Fade out at the very bottom
-          float bottomFade = smoothstep(-1.0, -0.6, p.y);
-          
-          gl_FragColor = vec4(uColor, mask * uOpacity * bottomFade);
+          float d = length(gl_PointCoord - 0.5) * 2.0;
+          float core    = exp(-d * d * 7.0);
+          float diffuse = exp(-d * d * 1.8) * 0.25;
+          float star = core + diffuse;
+          if (star < 0.01) discard;
+          gl_FragColor = vec4(vColor * vTwinkle, star * vTwinkle * uOpacity);
         }
       `
     });
+    const starField = new THREE.Points(starGeo, starMat);
+    scene.add(starField);
 
-    const mountainGeo = new THREE.PlaneGeometry(160, 40);
-    const mountains = new THREE.Mesh(mountainGeo, mountainMat);
-    // Positioned in the extreme foreground (closer to camera at Z=18)
-    // Recalibrated Y and Z to ensure visibility within the camera frustum
-    mountains.position.set(0, -1.5, 10);
-    scene.add(mountains);
+    // 6b. Nebula clouds — warm amber / deep violet / cold blue
+    const nebulaMatsArr: THREE.ShaderMaterial[] = [];
+
+    const nebulaVertexShader = `
+      varying vec2 vUv;
+      void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+    `;
+
+    const nebulaFragmentShader = `
+      precision highp float;
+      varying vec2 vUv;
+      uniform float uTime;
+      uniform float uOpacity;
+      uniform vec3 uColor;
+      uniform float uSeed;
+
+      float hash(vec2 p) { return fract(sin(dot(p + uSeed, vec2(127.1, 311.7))) * 43758.5453); }
+      float noise(vec2 p) {
+        vec2 i = floor(p); vec2 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(
+          mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+          mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
+          f.y
+        );
+      }
+      float fbm(vec2 p) {
+        float v = 0.0, a = 0.5;
+        for (int i = 0; i < 6; i++) { v += a * noise(p); p *= 2.1; a *= 0.45; }
+        return v;
+      }
+      void main() {
+        vec2 centered = vUv - 0.5;
+        float dist = length(centered * 1.5);
+
+        // Hard-stop at 0.68 radius — nothing reaches the plane boundary
+        float radial = smoothstep(0.68, 0.0, dist);
+
+        float base = fbm(centered * 2.2 + uTime * 0.009 + uSeed * 0.4);
+        float shape = radial * base;
+
+        float filament = fbm(centered * 5.5 - uTime * 0.006 + uSeed * 2.1 + 17.3);
+        float density = shape * (0.35 + filament * 0.65);
+
+        // UV-space edge vignette — 4-sided soft margin, kills any geometry boundary
+        float ex = smoothstep(0.0, 0.22, vUv.x) * smoothstep(1.0, 0.78, vUv.x);
+        float ey = smoothstep(0.0, 0.22, vUv.y) * smoothstep(1.0, 0.78, vUv.y);
+        density *= ex * ey;
+
+        // Scatter: mix warm core toward blue edges (space wavelength shift)
+        vec3 warmCore = uColor * 2.2;
+        vec3 coolEdge = mix(uColor * 0.5, vec3(0.55, 0.72, 1.0), 0.35);
+        vec3 col = mix(warmCore, coolEdge, smoothstep(0.0, 0.7, dist));
+        col = mix(col, vec3(0.7, 0.85, 1.0), filament * 0.12);
+
+        gl_FragColor = vec4(col, density * uOpacity);
+      }
+    `;
+
+    // Nebula A — warm amber (missioncontrol.co palette: #F16D46 → hue ~18°)
+    const nebulaMatA = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime:    { value: 0 },
+        uOpacity: { value: configRef.current.nebula1Opacity },
+        uColor:   { value: new THREE.Color().setHSL(configRef.current.nebulaWarmHue / 360, 0.88, 0.58) },
+        uSeed:    { value: 3.7 }
+      },
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+      vertexShader: nebulaVertexShader, fragmentShader: nebulaFragmentShader
+    });
+    const nebulaA = new THREE.Mesh(new THREE.PlaneGeometry(600, 440), nebulaMatA);
+    nebulaA.position.set(80, 35, -190);
+    nebulaA.rotation.set(0.18, 0.42, 0.08);
+    scene.add(nebulaA);
+    nebulaMatsArr.push(nebulaMatA);
+
+    // Nebula B — deep violet
+    const nebulaMatB = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime:    { value: 0 },
+        uOpacity: { value: configRef.current.nebula2Opacity },
+        uColor:   { value: new THREE.Color().setHSL(configRef.current.nebulaCoolHue / 360, 0.82, 0.52) },
+        uSeed:    { value: 11.3 }
+      },
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+      vertexShader: nebulaVertexShader, fragmentShader: nebulaFragmentShader
+    });
+    const nebulaB = new THREE.Mesh(new THREE.PlaneGeometry(510, 390), nebulaMatB);
+    nebulaB.position.set(-115, 55, -175);
+    nebulaB.rotation.set(-0.12, -0.28, 0.14);
+    scene.add(nebulaB);
+    nebulaMatsArr.push(nebulaMatB);
+
+    // Nebula C — cold steel blue
+    const nebulaMatC = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime:    { value: 0 },
+        uOpacity: { value: configRef.current.nebula3Opacity },
+        uColor:   { value: new THREE.Color().setHSL(configRef.current.nebulaColdHue / 360, 0.75, 0.50) },
+        uSeed:    { value: 7.1 }
+      },
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+      vertexShader: nebulaVertexShader, fragmentShader: nebulaFragmentShader
+    });
+    const nebulaC = new THREE.Mesh(new THREE.PlaneGeometry(720, 340), nebulaMatC);
+    nebulaC.position.set(25, -75, -240);
+    nebulaC.rotation.set(0.28, 0.14, -0.22);
+    scene.add(nebulaC);
+    nebulaMatsArr.push(nebulaMatC);
 
     // 7. POST-PROCESSING
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight), 
-      configRef.current.bloomStrength, 
-      configRef.current.bloomRadius, 
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      configRef.current.bloomStrength,
+      configRef.current.bloomRadius,
       configRef.current.bloomThreshold
     );
     composer.addPass(bloomPass);
 
     const anamorphicShader = {
-      uniforms: { 
-        tDiffuse: { value: null }, 
-        uTime: { value: 0 }, 
-        uFlareIntensity: { value: configRef.current.flareIntensity }, 
-        uGrainIntensity: { value: configRef.current.grainIntensity } 
+      uniforms: {
+        tDiffuse: { value: null },
+        uTime: { value: 0 },
+        uFlareIntensity: { value: configRef.current.flareIntensity },
+        uGrainIntensity: { value: configRef.current.grainIntensity }
       },
       vertexShader: `
         varying vec2 vUv;
@@ -687,7 +804,6 @@ const StarkOpticalEngine = () => {
       const time = clock.getElapsedTime();
       const primaryColor = new THREE.Color().setHSL(configRef.current.hue / 360, configRef.current.saturation, configRef.current.lightness);
 
-      // Update from config
       renderer.toneMappingExposure = configRef.current.exposure;
       bloomPass.strength = configRef.current.bloomStrength;
       bloomPass.radius = configRef.current.bloomRadius;
@@ -697,8 +813,6 @@ const StarkOpticalEngine = () => {
       controls.autoRotateSpeed = configRef.current.autoRotateSpeed;
       controls.dampingFactor = configRef.current.damping;
 
-      // Update Blackhole Transform
-      blackHoleGroup.position.set(configRef.current.bhPosX, configRef.current.bhPosY, configRef.current.bhPosZ);
       const autoY = time * configRef.current.bhAutoRotateSpeed;
       blackHoleGroup.rotation.set(
         configRef.current.bhRotX * Math.PI / 180,
@@ -706,78 +820,75 @@ const StarkOpticalEngine = () => {
         configRef.current.bhRotZ * Math.PI / 180
       );
 
-      // Note: camera position is mostly managed by controls, but we can set it if needed
-      // camera.position.z = configRef.current.cameraZ;
-
       smoothMouse.x += (mouse.x - smoothMouse.x) * 0.03;
       smoothMouse.y += (mouse.y - smoothMouse.y) * 0.03;
 
+      const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      const scrollProgress = Math.min(scrollRef.current / maxScroll, 1);
+      const targetBhX = sectionIndexRef.current % 2 === 0
+        ? configRef.current.bhPosX
+        : -configRef.current.bhPosX;
+      blackHoleGroup.position.x += (targetBhX - blackHoleGroup.position.x) * 0.025;
+      blackHoleGroup.position.y += (configRef.current.bhPosY - scrollProgress * 10 - blackHoleGroup.position.y) * 0.025;
+      blackHoleGroup.position.z = configRef.current.bhPosZ;
+      const targetCamZ = configRef.current.cameraZ + scrollProgress * 8;
+      camera.position.z += (targetCamZ - camera.position.z) * 0.025;
+
       currentLookAt.x = baseLookAt.x + smoothMouse.x * 1.5;
-      currentLookAt.y = baseLookAt.y + smoothMouse.y * 0.8;
+      currentLookAt.y = baseLookAt.y + smoothMouse.y * 0.8 - scrollProgress * 3;
       controls.target.lerp(currentLookAt, 0.02);
-      
-      // Mountain Parallax (Extreme Foreground)
-      mountains.position.x = smoothMouse.x * 3.5;
-      mountains.position.y = -1.5 + smoothMouse.y * 1.2;
 
+      // Black hole & fog materials — uTime
       const timed = [bhCoreMat, photonRingMat, diskMat, lensHaloMat, gridMat, particleMat, anamorphicPass.material];
-      timed.forEach(m => { 
-        if (m && (m as THREE.ShaderMaterial).uniforms && (m as THREE.ShaderMaterial).uniforms.uTime) {
-          (m as THREE.ShaderMaterial).uniforms.uTime.value = time; 
+      timed.forEach(m => {
+        if (m && (m as THREE.ShaderMaterial).uniforms?.uTime) {
+          (m as THREE.ShaderMaterial).uniforms.uTime.value = time;
         }
       });
-      if (mountainMat.uniforms.uTime) mountainMat.uniforms.uTime.value = time;
-      mountainMat.uniforms.uPrimaryColor.value.copy(primaryColor);
-
-      fogPlanes.forEach(f => { 
+      fogPlanes.forEach(f => {
         if (f.material && (f.material as THREE.ShaderMaterial).uniforms) {
-          (f.material as THREE.ShaderMaterial).uniforms.uTime.value = time; 
+          (f.material as THREE.ShaderMaterial).uniforms.uTime.value = time;
+          (f.material as THREE.ShaderMaterial).uniforms.uOpacity.value = configRef.current.fogOpacity;
+          (f.material as THREE.ShaderMaterial).uniforms.uColor.value.copy(primaryColor);
         }
       });
+
+      // Starfield — time + opacity
+      starMat.uniforms.uTime.value = time;
+      starMat.uniforms.uOpacity.value = configRef.current.starsOpacity;
+
+      // Nebulae — time + live color/opacity from config
+      nebulaMatA.uniforms.uTime.value = time;
+      nebulaMatA.uniforms.uOpacity.value = configRef.current.nebula1Opacity;
+      nebulaMatA.uniforms.uColor.value.setHSL(configRef.current.nebulaWarmHue / 360, 0.88, 0.58);
+
+      nebulaMatB.uniforms.uTime.value = time;
+      nebulaMatB.uniforms.uOpacity.value = configRef.current.nebula2Opacity;
+      nebulaMatB.uniforms.uColor.value.setHSL(configRef.current.nebulaCoolHue / 360, 0.82, 0.52);
+
+      nebulaMatC.uniforms.uTime.value = time;
+      nebulaMatC.uniforms.uOpacity.value = configRef.current.nebula3Opacity;
+      nebulaMatC.uniforms.uColor.value.setHSL(configRef.current.nebulaColdHue / 360, 0.75, 0.50);
 
       updateParticles(dt, time);
 
       const currentBhRadius = configRef.current.bhRadius;
       bhCore.scale.setScalar(currentBhRadius / bhRadius);
       photonRing.scale.setScalar(currentBhRadius / bhRadius);
-      
-      
+
       bhCoreMat.uniforms.uColor.value.copy(primaryColor);
       photonRingMat.uniforms.uColor.value.copy(primaryColor);
       lensHaloMat.uniforms.uColor.value.copy(primaryColor);
       diskMat.uniforms.uColor.value.copy(primaryColor);
-      
+
       gridMat.uniforms.uAlpha.value = configRef.current.gridOpacity;
       lensHaloMat.uniforms.uRadius.value = currentBhRadius;
-      
+
       diskMat.uniforms.uInner.value = currentBhRadius * configRef.current.diskInnerRel;
       diskMat.uniforms.uOuter.value = currentBhRadius * configRef.current.diskOuterRel;
       diskMat.uniforms.uSpeed.value = configRef.current.diskSpeed;
       diskMat.uniforms.uOpacity.value = configRef.current.diskOpacity;
       disk.rotation.x = -Math.PI * 0.5 + (configRef.current.diskTilt * Math.PI / 180.0);
-
-      asteroidData.forEach(a => {
-        const angle = a.baseAngle + time * a.orbitSpeed;
-        a.mesh.position.x = Math.cos(angle) * a.dist + smoothMouse.x * a.parallaxFactor * 3.0 * configRef.current.asteroidParallax;
-        a.mesh.position.z = Math.sin(angle) * a.dist;
-        a.mesh.position.y = a.base_y + smoothMouse.y * a.parallaxFactor * 1.5 * configRef.current.asteroidParallax;
-        a.mesh.rotation.x += a.rotSpeed * dt;
-        a.mesh.rotation.y += a.rotSpeed * dt * 0.7;
-        const mat = a.mesh.material as THREE.ShaderMaterial;
-        if (mat.uniforms) {
-          mat.uniforms.uTime.value = time;
-          mat.uniforms.uCyanLight.value.copy(primaryColor);
-        }
-      });
-
-      fogPlanes.forEach(f => { 
-        const mat = f.material as THREE.ShaderMaterial;
-        if (mat.uniforms) {
-          mat.uniforms.uTime.value = time;
-          mat.uniforms.uOpacity.value = configRef.current.fogOpacity;
-          mat.uniforms.uColor.value.copy(primaryColor);
-        }
-      });
 
       controls.update();
       composer.render();
@@ -790,6 +901,7 @@ const StarkOpticalEngine = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
       composer.setSize(window.innerWidth, window.innerHeight);
       particleMat.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
+      starMat.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
     };
     window.addEventListener('resize', onResize);
 
@@ -797,9 +909,10 @@ const StarkOpticalEngine = () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('keydown', handleKeyDown);
       if (containerRef.current) containerRef.current.removeChild(renderer.domElement);
-      // Cleanup Three.js resources
+
       scene.traverse((object) => {
         if (object instanceof THREE.Mesh) {
           object.geometry.dispose();
@@ -807,15 +920,19 @@ const StarkOpticalEngine = () => {
           else object.material.dispose();
         }
       });
+
+      starGeo.dispose();
+      starMat.dispose();
+      nebulaMatsArr.forEach(m => m.dispose());
       renderer.dispose();
     };
   }, []);
 
   return (
     <>
-      <div ref={containerRef} className="absolute inset-0 z-0 bg-black" />
-      
-      {/* Stark Console UI - Hidden by default, accessible via Shift+H */}
+      <div ref={containerRef} className="fixed inset-0 bg-black" style={{ zIndex: 0 }} />
+
+      {/* Stark Console UI — Shift+H */}
       <div className="fixed bottom-10 left-10 z-[9999] pointer-events-auto transition-opacity duration-500">
         {config.showConsole && (
           <div className="w-96 max-h-[85vh] overflow-y-auto p-6 bg-black/90 backdrop-blur-3xl border border-white/20 rounded-none shadow-2xl select-none custom-scrollbar font-mono">
@@ -824,7 +941,7 @@ const StarkOpticalEngine = () => {
                 <div className="w-2 h-2 rounded-full bg-[#29BDF2] animate-pulse" />
                 <span className="text-[10px] tracking-[0.2em] uppercase text-white/80">Stark Art Direction</span>
               </div>
-              <button 
+              <button
                 onClick={() => setConfig(c => ({...c, showConsole: false}))}
                 className="text-white/40 hover:text-white text-[10px] uppercase"
               >
@@ -833,136 +950,166 @@ const StarkOpticalEngine = () => {
             </div>
 
             <div className="space-y-10">
-              {/* Physics Section */}
+              {/* 01. Singularity */}
               <div className="space-y-4">
                 <span className="text-[9px] uppercase text-[#29BDF2] block tracking-widest">01. Singularity</span>
-                <ScannerSlider 
-                  label="Horizon Radius" value={config.bhRadius} min={0.5} max={5.0} step={0.1}
+                <ScannerSlider
+                  label="Horizon Radius" value={config.bhRadius} min={0.5} max={10.0} step={0.1}
                   onChange={(v: number) => setConfig(c => ({...c, bhRadius: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Gravity" value={config.gravityStrength} min={0} max={30} step={0.5}
                   onChange={(v: number) => setConfig(c => ({...c, gravityStrength: v}))}
                 />
-                
-                {/* Posicionamento Espacial */}
                 <div className="pt-2 grid grid-cols-2 gap-4">
-                  <ScannerSlider 
+                  <ScannerSlider
                     label="Posição X" value={config.bhPosX} min={-20} max={20} step={0.1}
                     onChange={(v: number) => setConfig(c => ({...c, bhPosX: v}))}
                   />
-                  <ScannerSlider 
+                  <ScannerSlider
                     label="Posição Y" value={config.bhPosY} min={-20} max={20} step={0.1}
                     onChange={(v: number) => setConfig(c => ({...c, bhPosY: v}))}
                   />
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                  <ScannerSlider 
+                  <ScannerSlider
                     label="Rot X" value={config.bhRotX} min={-180} max={180} step={1}
                     onChange={(v: number) => setConfig(c => ({...c, bhRotX: v}))}
                   />
-                  <ScannerSlider 
+                  <ScannerSlider
                     label="Rot Y" value={config.bhRotY} min={-180} max={180} step={1}
                     onChange={(v: number) => setConfig(c => ({...c, bhRotY: v}))}
                   />
-                  <ScannerSlider 
+                  <ScannerSlider
                     label="Rot Z" value={config.bhRotZ} min={-180} max={180} step={1}
                     onChange={(v: number) => setConfig(c => ({...c, bhRotZ: v}))}
                   />
                 </div>
-                <ScannerSlider 
+                <ScannerSlider
                   label="Auto Rotation Y" value={config.bhAutoRotateSpeed} min={0} max={50} step={0.5}
                   onChange={(v: number) => setConfig(c => ({...c, bhAutoRotateSpeed: v}))}
                 />
               </div>
 
-              {/* Accretion Disk Section */}
+              {/* 02. Accretion Disk */}
               <div className="pt-4 border-t border-white/5 space-y-4">
                 <span className="text-[9px] uppercase text-[#29BDF2] block tracking-widest">02. Accretion Disk</span>
-                <ScannerSlider 
+                <ScannerSlider
                   label="Disk Tilt" value={config.diskTilt} min={-45} max={45} step={1}
                   onChange={(v: number) => setConfig(c => ({...c, diskTilt: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Orbital Speed" value={config.diskSpeed} min={0.1} max={10.0} step={0.1}
                   onChange={(v: number) => setConfig(c => ({...c, diskSpeed: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Disk Opacity" value={config.diskOpacity} min={0} max={1} step={0.05}
                   onChange={(v: number) => setConfig(c => ({...c, diskOpacity: v}))}
                 />
                 <div className="grid grid-cols-2 gap-4">
-                  <ScannerSlider 
+                  <ScannerSlider
                     label="Inner Multi" value={config.diskInnerRel} min={1.1} max={3.0} step={0.1}
                     onChange={(v: number) => setConfig(c => ({...c, diskInnerRel: v}))}
                   />
-                  <ScannerSlider 
+                  <ScannerSlider
                     label="Outer Multi" value={config.diskOuterRel} min={4.0} max={12.0} step={0.1}
                     onChange={(v: number) => setConfig(c => ({...c, diskOuterRel: v}))}
                   />
                 </div>
               </div>
 
-              {/* Color & Light Section */}
+              {/* 03. Chromatic Engine */}
               <div className="pt-4 border-t border-white/5 space-y-4">
                 <span className="text-[9px] uppercase text-[#29BDF2] block tracking-widest">03. Chromatic Engine</span>
-                <ScannerSlider 
+                <ScannerSlider
                   label="Global Hue" value={config.hue} min={0} max={360} step={1}
                   onChange={(v: number) => setConfig(c => ({...c, hue: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Saturation" value={config.saturation} min={0} max={1} step={0.01}
                   onChange={(v: number) => setConfig(c => ({...c, saturation: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Luminance" value={config.lightness} min={0.1} max={0.9} step={0.01}
                   onChange={(v: number) => setConfig(c => ({...c, lightness: v}))}
                 />
               </div>
 
-              {/* Atmosphere Section */}
+              {/* 04. Atmosphere */}
               <div className="pt-4 border-t border-white/5 space-y-4">
                 <span className="text-[9px] uppercase text-[#29BDF2] block tracking-widest">04. Atmosphere</span>
-                <ScannerSlider 
+                <ScannerSlider
                   label="Void Grid Alpha" value={config.gridOpacity} min={0} max={0.1} step={0.001}
                   onChange={(v: number) => setConfig(c => ({...c, gridOpacity: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Volumetric Fog" value={config.fogOpacity} min={0} max={0.1} step={0.001}
                   onChange={(v: number) => setConfig(c => ({...c, fogOpacity: v}))}
                 />
-                <ScannerSlider 
-                  label="Parallax Scale" value={config.asteroidParallax} min={0} max={5.0} step={0.1}
-                  onChange={(v: number) => setConfig(c => ({...c, asteroidParallax: v}))}
-                />
               </div>
 
-              {/* Camera & Optics Section */}
+              {/* 05. Optical Post */}
               <div className="pt-4 border-t border-white/5 space-y-4">
                 <span className="text-[9px] uppercase text-[#29BDF2] block tracking-widest">05. Optical Post</span>
-                <ScannerSlider 
+                <ScannerSlider
                   label="Anamorphic Bloom" value={config.bloomStrength} min={0} max={5} step={0.1}
                   onChange={(v: number) => setConfig(c => ({...c, bloomStrength: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Flare Intensity" value={config.flareIntensity} min={0} max={1} step={0.01}
                   onChange={(v: number) => setConfig(c => ({...c, flareIntensity: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Digital Grain" value={config.grainIntensity} min={0} max={0.2} step={0.01}
                   onChange={(v: number) => setConfig(c => ({...c, grainIntensity: v}))}
                 />
-                <ScannerSlider 
+                <ScannerSlider
                   label="Exposure" value={config.exposure} min={0.1} max={2.0} step={0.05}
                   onChange={(v: number) => setConfig(c => ({...c, exposure: v}))}
                 />
               </div>
-              
+
+              {/* 06. Deep Space */}
+              <div className="pt-4 border-t border-white/5 space-y-4">
+                <span className="text-[9px] uppercase text-[#F16D46] block tracking-widest">06. Deep Space</span>
+                <ScannerSlider
+                  label="Stars Opacity" value={config.starsOpacity} min={0} max={1} step={0.01}
+                  onChange={(v: number) => setConfig(c => ({...c, starsOpacity: v}))}
+                />
+                <div className="pt-1 space-y-1">
+                  <span className="text-[8px] uppercase text-white/20 tracking-widest block">Nebulae</span>
+                </div>
+                <ScannerSlider
+                  label="Amber Nebula" value={config.nebula1Opacity} min={0} max={0.4} step={0.005}
+                  onChange={(v: number) => setConfig(c => ({...c, nebula1Opacity: v}))}
+                />
+                <ScannerSlider
+                  label="Amber Hue" value={config.nebulaWarmHue} min={0} max={60} step={1}
+                  onChange={(v: number) => setConfig(c => ({...c, nebulaWarmHue: v}))}
+                />
+                <ScannerSlider
+                  label="Violet Nebula" value={config.nebula2Opacity} min={0} max={0.4} step={0.005}
+                  onChange={(v: number) => setConfig(c => ({...c, nebula2Opacity: v}))}
+                />
+                <ScannerSlider
+                  label="Violet Hue" value={config.nebulaCoolHue} min={220} max={320} step={1}
+                  onChange={(v: number) => setConfig(c => ({...c, nebulaCoolHue: v}))}
+                />
+                <ScannerSlider
+                  label="Blue Nebula" value={config.nebula3Opacity} min={0} max={0.4} step={0.005}
+                  onChange={(v: number) => setConfig(c => ({...c, nebula3Opacity: v}))}
+                />
+                <ScannerSlider
+                  label="Blue Hue" value={config.nebulaColdHue} min={180} max={240} step={1}
+                  onChange={(v: number) => setConfig(c => ({...c, nebulaColdHue: v}))}
+                />
+              </div>
+
               <div className="pt-6 border-t border-white/10">
                 <div className="bg-white/5 p-3 rounded-none">
                   <p className="text-[8px] text-white/40 uppercase leading-loose font-mono">
-                    System: Stark High-Fidelity V3.4<br/>
-                    Status: Art Direction Mode Active<br/>
+                    System: Stark High-Fidelity V3.5<br/>
+                    Scene: Deep Space Protocol Active<br/>
                     Hotkeys: Shift+H (Toggle)
                   </p>
                 </div>
@@ -975,11 +1122,18 @@ const StarkOpticalEngine = () => {
   );
 };
 
-const ScannerSlider = ({ label, value, min, max, step, onChange }: any) => (
+const ScannerSlider = ({ label, value, min, max, step, onChange }: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (v: number) => void;
+}) => (
   <div className="space-y-2">
     <div className="flex justify-between items-center">
       <label className="font-mono text-[9px] uppercase text-white/50">{label}</label>
-      <input 
+      <input
         type="number"
         step={step}
         value={typeof value === 'number' ? parseFloat(value.toFixed(3)) : value}
@@ -987,7 +1141,7 @@ const ScannerSlider = ({ label, value, min, max, step, onChange }: any) => (
         className="bg-transparent border-b border-white/10 font-mono text-[10px] text-white/80 w-16 text-right focus:outline-none focus:border-[#29BDF2] transition-colors"
       />
     </div>
-    <input 
+    <input
       type="range" min={min} max={max} step={step} value={value}
       onChange={(e) => onChange(parseFloat(e.target.value))}
       className="w-full h-1 bg-white/10 rounded-none appearance-none cursor-pointer accent-[#29BDF2]"
