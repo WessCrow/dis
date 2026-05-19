@@ -1,2 +1,4 @@
-.vercel        
-public         
+.vercel
+public
+!APP/public/
+!APP/public/**

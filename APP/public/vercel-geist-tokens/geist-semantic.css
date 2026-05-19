@@ -1,0 +1,140 @@
+/**
+ * Geist-like semantic tokens for DIS prototypes.
+ * Nomenclature mirrors https://vercel.com/geist/colors (Background 1/2, Color 1–10).
+ * Values are approximate; refine against DevTools on vercel.com when needed.
+ */
+
+:root {
+  color-scheme: light;
+  --ds-bg-1: #ffffff;
+  --ds-bg-2: #fafafa;
+  --ds-c-1: #ffffff;
+  --ds-c-2: #f4f4f5;
+  --ds-c-3: #e4e4e7;
+  --ds-c-4: #e4e4e7;
+  --ds-c-5: #d4d4d8;
+  --ds-c-6: #a1a1aa;
+  --ds-c-7: #18181b;
+  --ds-c-8: #27272a;
+  --ds-c-9: #71717a;
+  --ds-c-10: #09090b;
+  --ds-blue: #0070f3;
+  --ds-blue-hover: #0761d1;
+  --ds-red: #e00;
+  --ds-green: #007a41;
+  --ds-amber: #f5a623;
+  --ds-radius-sm: 5px;
+  --ds-radius-md: 5px;
+  --ds-radius-lg: 5px;
+  --ds-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --ds-shadow-2: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg-1), 0 0 0 4px var(--ds-blue);
+}
+
+[data-theme="dark"],
+.dark {
+  color-scheme: dark;
+  --ds-bg-1: #000000;
+  --ds-bg-2: #0a0a0a;
+  --ds-c-1: #111111;
+  --ds-c-2: #1a1a1a;
+  --ds-c-3: #262626;
+  --ds-c-4: rgba(255, 255, 255, 0.12);
+  --ds-c-5: rgba(255, 255, 255, 0.18);
+  --ds-c-6: rgba(255, 255, 255, 0.28);
+  --ds-c-7: #ededed;
+  --ds-c-8: #ffffff;
+  --ds-c-9: #a1a1aa;
+  --ds-c-10: #fafafa;
+  --ds-blue: #3291ff;
+  --ds-blue-hover: #52a9ff;
+  --ds-red: #ff3333;
+  --ds-green: #45dec4;
+  --ds-amber: #f7b955;
+  --ds-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --ds-shadow-2: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg-1), 0 0 0 4px var(--ds-blue);
+}
+
+.ds-surface {
+  background: var(--ds-bg-1);
+  color: var(--ds-c-10);
+}
+
+.ds-surface-2 {
+  background: var(--ds-bg-2);
+  color: var(--ds-c-10);
+}
+
+.ds-border {
+  border: var(--border-width) solid var(--ds-c-4);
+}
+
+.ds-muted {
+  color: var(--ds-c-9);
+}
+
+.ds-btn {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  padding: 0 0.875rem;
+  min-height: 2.75rem;
+  height: auto;
+  border-radius: var(--ds-radius-sm);
+  border: var(--border-width) solid var(--ds-c-4);
+  background: var(--ds-c-1);
+  color: var(--ds-c-10);
+  box-shadow: var(--ds-shadow-1);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ds-btn:hover {
+  background: var(--ds-c-2);
+  border-color: var(--ds-c-5);
+}
+
+.ds-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.ds-btn-primary {
+  background: var(--ds-c-10);
+  color: var(--ds-bg-1);
+  border-color: var(--ds-c-10);
+}
+
+[data-theme="dark"] .ds-btn-primary,
+.dark .ds-btn-primary {
+  background: var(--ds-c-10);
+  color: var(--ds-bg-1);
+  border-color: var(--ds-c-10);
+}
+
+.ds-btn-primary:hover {
+  background: var(--ds-c-8);
+  border-color: var(--ds-c-8);
+}
+
+.ds-input {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--ds-radius-sm);
+  border: var(--border-width) solid var(--ds-c-4);
+  background: var(--ds-bg-1);
+  color: var(--ds-c-10);
+  width: 100%;
+  max-width: 24rem;
+}
+
+.ds-input:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+  border-color: var(--ds-blue);
+}

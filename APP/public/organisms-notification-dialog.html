@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>Organism — Notification Dialog</title>
+  <link rel="stylesheet" href="design-system/index.css" />
+  <link rel="stylesheet" href="disrupta-ui.css" />
+  <link rel="stylesheet" href="sb-docs.css" />
+</head>
+<body class="page-laboratorio-ideias sb-doc-page">
+
+  <header>
+    <span class="sb-doc-tag">Organismo</span>
+    <span class="sb-doc-tag">Interface Principal</span>
+    <h1 class="sb-doc-h1">Notification Dialog</h1>
+    <p class="sb-doc-desc">Sistema de notificações em popover (dialog modal), com divisão por abas e tratamento de estado lido/arquivado.</p>
+  </header>
+
+  <section>
+    <h2 class="sb-doc-h2">UX Writing & Identidade</h2>
+    <div class="sb-doc-uxw">
+      <p><strong>Voz:</strong> Clara, Concisa e Útil.</p>
+      <p><strong>Tom:</strong> Neutro a informativo. Direto ao ponto sem causar pânico, focando na ação acionável (ex: Arquivar).</p>
+      <p><strong>Regra de Ouro:</strong> Nunca culpar o usuário. Títulos de notificações devem resumir o ocorrido em poucas palavras. Datas relativas (ex: 2 min atrás) aumentam o contexto temporal sem ruído visual.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sb-doc-h2">Canvas (Interativo)</h2>
+    <div class="sb-doc-canvas" style="min-height: 500px; display: flex; justify-content: flex-end; align-items: flex-start; padding: 2rem;">
+      
+      <button
+        type="button"
+        id="lab-notify-trigger"
+        class="lab-notify"
+        aria-haspopup="dialog"
+        aria-controls="lab-notify-dialog"
+        aria-expanded="false"
+        aria-label="Notificações, 1 não lida"
+      >
+        <span class="lab-notify__icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+            <path d="M12 22a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z" />
+            <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7" />
+          </svg>
+        </span>
+        <span class="lab-notify__badge">1</span>
+        <span class="visually-hidden">1 nova notificação</span>
+      </button>
+
+      <!-- The Component -->
+      <dialog
+        id="lab-notify-dialog"
+        class="lab-notify-dialog"
+        aria-labelledby="lab-notify-title"
+      >
+        <div class="lab-notify-dialog__panel">
+          <header class="lab-notify-dialog__head">
+            <h2 id="lab-notify-title" class="lab-notify-dialog__title">Histórico</h2>
+            <button type="button" class="lab-notify-dialog__close" id="lab-notify-close" aria-label="Fechar">
+              <span aria-hidden="true">×</span>
+            </button>
+          </header>
+          <div class="lab-notify-dialog__tabs" role="tablist" aria-label="Filtro de Histórico">
+            <button type="button" role="tab" aria-selected="true" aria-controls="lab-notify-panel-all" id="lab-notify-tab-all" class="lab-notify-dialog__tab">Todas</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="lab-notify-panel-notifications" id="lab-notify-tab-notifications" class="lab-notify-dialog__tab">Notificações</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="lab-notify-panel-hist-lab" id="lab-notify-tab-hist-lab" class="lab-notify-dialog__tab">Histórico lab</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="lab-notify-panel-hist-calc" id="lab-notify-tab-hist-calc" class="lab-notify-dialog__tab">Histórico Calculadora</button>
+          </div>
+
+          <div class="lab-notify-dialog__content" role="tabpanel" id="lab-notify-panel-all" aria-labelledby="lab-notify-tab-all">
+            <ol class="lab-notify-dialog__list">
+              <li class="lab-notify-dialog__item">
+                <a href="#" class="lab-notify-dialog__link">
+                  <span class="lab-notify-dialog__item-icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  </span>
+                  <div class="lab-notify-dialog__item-text">
+                    <span class="lab-notify-dialog__item-title">Novo relatório disponível</span>
+                    <span class="lab-notify-dialog__item-time">2 min atrás</span>
+                  </div>
+                  <button type="button" class="lab-notify-dialog__item-action" title="Arquivar" aria-label="Arquivar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+                  </button>
+                </a>
+              </li>
+              <li class="lab-notify-dialog__item">
+                <a href="#" class="lab-notify-dialog__link">
+                  <span class="lab-notify-dialog__item-icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  </span>
+                  <div class="lab-notify-dialog__item-text">
+                    <span class="lab-notify-dialog__item-title">Bem-vindo ao Laboratório</span>
+                    <span class="lab-notify-dialog__item-time">1h atrás</span>
+                  </div>
+                  <button type="button" class="lab-notify-dialog__item-action" title="Arquivar" aria-label="Arquivar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+                  </button>
+                </a>
+              </li>
+            </ol>
+          </div>
+
+          <div class="lab-notify-dialog__content" role="tabpanel" id="lab-notify-panel-notifications" aria-labelledby="lab-notify-tab-notifications" hidden>
+            <ol class="lab-notify-dialog__list">
+              <li class="lab-notify-dialog__item">
+                <a href="#" class="lab-notify-dialog__link">
+                  <span class="lab-notify-dialog__item-icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  </span>
+                  <div class="lab-notify-dialog__item-text">
+                    <span class="lab-notify-dialog__item-title">Novo relatório disponível</span>
+                    <span class="lab-notify-dialog__item-time">2 min atrás</span>
+                  </div>
+                  <button type="button" class="lab-notify-dialog__item-action" title="Arquivar" aria-label="Arquivar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+                  </button>
+                </a>
+              </li>
+            </ol>
+          </div>
+
+          <div class="lab-notify-dialog__content" role="tabpanel" id="lab-notify-panel-hist-lab" aria-labelledby="lab-notify-tab-hist-lab" hidden>
+            <div class="lab-notify-dialog__empty">
+              <span class="lab-notify-dialog__empty-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+              </span>
+              <h3 class="lab-notify-dialog__empty-title">NADA POR AQUI</h3>
+              <p class="lab-notify-dialog__empty-desc">Suas ideias e projetos arquivados no laboratório aparecerão nesta aba.</p>
+            </div>
+          </div>
+
+          <div class="lab-notify-dialog__content" role="tabpanel" id="lab-notify-panel-hist-calc" aria-labelledby="lab-notify-tab-hist-calc" hidden>
+            <div class="lab-notify-dialog__empty">
+              <span class="lab-notify-dialog__empty-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="8" x2="16" y1="10" y2="10"/><line x1="8" x2="16" y1="14" y2="14"/><line x1="8" x2="16" y1="18" y2="18"/></svg>
+              </span>
+              <h3 class="lab-notify-dialog__empty-title">HISTÓRICO LIMPO</h3>
+              <p class="lab-notify-dialog__empty-desc">Realize simulações de viabilidade para salvar e auditar seus resultados aqui.</p>
+            </div>
+          </div>
+
+          <footer class="lab-notify-dialog__foot">
+            <button type="button" class="lab-notify-dialog__view-all">Ver todas</button>
+          </footer>
+        </div>
+      </dialog>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sb-doc-h2">Matriz FEER (Technical Rigor)</h2>
+    
+    <h3 class="sb-doc-h3">Fluxos (Flows)</h3>
+    <table class="sb-doc-table">
+      <thead>
+        <tr>
+          <th>Passo</th>
+          <th>Ação do Usuário</th>
+          <th>Resposta do Sistema</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Clica no sino de Notificações <code>#lab-notify-trigger</code></td>
+          <td>O sistema previne scroll da página e exibe o popover `<dialog>` sob o ícone de sino, focado no último item. Ativa `aria-expanded="true"`.</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Navega entre as abas Todas / Notificações / Histórico lab / Histórico Calculadora</td>
+          <td>O <code>role="tabpanel"</code> respectivo é exibido (<code>hidden=false</code>), enquanto as demais ocultam-se (<code>hidden=true</code>). Abas atualizam `aria-selected`.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Clica no botão Arquivar numa notificação</td>
+          <td>A notificação transita imediatamente (Otimista) para fora da visão principal.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sb-doc-h3">Estados de UI (States)</h3>
+    <table class="sb-doc-table">
+      <thead>
+        <tr>
+          <th>Estado</th>
+          <th>Descrição Visual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Unread Badge</td>
+          <td>Indicador numérico de cor predominante com fonte Mono e contorno limpo, localizado no canto superior direito do botão de sino.</td>
+        </tr>
+        <tr>
+          <td>Empty State (Arquivadas)</td>
+          <td>Exibe um ícone sutil e um texto com cor secundária (text-muted).</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3 class="sb-doc-h3">Acessibilidade & Regras (Rules)</h3>
+    <ul class="sb-doc-list">
+      <li><strong>Foco (Keyboard):</strong> O dialog suporta foco completo. Ao abrir, o <code>showModal()</code> cuida de capturar o foco para os interativos dentro do dialog. A tecla ESC nativamente fecha o popover.</li>
+      <li><strong>Leitores de Tela:</strong> Os textos de badge possuem correspondente visually-hidden. A interface das tabs adere estritamente aos <code>role="tablist"</code> e <code>aria-selected</code>.</li>
+      <li><strong>Botões Sem Texto:</strong> Todas as ações puramente visuais, como o ícone de arquivar e configurações, dependem de rótulos via <code>aria-label</code> e <code>title</code> para dicas interativas.</li>
+    </ul>
+  </section>
+
+  <script src="js/laboratorio-ideias.js"></script>
+</body>
+</html>

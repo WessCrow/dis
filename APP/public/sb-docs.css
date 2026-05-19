@@ -1,0 +1,199 @@
+/* Storybook Docs Theme — Disrupta (Bugatti) */
+:root {
+  --sb-doc-bg: var(--void, var(--ds-bg-1));
+  --sb-doc-text: var(--text, var(--ds-c-10));
+  --sb-doc-muted: var(--text-muted, var(--ds-c-9));
+  --sb-doc-border: var(--line, var(--ds-c-4));
+  --sb-doc-surface: color-mix(in srgb, var(--sb-doc-text) 4%, transparent);
+}
+
+body.sb-doc-page {
+  background: var(--sb-doc-bg);
+  color: var(--sb-doc-text);
+  margin: 0;
+  padding: 2rem 3rem;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  display: block; /* override flex from center canvas */
+}
+
+body.page-laboratorio-ideias.sb-doc-page {
+  background: transparent;
+}
+
+/* Typography */
+.sb-doc-h1 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
+}
+
+.sb-doc-desc {
+  font-size: 1rem;
+  color: var(--sb-doc-muted);
+  margin: 0 0 2rem 0;
+  max-width: 65ch;
+}
+
+.sb-doc-h2 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 2.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: var(--border-width) solid var(--sb-doc-border);
+}
+
+.sb-doc-h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sb-doc-muted);
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+/* Labels & Tags */
+.sb-doc-tag {
+  display: inline-block;
+  padding: 0.15rem 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem; /* WCAG: mínimo 12px */
+  background: var(--sb-doc-surface);
+  border: var(--border-width) solid var(--sb-doc-border);
+  color: var(--sb-doc-text);
+  border-radius: var(--radius-sm); /* Bugatti strict */
+  text-transform: uppercase;
+  margin-right: 0.5rem;
+}
+
+/* Canvas Area */
+.sb-doc-canvas {
+  background: var(--sb-doc-bg);
+  border: var(--border-width) solid var(--sb-doc-border);
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-image: radial-gradient(var(--sb-doc-border) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+body.page-laboratorio-ideias .sb-doc-canvas {
+  background: var(--dis-glass-bg, color-mix(in srgb, var(--void) 42%, transparent));
+  border-color: var(--dis-glass-border, var(--sb-doc-border));
+  background-image: none;
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  body.page-laboratorio-ideias .sb-doc-canvas {
+    -webkit-backdrop-filter: blur(var(--dis-glass-blur, 1.5rem));
+    backdrop-filter: blur(var(--dis-glass-blur, 1.5rem));
+  }
+}
+
+/* Matrix Table (FEER) */
+.sb-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.sb-doc-table th,
+.sb-doc-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: var(--border-width) solid var(--sb-doc-border);
+}
+
+.sb-doc-table th {
+  font-weight: 500;
+  color: var(--sb-doc-muted);
+}
+
+.sb-doc-table td code {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  padding: 0.2rem 0.4rem;
+  background: var(--sb-doc-surface);
+  border: var(--border-width) solid var(--sb-doc-border);
+}
+
+/* UX Writing Block */
+.sb-doc-uxw {
+  background: var(--sb-doc-surface);
+  border-left: var(--border-width) solid var(--sb-doc-text);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sb-doc-uxw p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+}
+.sb-doc-uxw p:last-child {
+  margin: 0;
+}
+.sb-doc-uxw strong {
+  font-weight: 600;
+}
+
+.atomic-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.atomic-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 25rem;
+}
+
+.atomic-stack--wide {
+  max-width: 36rem;
+}
+
+.atomic-molecule-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: stretch;
+  width: 100%;
+  max-width: 36rem;
+}
+
+.atomic-molecule-row .v2-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.atomic-row--end {
+  justify-content: flex-end;
+}
+
+.sb-doc-canvas--v2 {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.atomic-organism-card {
+  width: 100%;
+  max-width: 36rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.atomic-organism-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}

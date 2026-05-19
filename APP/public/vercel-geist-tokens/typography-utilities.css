@@ -1,0 +1,199 @@
+/**
+ * Utility class names aligned with https://vercel.com/geist/typography
+ * Use with Geist Sans / Geist Mono loaded on the page.
+ */
+
+:root {
+  --font-sans: "Geist", "Geist Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Headings */
+.text-heading-72 {
+  font-size: 4.5rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+.text-heading-64 {
+  font-size: 4rem;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+.text-heading-56 {
+  font-size: 3.5rem;
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+.text-heading-48 {
+  font-size: 3rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+.text-heading-40 {
+  font-size: 2.5rem;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+.text-heading-32 {
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+.text-heading-24 {
+  font-size: 1.5rem;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+.text-heading-20 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+.text-heading-16 {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+.text-heading-14 {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+/* Buttons */
+.text-button-16 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+.text-button-14 {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+.text-button-12 {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+/* Labels */
+.text-label-20 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+}
+.text-label-18 {
+  font-size: 1.125rem;
+  line-height: 1.625rem;
+  font-weight: 400;
+}
+.text-label-16 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+.text-label-14 {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+.text-label-14-mono {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  font-family: var(--font-mono);
+}
+.text-label-13 {
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+.text-label-13-mono {
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  font-family: var(--font-mono);
+}
+.text-label-12 {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.text-label-12-mono {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-family: var(--font-mono);
+}
+
+.text-label-13 strong,
+.text-label-14 strong,
+.text-label-16 strong {
+  font-weight: 600;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Copy */
+.text-copy-24 {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.text-copy-20 {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.text-copy-18 {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  font-weight: 400;
+}
+.text-copy-16 {
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.text-copy-14 {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.text-copy-13 {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  font-weight: 400;
+}
+.text-copy-13-mono {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  font-family: var(--font-mono);
+}
+
+.text-copy-24 strong,
+.text-copy-20 strong,
+.text-copy-18 strong,
+.text-copy-16 strong,
+.text-copy-14 strong {
+  font-weight: 600;
+}
