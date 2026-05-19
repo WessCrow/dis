@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { padding: 24px; background: var(--ds-bg-1); display: flex; flex-direction: column; gap: 20px; }
+.label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ds-c-9); }
+.row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.btn-disabled { opacity: 0.38; pointer-events: none; }
+.btn-danger { border-color: var(--ds-red); color: var(--ds-red); }
+.btn-danger:hover { background: var(--ds-red); color: var(--ds-bg-1); }
+.btn-solid { background: var(--ds-c-10); color: var(--ds-bg-1); }
+.btn-solid:hover { background: var(--ds-c-8); }
+.kbd { font-family: var(--font-mono); font-size: 11px; padding: 2px 6px; border: var(--ds-border-width) solid var(--ds-c-4); color: var(--ds-c-9); }
+.group { display: flex; flex-direction: column; gap: 10px; }
+</style>
+</head>
+<body>
+<div class="group">
+  <div class="label">Primary (outline → fill on hover)</div>
+  <div class="row">
+    <button type="button" class="btn-primary">Executar Protocolo</button>
+    <button type="button" class="btn-primary">Solicitar Acesso</button>
+    <button type="button" class="btn-primary btn-solid">Validar Ideia ▲</button>
+    <button type="button" class="btn-primary btn-disabled">Bloqueado</button>
+  </div>
+</div>
+<div class="group">
+  <div class="label">Ghost (mono caps, thin border)</div>
+  <div class="row">
+    <button type="button" class="btn-ghost">Ver Histórico</button>
+    <button type="button" class="btn-ghost">Exportar Relatório</button>
+    <button type="button" class="btn-ghost">⏸ Pausar</button>
+    <button type="button" class="btn-ghost">▶ Play</button>
+  </div>
+</div>
+<div class="group">
+  <div class="label">Destructive</div>
+  <div class="row">
+    <button type="button" class="btn-primary btn-danger">Reprovar Ideia</button>
+    <button type="button" class="btn-ghost" style="color:var(--ds-red);border-color:rgba(255,51,51,0.3)">Descartar Hipótese</button>
+  </div>
+</div>
+<div class="group">
+  <div class="label">Inline link + kbd hint</div>
+  <div class="row">
+    <a href="#" style="font-family:var(--font-sans);font-size:14px;color:var(--ds-blue);text-decoration:none;border-bottom:var(--ds-border-width) solid var(--ds-blue)">ver metodologia SIID completa</a>
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--ds-c-9)">Atalho <span class="kbd">Shift</span> + <span class="kbd">H</span> abre o console</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { padding: 24px; background: var(--ds-bg-1); display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+.card { padding: 24px; }
+.molding { border: var(--ds-border-width) solid var(--ds-c-4); border-left: var(--ds-border-width) solid var(--ds-c-10); background: var(--ds-bg-1); }
+.flat   { border: var(--ds-border-width) solid var(--ds-c-4); background: var(--ds-c-1); }
+.accent { border: var(--ds-border-width) solid var(--ds-blue); background: var(--ds-bg-1); }
+
+.eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.45em; text-transform: uppercase; color: var(--ds-c-9); margin-bottom: 16px; display: block; }
+.title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: var(--ds-c-10); margin-bottom: 10px; line-height: 1.2; }
+.body { font-family: var(--font-sans); font-size: 14px; color: var(--ds-c-9); line-height: 1.6; }
+.divider { height: 1px; background: var(--ds-c-4); margin: 20px 0; }
+.metric { font-family: var(--font-mono); font-size: 36px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--ds-c-10); letter-spacing: -0.02em; margin-bottom: 4px; display: block; }
+.metric-label { font-family: var(--font-mono); font-size: 11px; color: var(--ds-c-9); letter-spacing: 0.1em; text-transform: uppercase; }
+.status-row { display: flex; align-items: center; gap: 10px; }
+.dot { width: 8px; height: 8px; flex-shrink: 0; }
+.status-text { font-family: var(--font-mono); font-size: 12px; color: var(--ds-c-9); letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+  <!-- siid-molding canonical -->
+  <div class="card molding">
+    <span class="eyebrow">DIM_01 / Auditoria</span>
+    <div class="title">Intensidade da Dor</div>
+    <p class="body">Mapeamento da urgência real do problema no cotidiano do usuário. Sem placebos, sem viés do entrevistador.</p>
+    <div class="divider"></div>
+    <span class="metric">0.84</span>
+    <span class="metric-label">Score técnico</span>
+    <div class="divider"></div>
+    <div class="status-row"><div class="dot" style="background:var(--ds-green)"></div><div class="status-text">Aprovado no limiar</div></div>
+  </div>
+
+  <!-- flat card -->
+  <div class="card flat">
+    <span class="eyebrow">Resultado SIID</span>
+    <div class="title">App de delivery para pets</div>
+    <p class="body">B2B SaaS · Estágio: Validação de demanda. 4 das 8 dimensões falharam no protocolo.</p>
+    <div class="divider"></div>
+    <span class="metric" style="color:var(--ds-red)">REPROVAR</span>
+    <span class="metric-label">Veredicto Disrupta</span>
+    <div class="divider"></div>
+    <div class="status-row"><div class="dot" style="background:var(--ds-red)"></div><div class="status-text">Hipótese não defensável</div></div>
+  </div>
+
+  <!-- accent card -->
+  <div class="card accent">
+    <span class="eyebrow" style="color:var(--ds-blue)">Comando de Missão</span>
+    <div class="title">Próxima auditoria</div>
+    <p class="body">5 ideias na fila. Tempo médio de processamento por dimensão: 38 min.</p>
+    <div class="divider"></div>
+    <span class="metric" style="color:var(--ds-blue)">05</span>
+    <span class="metric-label">Em órbita</span>
+    <div class="divider"></div>
+    <div class="status-row"><div class="dot" style="background:var(--ds-blue)"></div><div class="status-text">Fila ativa · sem ruído</div></div>
+  </div>
+</body>
+</html>

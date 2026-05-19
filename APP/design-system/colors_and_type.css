@@ -1,0 +1,336 @@
+/* ============================================================
+   DISRUPTA — Design System Tokens
+   colors_and_type.css
+
+   Single-file port of:
+     - design-system/fontfaces.css        (TTArtnikDemo, 8 weights)
+     - vercel-geist/tokens/geist-semantic.css
+     - vercel-geist/tokens/typography-utilities.css
+
+   Stack:
+     --font-display / --font-sans → TTArtnikDemo
+     --font-mono                  → Geist Mono (Google Fonts)
+   ============================================================ */
+
+/* ── TTArtnikDemo — 8 weights (Thin → ExtraBold) ───────────────────────── */
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('assets/fonts/TTArtnikDemo-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('assets/fonts/TTArtnikDemo-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('assets/fonts/TTArtnikDemo-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('assets/fonts/TTArtnikDemo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('assets/fonts/TTArtnikDemo-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('assets/fonts/TTArtnikDemo-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('assets/fonts/TTArtnikDemo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTArtnikDemo';
+  src: url('assets/fonts/TTArtnikDemo-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
+
+/* ============================================================
+   GEIST SEMANTIC TOKENS — LIGHT (default)
+   ============================================================ */
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --ds-bg-1: #ffffff;
+  --ds-bg-2: #fafafa;
+
+  /* Component scale (1-3 fills, 4-6 borders, 7-8 high-contrast bg, 9-10 text/icons) */
+  --ds-c-1: #ffffff;
+  --ds-c-2: #f4f4f5;
+  --ds-c-3: #e4e4e7;
+  --ds-c-4: #e4e4e7;
+  --ds-c-5: #d4d4d8;
+  --ds-c-6: #a1a1aa;
+  --ds-c-7: #18181b;
+  --ds-c-8: #27272a;
+  --ds-c-9: #71717a;   /* secondary text */
+  --ds-c-10: #09090b;  /* primary text */
+
+  /* Accent / Status */
+  --ds-blue: #0070f3;
+  --ds-blue-hover: #0761d1;
+  --ds-red: #e00;
+  --ds-green: #007a41;
+  --ds-amber: #f5a623;
+
+  /* Espessura padrão de contorno */
+  --ds-border-width: 5px;
+
+  /* Radius — cantos arredondados 5px em superfícies do produto */
+  --ds-radius-sm: 5px;
+  --ds-radius-md: 5px;
+  --ds-radius-lg: 5px;
+
+  /* Shadows */
+  --ds-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --ds-shadow-2: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg-1), 0 0 0 4px var(--ds-blue);
+
+  /* Font stack — TTArtnikDemo display+sans, Geist Mono for code/metrics */
+  --font-display: "TTArtnikDemo", system-ui, -apple-system, sans-serif;
+  --font-sans:    "TTArtnikDemo", system-ui, -apple-system, sans-serif;
+  --font-mono:    "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-artnik:  "TTArtnikDemo", sans-serif; /* legacy alias */
+
+  /* Brutalist easing — used across motion */
+  --ease-bugatti: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Page dot-grid pattern */
+  --bg-dot-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================================
+   GEIST SEMANTIC TOKENS — DARK (Stark Mode — brand default)
+   ============================================================ */
+[data-theme="dark"],
+.dark {
+  color-scheme: dark;
+
+  --ds-bg-1: #000000;
+  --ds-bg-2: #0a0a0a;
+
+  --ds-c-1: #111111;
+  --ds-c-2: #1a1a1a;
+  --ds-c-3: #262626;
+  --ds-c-4: rgba(255, 255, 255, 0.12);
+  --ds-c-5: rgba(255, 255, 255, 0.18);
+  --ds-c-6: rgba(255, 255, 255, 0.28);
+  --ds-c-7: #ededed;
+  --ds-c-8: #ffffff;
+  --ds-c-9: #a1a1aa;
+  --ds-c-10: #fafafa;
+
+  --ds-blue: #3291ff;
+  --ds-blue-hover: #52a9ff;
+  --ds-red: #ff3333;
+  --ds-green: #45dec4;
+  --ds-amber: #f7b955;
+
+  --ds-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --ds-shadow-2: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg-1), 0 0 0 4px var(--ds-blue);
+
+  --bg-dot-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background: var(--ds-bg-1);
+  color: var(--ds-c-10);
+}
+
+h1,
+h2:not(.eyebrow),
+h3:not(.eyebrow) {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.font-mono { font-family: var(--font-mono); }
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES — Geist scale
+   ============================================================ */
+
+/* Headings — TTArtnikDemo */
+[class^="text-heading-"] {
+  font-family: var(--font-display);
+}
+
+.text-heading-72 { font-size: 4.5rem;  line-height: 1;    letter-spacing: -0.04em;  font-weight: 600; }
+.text-heading-64 { font-size: 4rem;    line-height: 1.05; letter-spacing: -0.035em; font-weight: 600; }
+.text-heading-56 { font-size: 3.5rem;  line-height: 1.07; letter-spacing: -0.03em;  font-weight: 600; }
+.text-heading-48 { font-size: 3rem;    line-height: 1.1;  letter-spacing: -0.03em;  font-weight: 600; }
+.text-heading-40 { font-size: 2.5rem;  line-height: 1.15; letter-spacing: -0.025em; font-weight: 600; }
+.text-heading-32 { font-size: 2rem;    line-height: 1.2;  letter-spacing: -0.02em;  font-weight: 600; }
+.text-heading-24 { font-size: 1.5rem;  line-height: 1.35; letter-spacing: -0.015em; font-weight: 600; }
+.text-heading-20 { font-size: 1.25rem; line-height: 1.4;  letter-spacing: -0.01em;  font-weight: 600; }
+.text-heading-16 { font-size: 1rem;    line-height: 1.5;  font-weight: 600; }
+.text-heading-14 { font-size: 0.875rem;line-height: 1.5;  font-weight: 600; }
+
+/* Buttons */
+.text-button-16 { font-size: 1rem;     line-height: 1.5rem;  font-weight: 500; }
+.text-button-14 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
+.text-button-12 { font-size: 0.75rem;  line-height: 1rem;    font-weight: 500; }
+
+/* Labels */
+.text-label-20      { font-size: 1.25rem;   line-height: 1.75rem;  font-weight: 400; }
+.text-label-18      { font-size: 1.125rem;  line-height: 1.625rem; font-weight: 400; }
+.text-label-16      { font-size: 1rem;      line-height: 1.5rem;   font-weight: 400; }
+.text-label-14      { font-size: 0.875rem;  line-height: 1.25rem;  font-weight: 400; }
+.text-label-14-mono { font-size: 0.875rem;  line-height: 1.25rem;  font-weight: 400; font-family: var(--font-mono); }
+.text-label-13      { font-size: 0.8125rem; line-height: 1.25rem;  font-weight: 400; }
+.text-label-13-mono { font-size: 0.8125rem; line-height: 1.25rem;  font-family: var(--font-mono); }
+.text-label-12      { font-size: 0.75rem;   line-height: 1rem;     font-weight: 500; letter-spacing: 0.02em; }
+.text-label-12-mono { font-size: 0.75rem;   line-height: 1rem;     font-family: var(--font-mono); }
+
+.text-label-13 strong, .text-label-14 strong, .text-label-16 strong { font-weight: 600; }
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* Copy */
+.text-copy-24      { font-size: 1.5rem;   line-height: 1.6;  font-weight: 400; }
+.text-copy-20      { font-size: 1.25rem;  line-height: 1.6;  font-weight: 400; }
+.text-copy-18      { font-size: 1.125rem; line-height: 1.65; font-weight: 400; }
+.text-copy-16      { font-size: 1rem;     line-height: 1.6;  font-weight: 400; }
+.text-copy-14      { font-size: 0.875rem; line-height: 1.6;  font-weight: 400; }
+.text-copy-13      { font-size: 0.8125rem;line-height: 1.55; font-weight: 400; }
+.text-copy-13-mono { font-size: 0.8125rem;line-height: 1.55; font-family: var(--font-mono); }
+
+.text-copy-24 strong, .text-copy-20 strong, .text-copy-18 strong, .text-copy-16 strong, .text-copy-14 strong { font-weight: 600; }
+
+/* ============================================================
+   COMPONENTS — radius via --ds-radius-sm (5px)
+   ============================================================ */
+
+/* Primary button — Disrupta brand pattern */
+.btn-primary {
+  min-height: 2.75rem;
+  border: var(--ds-border-width) solid var(--ds-c-10);
+  border-radius: var(--ds-radius-sm);
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-artnik);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--ds-c-10);
+  background: transparent;
+  transition: all 0.3s var(--ease-bugatti);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover { background: var(--ds-c-10); color: var(--ds-bg-1); }
+.btn-primary:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+
+/* Ghost button — secondary utility */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: var(--ds-border-width) solid var(--ds-c-4);
+  background: transparent;
+  border-radius: var(--ds-radius-sm);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ds-c-10);
+  cursor: pointer;
+  transition: all 0.25s var(--ease-bugatti);
+}
+.btn-ghost:hover { border-color: var(--ds-c-10); background: var(--ds-c-2); }
+
+/* Input (Geist baseline, zero-radius brutalist override) */
+.ds-input {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--ds-radius-sm);
+  border: var(--ds-border-width) solid var(--ds-c-4);
+  background: var(--ds-bg-1);
+  color: var(--ds-c-10);
+  width: 100%;
+}
+.ds-input:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+  border-color: var(--ds-blue);
+}
+
+/* SIID molding — legacy card with left accent rail */
+.siid-molding {
+  background: var(--ds-bg-1);
+  border: var(--ds-border-width) solid var(--ds-c-4);
+  border-left: var(--ds-border-width) solid var(--ds-c-10);
+  border-radius: var(--ds-radius-sm);
+  transition: all 0.5s var(--ease-bugatti);
+}
+.siid-molding:hover { border-color: var(--ds-c-6); background: var(--ds-c-1); }
+
+/* Skip-to-content link */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1.25rem;
+  background: var(--ds-blue);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-to-content:focus { top: 1rem; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

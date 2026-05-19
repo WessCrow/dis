@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { padding: 24px; background: var(--ds-bg-1); display: flex; gap: 16px; flex-wrap: wrap; }
+.shadow-card { background: var(--ds-c-1); padding: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 150px; }
+.shadow-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ds-c-10); }
+.shadow-val { font-family: var(--font-mono); font-size: 11px; color: var(--ds-c-9); }
+.sm { box-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.md { box-shadow: 0 4px 12px rgba(0,0,0,0.55); }
+.lg { box-shadow: 0 8px 24px rgba(0,0,0,0.55); }
+.focus { box-shadow: 0 0 0 2px var(--ds-bg-1), 0 0 0 4px var(--ds-blue); }
+.note { font-family: var(--font-mono); font-size: 10px; color: var(--ds-c-9); width: 100%; margin-top: 8px; line-height: 1.6; letter-spacing: 0.02em; }
+</style>
+</head>
+<body>
+<div class="shadow-card sm">
+  <div class="shadow-label">--ds-shadow-1</div>
+  <div class="shadow-val">0 1px 2px rgba(0,0,0,.5)</div>
+</div>
+<div class="shadow-card md">
+  <div class="shadow-label">--ds-shadow-2</div>
+  <div class="shadow-val">0 8px 24px rgba(0,0,0,.55)</div>
+</div>
+<div class="shadow-card lg" style="background:var(--ds-c-2)">
+  <div class="shadow-label">High elevation</div>
+  <div class="shadow-val">0 8px 24px ÷ .55</div>
+</div>
+<div class="shadow-card focus" style="background:var(--ds-c-1)">
+  <div class="shadow-label">--ds-focus-ring</div>
+  <div class="shadow-val">0 0 0 4px var(--ds-blue)</div>
+</div>
+<div class="note">⚠ A marca Disrupta usa sombras com extrema parcimônia. Separação é feita com 1px borders + dot-grid background, não com elevação. Use shadow-1/2 apenas em dropdowns/popovers; focus-ring é obrigatório em controles interativos.</div>
+</body>
+</html>

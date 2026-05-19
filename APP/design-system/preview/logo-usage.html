@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-sans); padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #444; }
+.panel { padding: 36px 24px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 18px; }
+.dark { background: #000; }
+.light { background: #fff; }
+.logo-full { width: 220px; }
+.logo-icon { width: 64px; }
+.logo-txt { width: 180px; }
+.usage-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+.light .usage-label { color: rgba(0,0,0,0.4); }
+.lockup { display: flex; align-items: center; gap: 12px; }
+</style>
+</head>
+<body>
+  <div class="panel dark">
+    <img src="../assets/logo-white.svg" class="logo-full" alt="Disrupta full lockup white">
+    <div class="usage-label">Full lockup · on dark</div>
+  </div>
+  <div class="panel light">
+    <img src="../assets/logo-black.svg" class="logo-full" alt="Disrupta full lockup black">
+    <div class="usage-label">Full lockup · on light</div>
+  </div>
+  <div class="panel dark">
+    <img src="../assets/logo-icon-white.svg" class="logo-icon" alt="Disrupta icon">
+    <div class="usage-label">Icon only · 24–96px range</div>
+  </div>
+  <div class="panel dark">
+    <img src="../assets/logo-txt-white.svg" class="logo-txt" alt="Disrupta wordmark">
+    <div class="usage-label">Wordmark only · use in navbar</div>
+  </div>
+</body>
+</html>

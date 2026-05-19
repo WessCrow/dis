@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>Disrupta-v2 — Atomic Design</title>
+    <link rel="stylesheet" href="design-system/index.css" />
+    <link rel="stylesheet" href="disrupta-v2/disrupta-v2.css" />
+    <link rel="stylesheet" href="sb-docs.css" />
+  </head>
+  <body class="sb-doc-page">
+    <header>
+      <span class="sb-doc-tag">Core</span>
+      <span class="sb-doc-tag">Design System</span>
+      <h1 class="sb-doc-h1">Atomic Overview</h1>
+      <p class="sb-doc-desc">
+        Catálogo base organizado em Átomos e Moléculas, estabelecendo a fundação da interface Disrupta.
+        Todos os componentes usam tokens e classes de <code>disrupta-v2/disrupta-v2.css</code>.
+      </p>
+    </header>
+
+    <section id="atoms">
+      <h2 class="sb-doc-h2">1. Átomos (Atoms)</h2>
+      <div class="sb-doc-uxw">
+        <p><strong>UX Writing (Botões):</strong> Use verbos imperativos curtos (Ex: "Guardar", "Gerar"). Nunca use "Clique aqui".</p>
+        <p><strong>Acessibilidade:</strong> Fonte mínima funcional em 12px (botões) e 16px (inputs). Foco visível em todos os controles.</p>
+      </div>
+
+      <div class="sb-doc-canvas sb-doc-canvas--v2">
+        <div class="atomic-stack">
+          <h3 class="sb-doc-h3">Buttons</h3>
+          <div class="atomic-row">
+            <button type="button" class="v2-btn">Default</button>
+            <button type="button" class="v2-btn v2-btn--primary">Primary</button>
+            <button type="button" class="v2-btn v2-btn--danger">Danger</button>
+          </div>
+
+          <h3 class="sb-doc-h3">Inputs &amp; Badges</h3>
+          <div class="atomic-stack">
+            <input class="v2-input" type="text" placeholder="Descreva a ideia principal…" aria-label="Descreva a ideia" />
+            <div class="atomic-row">
+              <span class="v2-badge v2-badge--info">info</span>
+              <span class="v2-badge v2-badge--success">success</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="molecules">
+      <h2 class="sb-doc-h2">2. Moléculas (Molecules)</h2>
+      <div class="sb-doc-uxw">
+        <p><strong>Definição:</strong> Combinações de átomos que formam blocos funcionais, como barras de pesquisa ou grupos de filtros.</p>
+        <p><strong>Voz:</strong> Os placeholders de input devem ser descritivos ("Nova aposta…" e não "Escreva algo").</p>
+      </div>
+
+      <div class="sb-doc-canvas sb-doc-canvas--v2">
+        <div class="atomic-stack atomic-stack--wide">
+          <h3 class="sb-doc-h3">Input Row + CTA</h3>
+          <div class="atomic-molecule-row">
+            <input class="v2-input" type="text" placeholder="Adicione nova aposta…" aria-label="Adicionar aposta" />
+            <button type="button" class="v2-btn v2-btn--primary">Gerar</button>
+          </div>
+
+          <h3 class="sb-doc-h3">Status Chip Group</h3>
+          <div class="atomic-row">
+            <button type="button" class="v2-btn v2-chip v2-chip--active">Refinar raciocínio</button>
+            <button type="button" class="v2-btn v2-chip">Contexto amplo</button>
+            <button type="button" class="v2-btn v2-chip">Revisão humana</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="organisms">
+      <h2 class="sb-doc-h2">3. Organismos (Organisms)</h2>
+      <div class="sb-doc-uxw">
+        <p><strong>Intent Preview (IA Agêntica):</strong> Aplicação da camada IAA. A IA descreve o que vai fazer antes de agir. Use tom empático mas direto.</p>
+        <p><strong>Regra:</strong> Exiba sempre um rótulo de confiança/revisão quando o agente propõe uma ação destrutiva ou autônoma.</p>
+      </div>
+
+      <div class="sb-doc-canvas sb-doc-canvas--v2">
+        <article class="v2-card atomic-organism-card">
+          <div class="atomic-organism-card__head">
+            <strong>Intent Preview</strong>
+            <span class="v2-badge v2-badge--warning">needs-review</span>
+          </div>
+          <p class="v2-copy">
+            O agente vai consolidar diagnóstico, hipóteses e próximos passos no dossiê do laboratório. Esta ação consumirá 1 token de processamento.
+          </p>
+          <div class="atomic-row atomic-row--end">
+            <button type="button" class="v2-btn">Rever prompt</button>
+            <button type="button" class="v2-btn v2-btn--primary">Executar ação</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <script>
+      (function () {
+        var id = (location.hash || "").replace(/^#/, "");
+        if (!id) return;
+        var el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      })();
+    </script>
+  </body>
+</html>

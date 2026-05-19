@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#09090b" />
+  <title>Calculadora de Inovação — Disrupta</title>
+  <link rel="stylesheet" href="design-system/index.css" />
+  <link rel="stylesheet" href="disrupta-ui.css?v=20260519-eval-review" />
+</head>
+<body class="page-laboratorio-ideias page-evaluation-v2 lab-mode-hero" data-nav-active="calculadora">
+  <a class="skip-link" href="#lab-main-content">Pular para o conteúdo principal</a>
+  <a class="skip-link skip-link--secondary" href="#float-dash">Pular para o menu</a>
+  <div class="lab-app">
+    <nav id="float-dash" class="float-dash" tabindex="-1" data-expanded="false" aria-label="Navegação principal">
+      <div class="float-dash__surface">
+        <div class="float-dash__collapsed">
+          <ul class="float-dash__icon-stack" role="list">
+            <li>
+              <a class="float-dash__icon-btn" href="laboratorio-ideias.html" title="Dashboard" data-float-tip="Dashboard" data-nav-item="dashboard">
+                <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="none" stroke="currentColor" stroke-width="1.35" d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z" />
+                </svg>
+                <span class="visually-hidden">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a class="float-dash__icon-btn" href="evaluation-v2.html" title="Calculadora de Inovação" data-float-tip="Calculadora de Inovação" data-nav-item="calculadora">
+                <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" d="M9 7h6M9 11h6M9 15h4M5 3h14a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V5a2 2 0 0 1 2-2Z" />
+                </svg>
+                <span class="visually-hidden">Calculadora de Inovação</span>
+              </a>
+            </li>
+            <li>
+              <a class="float-dash__icon-btn" href="laboratorio-ideias.html" title="Laboratório de Ideias" data-float-tip="Laboratório de Ideias" data-nav-item="laboratorio">
+                <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                <span class="visually-hidden">Laboratório de Ideias</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="lab-body">
+      <header class="lab-top-bar">
+        <a class="lab-brand" href="laboratorio-ideias.html" aria-label="Disrupta — início">
+          <img class="brand-logo" src="img/Dis-branco-vert-txt.svg" width="120" height="33" alt="Disrupta" />
+        </a>
+        <div class="lab-top-bar__end">
+          <div class="lab-top-bar__tools">
+            <div class="lab-tokens" role="group" aria-label="Saldo de tokens">
+              <button type="button" class="lab-tokens__label" disabled>Tokens: ∞</button>
+              <button type="button" class="lab-tokens__add" aria-label="Planos e tokens — adicionar" disabled>+</button>
+            </div>
+            <button type="button" class="lab-notify" aria-label="Notificações, 1 não lida" disabled>
+              <span class="lab-notify__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+                  <path d="M12 22a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z" />
+                  <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7" />
+                </svg>
+              </span>
+              <span class="lab-notify__badge">1</span>
+              <span class="visually-hidden">1 nova notificação</span>
+            </button>
+            <button type="button" class="lab-profile" aria-label="Menu do perfil" disabled>
+              <span class="lab-profile__avatar" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </span>
+              <svg class="lab-profile__chev" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="1.5" d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="lab-context-drawer" id="lab-context-drawer" data-expanded="true">
+        <aside class="lab-context eval-context-panel" id="lab-context-panel" aria-labelledby="eval-context-title">
+          <div class="lab-context__chrome">
+            <h1 id="eval-context-title" class="lab-context__headline">
+              <span class="lab-context__headline-text">Calculadora de Inovação</span>
+            </h1>
+            <p class="eval-context-panel__lede muted">Metodologia SIID — uma pergunta por vez.</p>
+          </div>
+
+          <section class="eval-context-panel__progress" id="eval-context-wizard" aria-label="Progresso da validação">
+            <div class="eval-context-panel__score-row">
+              <span class="eval-context-panel__score-label">Score ao vivo</span>
+              <span class="eval-context-panel__score-val" id="eval-live-score" aria-live="polite">0/40</span>
+            </div>
+            <p class="eval-context-panel__phase">
+              Fase: <span id="eval-phase-label">Contexto da ideia</span>
+            </p>
+            <ol class="eval-wizard__outline" id="eval-step-outline" aria-label="Etapas do fluxo"></ol>
+            <p class="eval-context-panel__hint muted">
+              Toque em uma etapa concluída para revisar. O relatório aparece aqui ao validar.
+            </p>
+          </section>
+          <section class="eval-context-panel__result" id="eval-context-result" hidden aria-label="Resumo do resultado">
+            <p class="eval-context-panel__phase">Relatório gerado</p>
+            <p class="eval-context-panel__idea-preview muted" id="eval-context-idea-preview"></p>
+            <ul class="eval-context-panel__dim-list" id="eval-context-dim-list"></ul>
+            <button type="button" class="btn-ghost eval-context-panel__new-btn" id="eval-btn-new-sidebar">Nova avaliação</button>
+          </section>
+        </aside>
+        <button
+          type="button"
+          class="lab-context-drawer__toggle"
+          id="lab-context-drawer-toggle"
+          aria-controls="lab-context-panel"
+          aria-expanded="true"
+          aria-label="Recolher painel de progresso"
+          title="Recolher painel de progresso"
+        >
+          <svg class="lab-context-drawer__toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+
+      <main class="lab-main" id="lab-main-content" tabindex="-1">
+        <div class="lab-main__grid">
+          <div class="lab-main__primary">
+            <div
+              id="eval-wizard"
+              class="eval-wizard"
+              role="region"
+              aria-labelledby="eval-wizard-heading"
+            >
+              <section class="eval-wizard__shell">
+                <header class="eval-wizard__meta">
+                  <p class="eval-wizard__eyebrow" id="eval-wizard-heading">Metodologia SIID</p>
+                  <p class="eval-wizard__counter" id="eval-wizard-counter" aria-live="polite">
+                    <span id="eval-counter-intro" class="eval-wizard__counter-intro" hidden>Introdução ao fluxo</span>
+                    <span id="eval-counter-steps">
+                      Etapa <span id="eval-step-current">1</span> de <span id="eval-step-total">10</span>
+                    </span>
+                  </p>
+                  <p class="eval-wizard__score-mobile" aria-live="polite">
+                    Score: <strong id="eval-live-score-mobile">0/40</strong>
+                  </p>
+                  <div
+                    id="eval-progress-bar"
+                    class="eval-wizard__progress"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    aria-label="Progresso geral do fluxo"
+                  >
+                    <span class="eval-wizard__progress-fill" id="eval-progress-fill"></span>
+                  </div>
+                </header>
+
+                <div class="eval-wizard__card eval-wizard__card--glass">
+                  <div id="eval-step-host" class="eval-step-host"></div>
+                </div>
+
+                <nav class="eval-wizard__nav" aria-label="Navegação do fluxo">
+                  <button type="button" class="btn-ghost eval-wizard__btn-back" id="eval-btn-back" disabled>Voltar</button>
+                  <div class="eval-wizard__nav-end">
+                    <button type="button" class="btn-ghost eval-wizard__btn-skip" id="eval-btn-skip" hidden>Pular</button>
+                    <button type="button" class="btn-primary eval-wizard__btn-continue" id="eval-btn-continue">Começar</button>
+                  </div>
+                </nav>
+
+                <p class="lab-field-context-bar__kbd-hint eval-wizard__kbd">
+                  <span class="lab-field-context-bar__kbd-lead">Atalho:</span>
+                  <kbd class="lab-kbd lab-kbd--mod" translate="no">⌘</kbd>
+                  <span class="lab-field-context-bar__kbd-plus" aria-hidden="true">+</span>
+                  <kbd class="lab-kbd" translate="no">Enter</kbd>
+                  <span class="lab-field-context-bar__kbd-trail">para continuar</span>
+                </p>
+              </section>
+            </div>
+
+            <div id="eval-result-panel" class="lab-result-panel" hidden>
+              <article
+                class="lab-result-dossier lab-result-dossier--glass eval-result-dossier report"
+                id="eval-result-dossier"
+                aria-labelledby="eval-result-title"
+              >
+                <header class="lab-result-dossier__masthead eval-result-dossier__masthead">
+                  <div class="lab-result-dossier__masthead-text">
+                    <p class="lab-result-dossier__eyebrow">Resultado SIID</p>
+                    <h2 id="eval-result-title" class="lab-result-dossier__title report-head__title">Avaliação de Inovação</h2>
+                    <p class="lab-result-dossier__subtitle">
+                      Data:
+                      <time id="eval-result-date" datetime=""></time>
+                      <span class="lab-result-dossier__sep" aria-hidden="true">|</span>
+                      <span
+                        class="confidence-pill"
+                        id="eval-result-confidence"
+                        data-level="medio"
+                        role="status"
+                      >Confiança moderada</span>
+                    </p>
+                    <p class="eval-result-dossier__score">
+                      Score total:
+                      <strong id="eval-result-total-score">0/40</strong>
+                    </p>
+                  </div>
+                  <button type="button" class="btn-ghost" id="eval-btn-new">Nova avaliação</button>
+                </header>
+
+                <section class="lab-result-dossier__section lab-rd-report-card" aria-labelledby="eval-rd-prompt-h">
+                  <header class="lab-rd-report-card__head">
+                    <span class="lab-rd-report-card__icon" aria-hidden="true">
+                      <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" focusable="false">
+                        <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                      </svg>
+                    </span>
+                    <h3 id="eval-rd-prompt-h" class="lab-rd-report-card__title">Prompt original</h3>
+                  </header>
+                  <p class="lab-result-dossier__rational">
+                    O texto bruto que gerou este relatório. Confira o alinhamento antes das interpretações abaixo.
+                  </p>
+                  <div class="lab-rd-prompt-stack">
+                    <div class="lab-rd-branch" aria-hidden="true">
+                      <span class="lab-rd-branch__node"></span>
+                      <span class="lab-rd-branch__line"></span>
+                    </div>
+                    <div class="lab-rd-nested-card lab-rd-nested-card--highlight">
+                      <span class="lab-rd-nested-card__icon" aria-hidden="true">
+                        <svg class="float-dash__ico" width="16" height="16" viewBox="0 0 24 24" focusable="false">
+                          <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.74V17h8v-2.26A7 7 0 0 0 12 2z"/>
+                        </svg>
+                      </span>
+                      <p class="lab-rd-nested-card__text" id="eval-prompt-highlight"></p>
+                    </div>
+                  </div>
+                  <p class="eval-result-problem muted" id="eval-result-problem-wrap" hidden>
+                    <strong>Problema:</strong> <span id="eval-result-problem"></span>
+                  </p>
+                </section>
+
+                <section class="lab-result-dossier__section lab-rd-report-card" aria-labelledby="eval-rd-siid-h">
+                  <header class="lab-rd-report-card__head">
+                    <span class="lab-rd-report-card__icon" aria-hidden="true">
+                      <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" focusable="false">
+                        <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.09 6.26L21 9.27l-5 4.87L17.18 21 12 17.77 6.82 21 8 14.14 3 9.27l6.91-1.01L12 3z"/>
+                      </svg>
+                    </span>
+                    <h3 id="eval-rd-siid-h" class="lab-rd-report-card__title">Dimensões SIID</h3>
+                  </header>
+                  <p class="lab-result-dossier__rational">
+                    Notas atribuídas no fluxo guiado. Cada dimensão contribui até 5 pontos para o score total de 40.
+                  </p>
+                  <div class="eval-result-dimensions" id="eval-result-dimensions"></div>
+                </section>
+
+                <section class="lab-result-dossier__section lab-rd-report-card" aria-labelledby="eval-rd-matrix-h">
+                  <header class="lab-rd-report-card__head">
+                    <span class="lab-rd-report-card__icon" aria-hidden="true">
+                      <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" focusable="false">
+                        <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M4 20V10M12 20V4M20 20V8"/>
+                      </svg>
+                    </span>
+                    <h3 id="eval-rd-matrix-h" class="lab-rd-report-card__title">Matriz de decisão</h3>
+                  </header>
+                  <p class="lab-result-dossier__rational">Síntese automática a partir das suas respostas SIID.</p>
+                  <div class="need-grid lab-rd-inner-panel eval-result-matrix" id="eval-result-matrix"></div>
+                </section>
+
+                <section class="lab-result-dossier__section lab-rd-report-card" aria-labelledby="eval-rd-prov-h">
+                  <header class="lab-rd-report-card__head">
+                    <span class="lab-rd-report-card__icon" aria-hidden="true">
+                      <svg class="float-dash__ico" width="22" height="22" viewBox="0 0 24 24" focusable="false">
+                        <path fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                      </svg>
+                    </span>
+                    <h3 id="eval-rd-prov-h" class="lab-rd-report-card__title">Provocações estratégicas</h3>
+                  </header>
+                  <p class="lab-result-dossier__rational">Reflexões para blindar a tese antes de executar.</p>
+                  <div class="lab-rd-tree accordion lab-rd-inner-panel" id="eval-provocations-tree"></div>
+                </section>
+              </article>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/disrupta-app-nav.js" defer></script>
+  <script src="js/lab-rd-expand.js?v=20260518" defer></script>
+  <script src="js/evaluation-v2.js?v=20260519" defer></script>
+</body>
+</html>

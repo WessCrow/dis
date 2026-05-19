@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { padding: 24px; background: var(--ds-bg-1); display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.group { display: flex; flex-direction: column; gap: 14px; }
+.label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ds-c-9); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field-label { font-family: var(--font-mono); font-size: 11px; color: var(--ds-c-9); text-transform: uppercase; letter-spacing: 0.1em; }
+.ds-input { font-family: var(--font-sans); font-size: 14px; }
+.ds-input::placeholder { color: var(--ds-c-9); opacity: 0.5; }
+.ds-input.error { border-color: var(--ds-red); }
+.error-msg { font-family: var(--font-mono); font-size: 11px; color: var(--ds-red); letter-spacing: 0.02em; }
+.helper { font-family: var(--font-mono); font-size: 11px; color: var(--ds-c-9); opacity: 0.7; }
+select.ds-input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--ds-c-9) 50%), linear-gradient(135deg, var(--ds-c-9) 50%, transparent 50%); background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 32px; }
+.check-row { display: flex; align-items: center; gap: 10px; }
+.check-row input[type=checkbox] { appearance: none; width: 16px; height: 16px; border: var(--ds-border-width) solid var(--ds-c-6); background: transparent; cursor: pointer; position: relative; }
+.check-row input[type=checkbox]:checked { background: var(--ds-c-10); border-color: var(--ds-c-10); }
+.check-row input[type=checkbox]:checked::after { content: ''; position: absolute; top: 1px; left: 4px; width: 5px; height: 9px; border: solid var(--ds-bg-1); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.check-row label { font-family: var(--font-sans); font-size: 13px; color: var(--ds-c-10); cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="group">
+  <div class="label">Text · Select · Error</div>
+  <div class="field">
+    <div class="field-label">Nome da ideia</div>
+    <input type="text" class="ds-input" placeholder="App de delivery para pets…">
+    <div class="helper">Até 60 caracteres · sem jargão de marketing</div>
+  </div>
+  <div class="field">
+    <div class="field-label">Segmento</div>
+    <select class="ds-input">
+      <option>Selecione…</option>
+      <option selected>B2B SaaS</option>
+      <option>Marketplace</option>
+      <option>Produto digital de consumo</option>
+      <option>Serviço profissional</option>
+    </select>
+  </div>
+  <div class="field">
+    <div class="field-label" style="color:var(--ds-red)">Margem operacional estimada</div>
+    <input type="text" class="ds-input error" value="500%">
+    <div class="error-msg">⚠ Fora do intervalo realista (5–60%). Revise a hipótese.</div>
+  </div>
+</div>
+
+<div class="group">
+  <div class="label">Textarea · Checkboxes · Focused</div>
+  <div class="field">
+    <div class="field-label">Hipótese principal</div>
+    <textarea class="ds-input" rows="4" style="resize:vertical;padding:10px 12px" placeholder="Clientes pagarão R$ X por mês para resolver Y porque…"></textarea>
+  </div>
+  <div class="check-row">
+    <input type="checkbox" id="cb1" checked>
+    <label for="cb1">Já realizei 10+ entrevistas estruturadas</label>
+  </div>
+  <div class="check-row">
+    <input type="checkbox" id="cb2">
+    <label for="cb2">Tenho dados de disposição real de pagamento</label>
+  </div>
+  <div class="check-row">
+    <input type="checkbox" id="cb3">
+    <label for="cb3">Já validei margem unitária em planilha</label>
+  </div>
+  <div class="field">
+    <div class="field-label">Focused state</div>
+    <input type="text" class="ds-input" value="bg-1, c-4 border, blue focus-ring" style="box-shadow: 0 0 0 2px var(--ds-bg-1), 0 0 0 4px var(--ds-blue); border-color: var(--ds-blue);">
+  </div>
+</div>
+</body>
+</html>

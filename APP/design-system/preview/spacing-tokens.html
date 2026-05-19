@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { padding: 24px; background: var(--ds-bg-1); }
+.section { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ds-c-9); margin: 18px 0 10px; }
+.section:first-child { margin-top: 0; }
+.row { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+.bar { height: 6px; background: var(--ds-c-10); }
+.meta { font-family: var(--font-mono); font-size: 11px; color: var(--ds-c-9); width: 130px; }
+.radius-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.radius-box { background: var(--ds-c-1); border: var(--ds-border-width) solid var(--ds-c-4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding: 14px 18px; min-width: 110px; }
+.radius-label { font-family: var(--font-mono); font-size: 10px; color: var(--ds-c-9); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+.note { font-family: var(--font-mono); font-size: 10px; color: var(--ds-red); margin-top: 8px; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+<div class="section">Spacing Scale</div>
+<div class="row"><div class="meta">space-1 / 4px</div><div class="bar" style="width:4px"></div></div>
+<div class="row"><div class="meta">space-2 / 8px</div><div class="bar" style="width:8px"></div></div>
+<div class="row"><div class="meta">space-3 / 12px</div><div class="bar" style="width:12px"></div></div>
+<div class="row"><div class="meta">space-4 / 16px</div><div class="bar" style="width:16px"></div></div>
+<div class="row"><div class="meta">space-6 / 24px</div><div class="bar" style="width:24px"></div></div>
+<div class="row"><div class="meta">space-8 / 32px</div><div class="bar" style="width:32px"></div></div>
+<div class="row"><div class="meta">space-12 / 48px</div><div class="bar" style="width:48px"></div></div>
+<div class="row"><div class="meta">space-16 / 64px</div><div class="bar" style="width:64px"></div></div>
+<div class="row"><div class="meta">space-48 / 192px</div><div class="bar" style="width:192px"></div></div>
+
+<div class="section">Border Radius — produto (5px)</div>
+<div class="radius-row">
+  <div class="radius-box" style="border-radius:5px"><div class="radius-label">all surfaces</div></div>
+  <div class="radius-box" style="border-radius:5px"><div class="radius-label">all buttons</div></div>
+  <div class="radius-box" style="border-radius:5px"><div class="radius-label">all cards</div></div>
+  <div class="radius-box" style="border-radius:5px"><div class="radius-label">all inputs</div></div>
+</div>
+<div class="note">Raio padrão de 5px em superfícies, botões, cards e inputs via tokens `--ds-radius-*`.</div>
+</body>
+</html>
