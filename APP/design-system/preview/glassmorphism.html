@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>DS · Glassmorphism — Disrupta</title>
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="../../disrupta-ui.css" />
+    <link rel="stylesheet" href="../../sb-docs.css" />
+    <style>
+      .glass-demo {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 2rem clamp(1rem, 4vw, 2.5rem) 4rem;
+      }
+      .glass-demo__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+        gap: 1.25rem;
+        margin-top: 1.5rem;
+      }
+      .glass-demo__stack {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        max-width: 42rem;
+      }
+      .glass-demo__label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin: 0 0 0.35rem;
+      }
+      .glass-demo__modal-mock {
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        max-width: 22rem;
+      }
+      .glass-demo__modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .glass-demo__modal-head h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+      .glass-demo .card,
+      .glass-demo .kpi-cell {
+        padding: 1.25rem;
+      }
+    </style>
+  </head>
+  <body class="page-laboratorio-ideias page-ds-shell sb-doc-page">
+    <main class="glass-demo">
+      <p class="sb-doc-tag">Shell · Ambient</p>
+      <h1 class="sb-doc-h1">Glassmorphism</h1>
+      <p class="sb-doc-desc">
+        Superfícies com <code>--dis-glass-*</code>, <code>backdrop-filter</code> e fundo ambiente radial.
+        Aplicado em Laboratório, Calculadora, Avaliação SIID, modais e Storybook.
+      </p>
+
+      <h2 class="sb-doc-h2">Tokens</h2>
+      <div class="glass-demo__grid">
+        <div class="card">
+          <p class="glass-demo__label">--dis-glass-bg</p>
+          <p style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem">color-mix(void 42%)</p>
+        </div>
+        <div class="card">
+          <p class="glass-demo__label">--dis-glass-blur</p>
+          <p style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem">1.5rem</p>
+        </div>
+        <div class="card">
+          <p class="glass-demo__label">--dis-glass-border</p>
+          <p style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem">text 14% mix</p>
+        </div>
+      </div>
+
+      <h2 class="sb-doc-h2">Cards e resultados</h2>
+      <div class="glass-demo__grid">
+        <div class="card molding">
+          <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted)">SIID</span>
+          <h3 style="margin: 0.5rem 0; font-weight: 600">Card · molding</h3>
+          <p class="muted" style="margin: 0; font-size: 0.9rem">Avaliação, KPIs e relatórios.</p>
+        </div>
+        <div class="kpi-cell">
+          <p class="glass-demo__label">KPI</p>
+          <p style="margin: 0; font-size: 1.75rem; font-family: var(--font-mono); font-weight: 600">0.84</p>
+        </div>
+        <div class="confidence-pill" data-level="alto" style="display: inline-flex; padding: 0.35rem 0.75rem; align-self: start">Alta confiança</div>
+      </div>
+
+      <h2 class="sb-doc-h2">Comando e sugestões</h2>
+      <div class="glass-demo__stack">
+        <div class="lab-center-preview__command" style="padding: 1rem 1.25rem">
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem">Descreva a sua ideia de inovação…</p>
+        </div>
+        <button type="button" class="lab-prompt-suggestions__card" style="max-width: 20rem">
+          <span style="font-size: 0.9rem">Sugestão de prompt</span>
+        </button>
+      </div>
+
+      <h2 class="sb-doc-h2">Modal (painel)</h2>
+      <div class="lab-pricing-dialog__panel glass-demo__modal-mock">
+        <div class="glass-demo__modal-head">
+          <h3>Planos e tokens</h3>
+          <button type="button" class="btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 0.8rem">Fechar</button>
+        </div>
+        <button type="button" class="lab-pricing__plan" style="width: 100%; margin-bottom: 0.65rem; text-align: left">
+          <strong>Pro</strong><br />
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted)">120 tokens / mês</span>
+        </button>
+        <button type="button" class="btn-primary" style="width: 100%">Continuar</button>
+      </div>
+
+      <h2 class="sb-doc-h2">Dossié (secção)</h2>
+      <div class="lab-result-dossier__section lab-result-dossier__section--layer-1" style="max-width: 40rem; padding: 1rem 1.1rem">
+        <h4 class="lab-result-dossier__h3" style="margin: 0 0 0.5rem">Need statement</h4>
+        <p style="margin: 0; font-size: 0.9rem; line-height: 1.55">Superfície de resultado com glass e borda em camada azul.</p>
+      </div>
+    </main>
+  </body>
+</html>

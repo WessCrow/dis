@@ -1,0 +1,84 @@
+# project-starter.skill
+
+> **Tipo:** Local Skill
+> **Domínio:** documentation · strategy-shaping
+> **Ação:** criar · estruturar
+> **Ativado por:** Start.md quando intenção = iniciar novo projeto
+
+---
+
+## 🎯 Propósito
+
+Entry-point de execução para inicialização de projetos. Delega o protocolo completo para `governance/project-start.md`.
+
+Esta skill não duplica o protocolo — ela o aciona e confirma a entrega via checklist.
+
+---
+
+## ⚡ Quando usar
+
+- Usuário pede para "criar um projeto" ou "iniciar" algo novo
+- Sessão nova sem `CONTEXT.md` na raiz do projeto
+- Usuário apresenta uma ideia que precisa virar estrutura
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Ler governance/RULES.md
+        ↓
+[2] Ler governance/project-start.md → protocolo completo
+        ↓
+[3] Executar o protocolo (etapas 1 a 8 do project-start.md)
+        ↓
+[4] Confirmar entrega com o checklist abaixo
+```
+
+**Protocolo completo:** ver `governance/project-start.md`
+
+---
+
+## 📋 Checklist de Saída
+
+Antes de declarar o projeto inicializado:
+
+- [ ] RULES.md lido e ativo
+- [ ] Stack detectada e documentada
+- [ ] Structure skill executada (arquitetura de pastas criada)
+- [ ] `CONTEXT.md` criado na raiz do projeto com:
+  - [ ] Stack e structure skill usada
+  - [ ] Design System (biblioteca, tokens, componentes disponíveis)
+  - [ ] Fase 1 e próximo passo
+  - [ ] Estrutura de pastas
+- [ ] `PRD.md` criado na raiz do projeto com:
+  - [ ] Visão do produto e problema que resolve
+  - [ ] Persona(s) definida(s)
+  - [ ] Features iniciais com critérios de aceite
+  - [ ] Itens explicitamente fora do escopo
+- [ ] Código inicial sem violações do RULES.md
+- [ ] Nenhum componente criado que já existe no Design System declarado
+- [ ] Primeiras decisões registradas em `CONTEXT.md`
+
+---
+
+## 🛡️ Governance
+
+- Se houver versionamento: consultar `governance/gitprotocol.md`
+- Para design: consultar `guidelines/designer2627.md`
+- Skill secundária sugerida: `kickoff-doc` (linked-skills) para aprofundar documentação
+
+---
+
+## 📤 Outputs Gerados
+
+```
+[raiz do projeto]/
+├── CONTEXT.md           ← contexto operacional (stack, DS, estado)
+└── PRD.md               ← especificação do produto (features, critérios, fluxos)
+
+skills/outputs/
+├── PROJECT_BRIEF.md     ← preenchido com dados do projeto
+├── ROADMAP.md           ← Fase 1 definida
+└── ARCHITECTURE.md      ← decisões iniciais registradas
+```

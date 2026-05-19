@@ -1,0 +1,144 @@
+# lenis-scroll.skill
+
+> **Domínio:** scroll-animation  
+> **Versão:** 1.0  
+> **Fonte:** https://github.com/darkroomengineering/lenis  
+> **Quando usar:** Sempre que o projeto requer scroll suave, controlado ou com animações scroll-driven (GSAP ScrollTrigger, scroll storytelling, parallax).
+
+---
+
+## 🎯 Propósito
+
+Implementar scroll suave e controlado via **Lenis** — a biblioteca de smooth scroll da darkroom.engineering, usada em projetos como Storybook, Vercel e Awwwards winners.
+
+**Não usar quando:** Projetos com muitos inputs, dashboards data-heavy, apps utilitários onde o scroll precisa ser preciso e imediato.
+
+---
+
+## ⚡ Setup mínimo
+
+```html
+<!-- No-code usage (CDN) -->
+<script src="https://unpkg.com/lenis@latest/dist/lenis.min.js"></script>
+<script>
+  const lenis = new Lenis();
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+</script>
+```
+
+```js
+// ESM (Vite / Next.js)
+import Lenis from 'lenis';
+
+const lenis = new Lenis({
+  duration: 1.2,              // segundos — quão longo o scroll dura
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),  // curva expo
+  orientation: 'vertical',
+  gestureOrientation: 'vertical',
+  smoothWheel: true,
+  wheelMultiplier: 1,
+  touchMultiplier: 2,
+});
+
+// RAF loop — obrigatório
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+```
+
+---
+
+## 🎛️ lenis.scrollTo() — parâmetros
+
+| Parâmetro | Tipo | Descrição |
+|---|---|---|
+| `target` | `number \| string \| HTMLElement` | Destino: px, seletor CSS (`"#hero"`, `"top"`, `"bottom"`) ou elemento |
+| `offset` | `number` | Equivalente a `scroll-padding-top` em px |
+| `lerp` | `number` | Intensidade de interpolação (0–1). Sobrescreve global |
+| `duration` | `number` | Duração em segundos. Sobrescreve global |
+| `easing` | `function` | Curva de animação personalizada |
+| `immediate` | `boolean` | Ignora duração e lerp — scroll instantâneo |
+| `lock` | `boolean` | Bloqueia input do usuário até destino ser atingido |
+| `force` | `boolean` | Executa mesmo se instância estiver `stopped` |
+| `onComplete` | `function` | Callback ao atingir o destino |
+| `userData` | `object` | Objeto passado adiante nos eventos `scroll` |
+
+```js
+// Exemplos práticos
+lenis.scrollTo('#section-about', { offset: -80, duration: 1.5 });
+lenis.scrollTo('top', { immediate: true });
+lenis.scrollTo(document.querySelector('.hero'), {
+  duration: 2,
+  easing: (t) => t * (2 - t),
+  onComplete: () => console.log('chegou'),
+});
+```
+
+---
+
+## 🔗 Integração com GSAP ScrollTrigger
+
+```js
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const lenis = new Lenis();
+
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000);
+});
+gsap.ticker.lagSmoothing(0);
+```
+
+---
+
+## 🎯 Padrões de uso no projeto
+
+### Scroll-to em âncoras de navegação
+```js
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener('click', (e) => {
+    e.preventDefault();
+    lenis.scrollTo(anchor.getAttribute('href'), { offset: -60 });
+  });
+});
+```
+
+### Pausa e retomada (ex: modal aberto)
+```js
+// Ao abrir modal
+lenis.stop();
+
+// Ao fechar modal
+lenis.start();
+```
+
+---
+
+## ✅ Checklist de implementação
+
+- [ ] RAF loop configurado (Lenis não anima sem ele)
+- [ ] `lenis.stop()` ao abrir modais/drawers
+- [ ] Integração ScrollTrigger: `lenis.on('scroll', ScrollTrigger.update)` + `gsap.ticker.lagSmoothing(0)`
+- [ ] `prefers-reduced-motion` verificado — considerar `duration: 0` ou desabilitar Lenis
+- [ ] Testado em iOS Safari (touch behavior difere de desktop)
+
+---
+
+## ⚠️ Armadilhas conhecidas
+
+- **Lenis + overflow:hidden** em um container não funciona — Lenis precisa que o scroll aconteça no `window` ou em um elemento com `overflow: auto/scroll` explícito
+- **SSR/Next.js:** instanciar Lenis somente no cliente (`useEffect`, não no módulo top-level)
+- **React StrictMode:** o RAF pode duplicar — usar `useRef` para guardar instância e `lenis.destroy()` no cleanup do `useEffect`
+- **z-index e position: fixed:** elementos fixos podem "escorregar" — verificar `will-change: transform` se necessário

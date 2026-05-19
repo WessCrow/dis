@@ -1,0 +1,102 @@
+# frontend-structure.skill
+
+> **Tipo:** Structure Skill
+> **Camada:** Organização Estrutural
+> **Stack:** Frontend genérico (HTML/CSS/JS, frameworks não identificados, ou multi-framework)
+> **Ativado por:** Start.md quando detecta: frontend, mas sem stack específica
+
+---
+
+## 🎯 Propósito
+
+Gerar estrutura base para projetos frontend sem framework específico identificado, ou quando o projeto mistura múltiplas tecnologias. Serve como fallback universal para projetos web.
+
+---
+
+## ⚡ Quando usar
+
+- Stack frontend não especificada ou ambígua
+- Projetos simples sem framework (HTML + CSS + JS)
+- Múltiplos frameworks convivendo
+- Qualquer projeto frontend que não encaixe em react-vite ou nextjs
+
+---
+
+## 🗂️ Arquitetura Gerada
+
+```
+/
+├── src/                          → código-fonte principal
+│   ├── components/               → componentes reutilizáveis
+│   ├── pages/                    → páginas/views
+│   ├── services/                 → chamadas de API
+│   ├── utils/                    → utilitários e helpers
+│   ├── types/                    → tipos e interfaces
+│   ├── constants/                → constantes globais
+│   └── assets/                   → recursos do projeto
+│       ├── images/
+│       ├── fonts/
+│       └── icons/
+│
+├── public/                       → arquivos servidos diretamente
+│   ├── index.html
+│   └── favicon.ico
+│
+├── styles/                       → estilos globais
+│   ├── global.css
+│   ├── variables.css             → custom properties / tokens
+│   └── reset.css
+│
+├── tests/                        → testes automatizados
+│   ├── unit/
+│   └── e2e/
+│
+├── scripts/                      → scripts de build e automação
+├── docs/                         → documentação técnica local
+├── .env.example
+├── .gitignore
+└── package.json
+```
+
+---
+
+## 📐 Convenções Aplicadas
+
+| Item | Padrão |
+|---|---|
+| Componentes | `PascalCase` |
+| Utilitários | `camelCase.js/.ts` |
+| CSS | `kebab-case.css` |
+| Pastas | `kebab-case/` |
+| Constantes | `SCREAMING_SNAKE` |
+| Assets | `kebab-case.ext` |
+
+---
+
+## 🔁 Fluxo de Execução
+
+```
+[1] Confirmar ausência de framework específico
+        ↓
+[2] Criar estrutura de pastas
+        ↓
+[3] Gerar public/index.html boilerplate
+        ↓
+[4] Gerar styles/global.css + variables.css
+        ↓
+[5] Criar src/utils/ com helpers básicos
+        ↓
+[6] Registrar decisões em outputs/ARCHITECTURE.md
+```
+
+---
+
+## 📤 Output em ARCHITECTURE.md
+
+```markdown
+## Decisão: Frontend Genérico
+**Data:** [DATA]
+**Stack:** HTML + CSS + JS (ou multi-framework)
+**Estrutura:** frontend-structure.skill aplicada
+**Motivo:** Stack específica não identificada no pedido
+```

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { padding: 24px; background: var(--ds-bg-1); display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; }
+.section-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ds-c-9); width: 100%; margin: 10px 0 4px; }
+.section-label:first-child { margin-top: 0; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; border: var(--ds-border-width) solid; line-height: 1; }
+.dot { width: 6px; height: 6px; }
+.b-success { color: var(--ds-green); border-color: rgba(69,222,196,0.32); background: rgba(69,222,196,0.06); }
+.b-warning { color: var(--ds-amber); border-color: rgba(247,185,85,0.32); background: rgba(247,185,85,0.06); }
+.b-error   { color: var(--ds-red);   border-color: rgba(255,51,51,0.32);  background: rgba(255,51,51,0.06); }
+.b-info    { color: var(--ds-blue);  border-color: rgba(50,145,255,0.32); background: rgba(50,145,255,0.06); }
+.b-mute    { color: var(--ds-c-9);   border-color: var(--ds-c-4); background: transparent; }
+.b-solid   { color: var(--ds-bg-1);  background: var(--ds-c-10); border-color: var(--ds-c-10); }
+.b-dim     { color: var(--ds-blue);  border-color: rgba(50,145,255,0.32); background: transparent; padding: 4px 8px; letter-spacing: 0.4em; }
+</style>
+</head>
+<body>
+  <div class="section-label">Status — auditoria SIID</div>
+  <span class="badge b-success"><div class="dot" style="background:var(--ds-green)"></div>Aprovado</span>
+  <span class="badge b-warning"><div class="dot" style="background:var(--ds-amber)"></div>Revisão</span>
+  <span class="badge b-error"><div class="dot" style="background:var(--ds-red)"></div>Reprovado</span>
+  <span class="badge b-info"><div class="dot" style="background:var(--ds-blue)"></div>Em órbita</span>
+  <span class="badge b-mute">Rascunho</span>
+
+  <div class="section-label">Solid + Mute</div>
+  <span class="badge b-solid">Disrupta · Stark Mode</span>
+  <span class="badge b-mute">B2B SaaS</span>
+  <span class="badge b-mute">Marketplace</span>
+  <span class="badge b-mute">Produto digital</span>
+  <span class="badge b-mute">Pré-seed</span>
+
+  <div class="section-label">SIID dimension tags (Geist Mono · 0.4em tracking)</div>
+  <span class="badge b-dim">DIM_01</span>
+  <span class="badge b-dim">DIM_02</span>
+  <span class="badge b-dim">DIM_03</span>
+  <span class="badge b-dim">DIM_04</span>
+  <span class="badge b-dim">DIM_05</span>
+  <span class="badge b-dim">DIM_06</span>
+  <span class="badge b-dim">DIM_07</span>
+  <span class="badge b-dim">DIM_08</span>
+</body>
+</html>

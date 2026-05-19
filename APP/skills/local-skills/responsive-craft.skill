@@ -1,0 +1,182 @@
+# responsive-craft.skill
+
+> **Domínio:** responsive-layout  
+> **Versão:** 1.0  
+> **Fonte:** https://github.com/kylezantos/responsive-craft  
+> **Quando usar:** Sempre que houver trabalho significativo em breakpoints, layouts fluidos, ou ao iniciar qualquer projeto com componentes visuais.
+
+---
+
+## 🎯 Propósito
+
+Implementar responsividade de forma **deliberada e sistemática** — compensando a falta de canvas visual no desenvolvimento code-first. Garante que decisões responsivas sejam tomadas antes de escrever CSS, não reativamente depois.
+
+---
+
+## 🗺️ Três modos de operação
+
+| Modo | Quando usar |
+|---|---|
+| **Audit** | Projeto existente com problemas de responsividade |
+| **Build** | Início de um novo componente ou página |
+| **Preview** | Verificação visual em múltiplos breakpoints simultaneamente |
+
+---
+
+## 📐 Princípios — escalar antes de breakpoint
+
+**Escalation model (seguir esta ordem):**
+
+```
+1. CSS Intrínseco    → auto-fit, flex-wrap, clamp()
+2. Container Queries → componente responde ao container, não viewport
+3. Media Queries     → só para mudanças estruturais reais
+```
+
+**Nunca pular etapas.** Breakpoints são exceção, não regra.
+
+---
+
+## ⚙️ Modo Audit — projeto existente
+
+Executar quando: "make this responsive", "fix the mobile layout", "the sidebar breaks on tablet"
+
+### Passo 1 — Pre-flight scan (problemas de AI)
+Verificar estes erros comuns antes de qualquer edição:
+
+| Padrão problemático | Correção |
+|---|---|
+| `height: 100vh` | `height: 100svh` (iOS) |
+| `min-width` queries no desktop | Reescrever mobile-first com `min-width` |
+| Flex child sem `min-width: 0` | Adicionar `min-width: 0` |
+| `overflow: hidden` no pai de sticky | Remover ou trocar por `overflow: clip` |
+| `font-size` fixo em px no input (< 16px) | Mínimo 16px — iOS faz zoom |
+| `position: fixed` sem `inset` | Definir `inset: 0` explicitamente |
+| `z-index` escalando sem controle | Usar camadas nomeadas com `@layer` |
+
+### Passo 2 — Identificar Design Forks
+Antes de corrigir, identificar se há múltiplas abordagens válidas:
+
+| Componente | Opções comuns |
+|---|---|
+| Sidebar em mobile | Drawer, Tabs, Accordion |
+| Tabela de dados | Scroll horizontal, Cards empilhados, Colunas ocultas |
+| Dashboard multi-painel | Stack vertical, Tabs, Prioridade única |
+| Navegação profunda | Hamburguer, Bottom nav, Breadcrumb colapsado |
+| Bento grid | Reformatar, Scroll horizontal, Stack |
+
+**Apresentar opções com tradeoffs. Nunca decidir silenciosamente.**
+
+### Passo 3 — Corrigir por prioridade
+1. Bugs críticos (conteúdo cortado, overflow quebrando layout)
+2. Estrutura (order, display, grid/flex)
+3. Tipografia e espaçamentos fluidos
+4. Refinamentos (animações, hover states)
+
+---
+
+## 🏗️ Modo Build — do zero
+
+### Fase 1 — Descrever comportamento antes de escrever CSS
+
+Para cada componente, documentar:
+```
+[ComponentName] responsive behavior:
+- Mobile (< 768px): [descrever]
+- Tablet (768–1024px): [descrever]  
+- Desktop (> 1024px): [descrever]
+- Fluid elements: [o que usa clamp()]
+- Sticky/scroll: [se houver]
+```
+
+### Fase 2 — Fundação mobile-first
+
+```css
+/* Base: mobile */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding-inline: clamp(1rem, 5vw, 3rem);
+}
+
+/* Tablet+ */
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+  }
+}
+```
+
+### Fase 3 — Escalar com CSS moderno
+
+```css
+/* Grid auto-responsivo sem media query */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+/* Tipografia fluida */
+.heading {
+  font-size: clamp(1.5rem, 4vw + 1rem, 4rem);
+  line-height: clamp(1.2, 1.1 + 0.5vw, 1.5);
+}
+
+/* Container query — componente responde ao pai */
+@container (min-width: 600px) {
+  .card {
+    flex-direction: row;
+  }
+}
+```
+
+---
+
+## 🖥️ Modo Preview — verificação multi-breakpoint
+
+Abrir iframes simultâneos em:
+- **375px** — iPhone SE / Android compacto
+- **768px** — iPad / tablet portrait
+- **1024px** — iPad landscape / laptop pequeno
+- **1440px** — Desktop padrão
+
+**Regra de teste:** Arrastar continuamente de 280px a 2560px — não só nos breakpoints.
+
+---
+
+## 📋 Design Forks — 8 padrões ambíguos
+
+Sempre apresentar opções antes de implementar:
+
+1. **Sidebar content** → Drawer / Tabs / Accordion
+2. **Data tables** → Scroll / Cards / Colunas ocultas  
+3. **Multi-panel dashboards** → Stack / Tabs / Prioridade
+4. **Complex heroes** → Simplificar / Stack / Scroll horizontal
+5. **Multiple sticky elements** → CSS custom props / Prioridade / Remover
+6. **Deep navigation** → Hamburguer / Bottom nav / Breadcrumb
+7. **Complex forms** → Stepper / Accordion / Simplificar
+8. **Bento grids** → Reformatar / Scroll / Stack
+
+---
+
+## ✅ Checklist de validação responsiva
+
+- [ ] Testado arrastando de 280px a 2560px (não só nos breakpoints)
+- [ ] `100vh` substituído por `100svh` onde aplicável
+- [ ] Flex children têm `min-width: 0` quando necessário
+- [ ] Tipografia usa `clamp()` — não px fixo
+- [ ] Espaçamentos usam `clamp()` ou `gap` fluido
+- [ ] `overflow: hidden` não está quebrando nenhum sticky
+- [ ] Inputs de formulário ≥ 16px (evita zoom no iOS)
+- [ ] Design forks documentados e decididos com o time/usuário
+
+---
+
+## ⚠️ Armadilhas conhecidas
+
+- **`100vh` no iOS Safari:** barra de endereço reduz a viewport — usar `100svh`
+- **Desktop-first queries:** nunca usar `max-width` como padrão — sempre `min-width` e mobile-first
+- **Sticky + overflow:hidden no pai:** quebra silenciosamente — trocar por `overflow: clip`
+- **Container queries e Safari < 16:** verificar suporte ou usar fallback com `@supports`

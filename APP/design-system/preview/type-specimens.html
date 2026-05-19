@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { padding: 24px; background: var(--ds-bg-1); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.card { border: var(--ds-border-width) solid var(--ds-c-4); padding: 20px; }
+.label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ds-c-9); margin-bottom: 16px; }
+.weights { display: flex; flex-direction: column; gap: 8px; }
+.w { font-size: 17px; color: var(--ds-c-10); font-family: var(--font-sans); }
+.wmeta { font-family: var(--font-mono); font-size: 9px; color: var(--ds-c-9); opacity: 0.6; margin-left: 8px; }
+.mono-ex { font-family: var(--font-mono); font-size: 12px; color: var(--ds-blue); background: var(--ds-c-1); border: var(--ds-border-width) solid var(--ds-c-4); padding: 14px; line-height: 1.8; }
+.mono-line { display: block; }
+.mono-key { color: var(--ds-c-9); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="label">TTArtnikDemo — 8 weights</div>
+    <div class="weights">
+      <div><span class="w" style="font-weight:100">Thin · Disrupta</span><span class="wmeta">100</span></div>
+      <div><span class="w" style="font-weight:200">ExtraLight · Disrupta</span><span class="wmeta">200</span></div>
+      <div><span class="w" style="font-weight:300">Light · Disrupta</span><span class="wmeta">300</span></div>
+      <div><span class="w" style="font-weight:400">Regular · Disrupta</span><span class="wmeta">400</span></div>
+      <div><span class="w" style="font-weight:500">Medium · Disrupta</span><span class="wmeta">500</span></div>
+      <div><span class="w" style="font-weight:600">SemiBold · Disrupta</span><span class="wmeta">600</span></div>
+      <div><span class="w" style="font-weight:700">Bold · Disrupta</span><span class="wmeta">700</span></div>
+      <div><span class="w" style="font-weight:800">ExtraBold · Disrupta</span><span class="wmeta">800</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="label">Geist Mono — code / metrics</div>
+    <div class="mono-ex">
+      <span class="mono-line"><span class="mono-key">dim_01_dor</span>: 0.84</span>
+      <span class="mono-line"><span class="mono-key">dim_02_frequencia</span>: 0.62</span>
+      <span class="mono-line"><span class="mono-key">dim_03_mercado</span>: 0.91</span>
+      <span class="mono-line"><span class="mono-key">dim_04_alternativas</span>: 0.45</span>
+      <span class="mono-line" style="color:var(--ds-red)"><span class="mono-key">veredicto</span>: "reprovar"</span>
+    </div>
+    <div style="margin-top:16px;font-family:var(--font-mono);font-size:11px;color:var(--ds-c-9);line-height:1.6">
+      Usado em todos os technical labels: eyebrows, métricas tabulares, código inline e taggers de dimensão SIID. Sempre aplicar <span style="color:var(--ds-c-10)">.tabular-nums</span> quando comparar números.
+    </div>
+  </div>
+</body>
+</html>
