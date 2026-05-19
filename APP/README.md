@@ -11,6 +11,22 @@ npx --yes serve public
 
 Abrir: [http://localhost:3000/laboratorio-ideias.html](http://localhost:3000/laboratorio-ideias.html) (porta pode variar).
 
+## GitHub Pages
+
+O site [wesscrow.github.io/dis](https://wesscrow.github.io/dis/) é publicado na branch **`gh-pages`** (landing Next.js). Os protótipos ficam em **`/APP/`** nessa branch — não basta push em `main`.
+
+| Página | URL publicada |
+|--------|----------------|
+| APP (entrada) | https://wesscrow.github.io/dis/APP/ |
+| Laboratório | https://wesscrow.github.io/dis/APP/laboratorio-ideias.html |
+| Storybook | https://wesscrow.github.io/dis/APP/storybook.html |
+
+Deploy (no clone do repo [WessCrow/dis](https://github.com/WessCrow/dis)):
+
+```bash
+bash scripts/deploy-github-pages.sh
+```
+
 ## Mapa do repositório
 
 | Caminho | Conteúdo |
